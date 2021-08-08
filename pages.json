@@ -1,0 +1,2286 @@
+[
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2021-07-31T11:17:02.564Z",
+        "user": 1,
+        "content_type": 16,
+        "object_id": "4",
+        "object_repr": "RMDemands object (4)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2021-07-31T11:19:30.149Z",
+        "user": 1,
+        "content_type": 16,
+        "object_id": "5",
+        "object_repr": "RMDemands object (5)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2021-07-31T11:19:59.942Z",
+        "user": 1,
+        "content_type": 16,
+        "object_id": "5",
+        "object_repr": "RMDemands object (5)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"CancelledDate\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2021-07-31T11:21:56.856Z",
+        "user": 1,
+        "content_type": 16,
+        "object_id": "5",
+        "object_repr": "RMDemands object (5)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2021-07-31T11:22:00.033Z",
+        "user": 1,
+        "content_type": 16,
+        "object_id": "4",
+        "object_repr": "RMDemands object (4)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+        "action_time": "2021-08-01T17:44:49.344Z",
+        "user": 1,
+        "content_type": 22,
+        "object_id": "1",
+        "object_repr": "RMDemands object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+        "action_time": "2021-08-01T17:46:37.028Z",
+        "user": 1,
+        "content_type": 26,
+        "object_id": "1",
+        "object_repr": "RMPurchaseOrders object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+        "action_time": "2021-08-01T17:48:10.019Z",
+        "user": 1,
+        "content_type": 20,
+        "object_id": "Primary",
+        "object_repr": "RawMaterialTypes object (Primary)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+        "action_time": "2021-08-01T17:48:13.173Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "AA",
+        "object_repr": "RawMaterials object (AA)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+        "action_time": "2021-08-01T17:54:29.155Z",
+        "user": 1,
+        "content_type": 27,
+        "object_id": "1",
+        "object_repr": "RMPurchaseOrderItems object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+        "action_time": "2021-08-02T10:37:44.422Z",
+        "user": 1,
+        "content_type": 20,
+        "object_id": "Primary",
+        "object_repr": "RawMaterialTypes object (Primary)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+        "action_time": "2021-08-02T10:37:51.152Z",
+        "user": 1,
+        "content_type": 20,
+        "object_id": "ACTIVE",
+        "object_repr": "RawMaterialTypes object (ACTIVE)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+        "action_time": "2021-08-02T10:38:18.510Z",
+        "user": 1,
+        "content_type": 20,
+        "object_id": "COLORING AGENT",
+        "object_repr": "RawMaterialTypes object (COLORING AGENT)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+        "action_time": "2021-08-02T10:38:33.925Z",
+        "user": 1,
+        "content_type": 20,
+        "object_id": "COATING",
+        "object_repr": "RawMaterialTypes object (COATING)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+        "action_time": "2021-08-02T10:38:52.620Z",
+        "user": 1,
+        "content_type": 20,
+        "object_id": "DISINTEGRANT",
+        "object_repr": "RawMaterialTypes object (DISINTEGRANT)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+        "action_time": "2021-08-02T10:39:26.822Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "1.01.001.00051",
+        "object_repr": "RawMaterials object (1.01.001.00051)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+        "action_time": "2021-08-02T10:39:54.992Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "1.01.001.00016",
+        "object_repr": "RawMaterials object (1.01.001.00016)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+        "action_time": "2021-08-02T10:40:28.020Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "2.01.001.00145",
+        "object_repr": "RawMaterials object (2.01.001.00145)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+        "action_time": "2021-08-02T10:40:52.465Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "2.01.001.00127",
+        "object_repr": "RawMaterials object (2.01.001.00127)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+        "action_time": "2021-08-02T11:26:41.700Z",
+        "user": 1,
+        "content_type": 22,
+        "object_id": "1",
+        "object_repr": "RMDemands object (1)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+        "action_time": "2021-08-03T08:01:05.405Z",
+        "user": 1,
+        "content_type": 18,
+        "object_id": "2",
+        "object_repr": "ALI RAZA",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+        "action_time": "2021-08-03T08:03:39.205Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "3",
+        "object_repr": "SupplierApprovedItems object (3)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+        "action_time": "2021-08-03T08:03:52.487Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "4",
+        "object_repr": "SupplierApprovedItems object (4)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+        "action_time": "2021-08-03T08:04:10.282Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "4",
+        "object_repr": "SupplierApprovedItems object (4)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+        "action_time": "2021-08-03T08:04:14.619Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "3",
+        "object_repr": "SupplierApprovedItems object (3)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+        "action_time": "2021-08-03T08:04:22.053Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "5",
+        "object_repr": "SupplierApprovedItems object (5)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+        "action_time": "2021-08-03T09:27:06.228Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "6",
+        "object_repr": "SupplierApprovedItems object (6)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+        "action_time": "2021-08-03T12:40:28.335Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "7",
+        "object_repr": "SupplierApprovedItems object (7)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+        "action_time": "2021-08-05T11:59:42.676Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "RM0001",
+        "object_repr": "RawMaterials object (RM0001)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+        "action_time": "2021-08-05T12:00:03.424Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "RM0002",
+        "object_repr": "RawMaterials object (RM0002)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+        "action_time": "2021-08-05T12:00:29.253Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "RM0003",
+        "object_repr": "RawMaterials object (RM0003)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+        "action_time": "2021-08-05T12:00:44.867Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "RM0004",
+        "object_repr": "RawMaterials object (RM0004)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+        "action_time": "2021-08-05T12:01:10.582Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "RM0005",
+        "object_repr": "RawMaterials object (RM0005)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+        "action_time": "2021-08-05T12:01:26.840Z",
+        "user": 1,
+        "content_type": 21,
+        "object_id": "RM0006",
+        "object_repr": "RawMaterials object (RM0006)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 35,
+    "fields": {
+        "action_time": "2021-08-05T12:02:22.298Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "8",
+        "object_repr": "SupplierApprovedItems object (8)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 36,
+    "fields": {
+        "action_time": "2021-08-05T12:02:34.270Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "9",
+        "object_repr": "SupplierApprovedItems object (9)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 37,
+    "fields": {
+        "action_time": "2021-08-05T12:12:21.595Z",
+        "user": 1,
+        "content_type": 19,
+        "object_id": "10",
+        "object_repr": "SupplierApprovedItems object (10)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 2,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 3,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 4,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 4,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 4,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 4,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 5,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 5,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 5,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 5,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 6,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 6,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 6,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 6,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add dosage forms",
+        "content_type": 7,
+        "codename": "add_dosageforms"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change dosage forms",
+        "content_type": 7,
+        "codename": "change_dosageforms"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete dosage forms",
+        "content_type": 7,
+        "codename": "delete_dosageforms"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view dosage forms",
+        "content_type": 7,
+        "codename": "view_dosageforms"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add products",
+        "content_type": 8,
+        "codename": "add_products"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change products",
+        "content_type": 8,
+        "codename": "change_products"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete products",
+        "content_type": 8,
+        "codename": "delete_products"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view products",
+        "content_type": 8,
+        "codename": "view_products"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add pack sizes",
+        "content_type": 9,
+        "codename": "add_packsizes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change pack sizes",
+        "content_type": 9,
+        "codename": "change_packsizes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete pack sizes",
+        "content_type": 9,
+        "codename": "delete_packsizes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view pack sizes",
+        "content_type": 9,
+        "codename": "view_packsizes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add raw material types",
+        "content_type": 10,
+        "codename": "add_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change raw material types",
+        "content_type": 10,
+        "codename": "change_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete raw material types",
+        "content_type": 10,
+        "codename": "delete_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can view raw material types",
+        "content_type": 10,
+        "codename": "view_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can add raw materials",
+        "content_type": 11,
+        "codename": "add_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can change raw materials",
+        "content_type": 11,
+        "codename": "change_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can delete raw materials",
+        "content_type": 11,
+        "codename": "delete_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view raw materials",
+        "content_type": 11,
+        "codename": "view_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can add packing material types",
+        "content_type": 12,
+        "codename": "add_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can change packing material types",
+        "content_type": 12,
+        "codename": "change_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can delete packing material types",
+        "content_type": 12,
+        "codename": "delete_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can view packing material types",
+        "content_type": 12,
+        "codename": "view_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+        "name": "Can add packing materials",
+        "content_type": 13,
+        "codename": "add_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+        "name": "Can change packing materials",
+        "content_type": 13,
+        "codename": "change_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+        "name": "Can delete packing materials",
+        "content_type": 13,
+        "codename": "delete_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+        "name": "Can view packing materials",
+        "content_type": 13,
+        "codename": "view_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+        "name": "Can add Token",
+        "content_type": 14,
+        "codename": "add_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+        "name": "Can change Token",
+        "content_type": 14,
+        "codename": "change_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+        "name": "Can delete Token",
+        "content_type": 14,
+        "codename": "delete_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+        "name": "Can view Token",
+        "content_type": 14,
+        "codename": "view_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+        "name": "Can add token",
+        "content_type": 15,
+        "codename": "add_tokenproxy"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+        "name": "Can change token",
+        "content_type": 15,
+        "codename": "change_tokenproxy"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+        "name": "Can delete token",
+        "content_type": 15,
+        "codename": "delete_tokenproxy"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+        "name": "Can view token",
+        "content_type": 15,
+        "codename": "view_tokenproxy"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+        "name": "Can add rm demands",
+        "content_type": 16,
+        "codename": "add_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+        "name": "Can change rm demands",
+        "content_type": 16,
+        "codename": "change_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+        "name": "Can delete rm demands",
+        "content_type": 16,
+        "codename": "delete_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+        "name": "Can view rm demands",
+        "content_type": 16,
+        "codename": "view_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+        "name": "Can add rm demanded items",
+        "content_type": 17,
+        "codename": "add_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+        "name": "Can change rm demanded items",
+        "content_type": 17,
+        "codename": "change_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+        "name": "Can delete rm demanded items",
+        "content_type": 17,
+        "codename": "delete_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+        "name": "Can view rm demanded items",
+        "content_type": 17,
+        "codename": "view_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+        "name": "Can add suppliers",
+        "content_type": 18,
+        "codename": "add_suppliers"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+        "name": "Can change suppliers",
+        "content_type": 18,
+        "codename": "change_suppliers"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+        "name": "Can delete suppliers",
+        "content_type": 18,
+        "codename": "delete_suppliers"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+        "name": "Can view suppliers",
+        "content_type": 18,
+        "codename": "view_suppliers"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+        "name": "Can add supplier approved items",
+        "content_type": 19,
+        "codename": "add_supplierapproveditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+        "name": "Can change supplier approved items",
+        "content_type": 19,
+        "codename": "change_supplierapproveditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+        "name": "Can delete supplier approved items",
+        "content_type": 19,
+        "codename": "delete_supplierapproveditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+        "name": "Can view supplier approved items",
+        "content_type": 19,
+        "codename": "view_supplierapproveditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+        "name": "Can add raw material types",
+        "content_type": 20,
+        "codename": "add_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+        "name": "Can change raw material types",
+        "content_type": 20,
+        "codename": "change_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+        "name": "Can delete raw material types",
+        "content_type": 20,
+        "codename": "delete_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+        "name": "Can view raw material types",
+        "content_type": 20,
+        "codename": "view_rawmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+        "name": "Can add raw materials",
+        "content_type": 21,
+        "codename": "add_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+        "name": "Can change raw materials",
+        "content_type": 21,
+        "codename": "change_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+        "name": "Can delete raw materials",
+        "content_type": 21,
+        "codename": "delete_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+        "name": "Can view raw materials",
+        "content_type": 21,
+        "codename": "view_rawmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+        "name": "Can add rm demands",
+        "content_type": 22,
+        "codename": "add_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+        "name": "Can change rm demands",
+        "content_type": 22,
+        "codename": "change_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+        "name": "Can delete rm demands",
+        "content_type": 22,
+        "codename": "delete_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+        "name": "Can view rm demands",
+        "content_type": 22,
+        "codename": "view_rmdemands"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+        "name": "Can add rm demanded items",
+        "content_type": 23,
+        "codename": "add_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+        "name": "Can change rm demanded items",
+        "content_type": 23,
+        "codename": "change_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+        "name": "Can delete rm demanded items",
+        "content_type": 23,
+        "codename": "delete_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+        "name": "Can view rm demanded items",
+        "content_type": 23,
+        "codename": "view_rmdemandeditems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 93,
+    "fields": {
+        "name": "Can add packing material types",
+        "content_type": 24,
+        "codename": "add_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 94,
+    "fields": {
+        "name": "Can change packing material types",
+        "content_type": 24,
+        "codename": "change_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 95,
+    "fields": {
+        "name": "Can delete packing material types",
+        "content_type": 24,
+        "codename": "delete_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 96,
+    "fields": {
+        "name": "Can view packing material types",
+        "content_type": 24,
+        "codename": "view_packingmaterialtypes"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 97,
+    "fields": {
+        "name": "Can add packing materials",
+        "content_type": 25,
+        "codename": "add_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 98,
+    "fields": {
+        "name": "Can change packing materials",
+        "content_type": 25,
+        "codename": "change_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 99,
+    "fields": {
+        "name": "Can delete packing materials",
+        "content_type": 25,
+        "codename": "delete_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 100,
+    "fields": {
+        "name": "Can view packing materials",
+        "content_type": 25,
+        "codename": "view_packingmaterials"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 101,
+    "fields": {
+        "name": "Can add rm purchase orders",
+        "content_type": 26,
+        "codename": "add_rmpurchaseorders"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 102,
+    "fields": {
+        "name": "Can change rm purchase orders",
+        "content_type": 26,
+        "codename": "change_rmpurchaseorders"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 103,
+    "fields": {
+        "name": "Can delete rm purchase orders",
+        "content_type": 26,
+        "codename": "delete_rmpurchaseorders"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 104,
+    "fields": {
+        "name": "Can view rm purchase orders",
+        "content_type": 26,
+        "codename": "view_rmpurchaseorders"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 105,
+    "fields": {
+        "name": "Can add rm purchase order items",
+        "content_type": 27,
+        "codename": "add_rmpurchaseorderitems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 106,
+    "fields": {
+        "name": "Can change rm purchase order items",
+        "content_type": 27,
+        "codename": "change_rmpurchaseorderitems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 107,
+    "fields": {
+        "name": "Can delete rm purchase order items",
+        "content_type": 27,
+        "codename": "delete_rmpurchaseorderitems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 108,
+    "fields": {
+        "name": "Can view rm purchase order items",
+        "content_type": 27,
+        "codename": "view_rmpurchaseorderitems"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 109,
+    "fields": {
+        "name": "Can add rm receiving",
+        "content_type": 28,
+        "codename": "add_rmreceiving"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 110,
+    "fields": {
+        "name": "Can change rm receiving",
+        "content_type": 28,
+        "codename": "change_rmreceiving"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 111,
+    "fields": {
+        "name": "Can delete rm receiving",
+        "content_type": 28,
+        "codename": "delete_rmreceiving"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 112,
+    "fields": {
+        "name": "Can view rm receiving",
+        "content_type": 28,
+        "codename": "view_rmreceiving"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 113,
+    "fields": {
+        "name": "Can add rm bin cards",
+        "content_type": 29,
+        "codename": "add_rmbincards"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 114,
+    "fields": {
+        "name": "Can change rm bin cards",
+        "content_type": 29,
+        "codename": "change_rmbincards"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 115,
+    "fields": {
+        "name": "Can delete rm bin cards",
+        "content_type": 29,
+        "codename": "delete_rmbincards"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 116,
+    "fields": {
+        "name": "Can view rm bin cards",
+        "content_type": 29,
+        "codename": "view_rmbincards"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "auth",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "Products",
+        "model": "dosageforms"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "Products",
+        "model": "products"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "Products",
+        "model": "packsizes"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+        "app_label": "Products",
+        "model": "rawmaterialtypes"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "Products",
+        "model": "rawmaterials"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "Products",
+        "model": "packingmaterialtypes"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+        "app_label": "Products",
+        "model": "packingmaterials"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+        "app_label": "authtoken",
+        "model": "token"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+        "app_label": "authtoken",
+        "model": "tokenproxy"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+        "app_label": "Products",
+        "model": "rmdemands"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+        "app_label": "Products",
+        "model": "rmdemandeditems"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+        "app_label": "MaterialSuppliers",
+        "model": "suppliers"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+        "app_label": "MaterialSuppliers",
+        "model": "supplierapproveditems"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rawmaterialtypes"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rawmaterials"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rmdemands"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rmdemandeditems"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "packingmaterialtypes"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 25,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "packingmaterials"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 26,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rmpurchaseorders"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 27,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rmpurchaseorderitems"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 28,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rmreceiving"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 29,
+    "fields": {
+        "app_label": "Inventory",
+        "model": "rmbincards"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "nxe2iwqv9enmfyumn3eu4s4esfp6zpdm",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2hAolIJL9z0DGWYGqRqalHZlvLtt0oVu_3vvv0WEbS1xa7zEicRVaHH53RLgk-sB6AH1Pkuc67pMSR6KPGmT40z8up3u30GBVvY6WUPsMRGh9mQNBGVdzsZzyJCo92CNckYzD-gCdowZe638YPfQdSw-Xw7kOJo:1m9mfM:A_6eXQn734hLGq2H7cQ7YbsgXG5Lp7pw8l_No7QVy5c",
+        "expire_date": "2021-08-14T10:56:28.780Z"
+    }
+},
+{
+    "model": "Inventory.rawmaterialtypes",
+    "pk": "ACTIVE",
+    "fields": {}
+},
+{
+    "model": "Inventory.rawmaterialtypes",
+    "pk": "COATING",
+    "fields": {}
+},
+{
+    "model": "Inventory.rawmaterialtypes",
+    "pk": "COLORING AGENT",
+    "fields": {}
+},
+{
+    "model": "Inventory.rawmaterialtypes",
+    "pk": "DISINTEGRANT",
+    "fields": {}
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "1.01.001.00016",
+    "fields": {
+        "Material": "Artemether",
+        "Units": "kg",
+        "Type": "ACTIVE"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "1.01.001.00051",
+    "fields": {
+        "Material": "Adefovir",
+        "Units": "Kg",
+        "Type": "ACTIVE"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "2.01.001.00127",
+    "fields": {
+        "Material": "Coat Dry 2200 OHA",
+        "Units": "kg",
+        "Type": "ACTIVE"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "2.01.001.00145",
+    "fields": {
+        "Material": "Castor Oil",
+        "Units": "g",
+        "Type": "COATING"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "RM0001",
+    "fields": {
+        "Material": "Aerosil",
+        "Units": "kg",
+        "Type": "COATING"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "RM0002",
+    "fields": {
+        "Material": "Albendazole",
+        "Units": "kg",
+        "Type": "COLORING AGENT"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "RM0003",
+    "fields": {
+        "Material": "Aluminum Hydroxide Gel Dried",
+        "Units": "kg",
+        "Type": "DISINTEGRANT"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "RM0004",
+    "fields": {
+        "Material": "Aluminum Hydroxide Gel Wet",
+        "Units": "kg",
+        "Type": "DISINTEGRANT"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "RM0005",
+    "fields": {
+        "Material": "Amikacin Sulp",
+        "Units": "g",
+        "Type": "COLORING AGENT"
+    }
+},
+{
+    "model": "Inventory.rawmaterials",
+    "pk": "RM0006",
+    "fields": {
+        "Material": "Ammonium Chloride",
+        "Units": "g",
+        "Type": "ACTIVE"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 2,
+    "fields": {
+        "DDate": "2021-08-02T11:28:58.788Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 3,
+    "fields": {
+        "DDate": "2021-08-02T11:29:55.580Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 4,
+    "fields": {
+        "DDate": "2021-08-02T11:30:25.995Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 5,
+    "fields": {
+        "DDate": "2021-08-02T11:39:16.528Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 6,
+    "fields": {
+        "DDate": "2021-08-02T16:53:52.495Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 7,
+    "fields": {
+        "DDate": "2021-08-02T16:56:20.662Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 8,
+    "fields": {
+        "DDate": "2021-08-02T17:01:01.726Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemands",
+    "pk": 9,
+    "fields": {
+        "DDate": "2021-08-05T12:08:42.938Z",
+        "CancelledDate": null,
+        "PoNo": null,
+        "demandStatus": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 1,
+    "fields": {
+        "DNo": 2,
+        "RMCode": "2.01.001.00127",
+        "Priority": "TOP",
+        "DemandedQty": 10.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 0.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 2,
+    "fields": {
+        "DNo": 2,
+        "RMCode": "1.01.001.00016",
+        "Priority": "URGENT",
+        "DemandedQty": 1200.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 0.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 3,
+    "fields": {
+        "DNo": 3,
+        "RMCode": "2.01.001.00127",
+        "Priority": "TOP",
+        "DemandedQty": 10.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 0.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 4,
+    "fields": {
+        "DNo": 3,
+        "RMCode": "1.01.001.00016",
+        "Priority": "URGENT",
+        "DemandedQty": 1200.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 0.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 5,
+    "fields": {
+        "DNo": 4,
+        "RMCode": "2.01.001.00127",
+        "Priority": "TOP",
+        "DemandedQty": 10.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 0.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 6,
+    "fields": {
+        "DNo": 4,
+        "RMCode": "1.01.001.00016",
+        "Priority": "URGENT",
+        "DemandedQty": 1200.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 0.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 7,
+    "fields": {
+        "DNo": 5,
+        "RMCode": "1.01.001.00051",
+        "Priority": "NORMAL",
+        "DemandedQty": 123.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 123.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 8,
+    "fields": {
+        "DNo": 6,
+        "RMCode": "2.01.001.00145",
+        "Priority": "NOW",
+        "DemandedQty": 786.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 786.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 9,
+    "fields": {
+        "DNo": 6,
+        "RMCode": "1.01.001.00051",
+        "Priority": "URGENT",
+        "DemandedQty": 786786.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 786786.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 10,
+    "fields": {
+        "DNo": 7,
+        "RMCode": "1.01.001.00051",
+        "Priority": "WHENEVER",
+        "DemandedQty": 12.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 12.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 11,
+    "fields": {
+        "DNo": 8,
+        "RMCode": "1.01.001.00051",
+        "Priority": "ABHI",
+        "DemandedQty": 12.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 12.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 12,
+    "fields": {
+        "DNo": 9,
+        "RMCode": "RM0001",
+        "Priority": "NORMAL",
+        "DemandedQty": 987.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 987.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 13,
+    "fields": {
+        "DNo": 9,
+        "RMCode": "RM0002",
+        "Priority": "URGENT",
+        "DemandedQty": 987.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 987.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 14,
+    "fields": {
+        "DNo": 9,
+        "RMCode": "RM0003",
+        "Priority": "NORMAL",
+        "DemandedQty": 987.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 987.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmdemandeditems",
+    "pk": 15,
+    "fields": {
+        "DNo": 9,
+        "RMCode": "RM0004",
+        "Priority": "NORMAL",
+        "DemandedQty": 987.0,
+        "CurrentStock": 0.0,
+        "QuantityPending": 987.0,
+        "Status": "Pending"
+    }
+},
+{
+    "model": "Inventory.rmpurchaseorders",
+    "pk": 2,
+    "fields": {
+        "PODate": "2021-08-03T07:44:26.263Z",
+        "DNo": 2,
+        "Status": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmpurchaseorders",
+    "pk": 3,
+    "fields": {
+        "PODate": "2021-08-03T07:45:01.878Z",
+        "DNo": 2,
+        "Status": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmpurchaseorders",
+    "pk": 4,
+    "fields": {
+        "PODate": "2021-08-03T07:48:19.431Z",
+        "DNo": 3,
+        "Status": "PENDING"
+    }
+},
+{
+    "model": "Inventory.rmpurchaseorderitems",
+    "pk": 2,
+    "fields": {
+        "PONo": 3,
+        "SID": 1,
+        "RMCode": "2.01.001.00145",
+        "Quantity": 1200.0,
+        "Pending": null,
+        "Received": 0.0,
+        "Status": "OPEN",
+        "CommittedDate": null,
+        "Reason": null
+    }
+},
+{
+    "model": "Inventory.rmpurchaseorderitems",
+    "pk": 3,
+    "fields": {
+        "PONo": 4,
+        "SID": 1,
+        "RMCode": "2.01.001.00145",
+        "Quantity": 123.0,
+        "Pending": null,
+        "Received": 0.0,
+        "Status": "OPEN",
+        "CommittedDate": null,
+        "Reason": null
+    }
+},
+{
+    "model": "MaterialSuppliers.suppliers",
+    "pk": 1,
+    "fields": {
+        "S_Name": "Usama",
+        "S_Email": "someone@example.com",
+        "S_Address": "Home NO 413",
+        "S_City": "Lahore",
+        "S_Country": "Pakistan",
+        "S_Phone": "0328-1212342",
+        "materialType": "RM",
+        "contactPersonName": "Sohail",
+        "contactPersonPhone": "0283-2394234"
+    }
+},
+{
+    "model": "MaterialSuppliers.suppliers",
+    "pk": 2,
+    "fields": {
+        "S_Name": "ALI RAZA",
+        "S_Email": "ALI@ok.com",
+        "S_Address": "Raiwind",
+        "S_City": "Lahore",
+        "S_Country": "Pakistan",
+        "S_Phone": "0324-8223231",
+        "materialType": "RM",
+        "contactPersonName": "Usama",
+        "contactPersonPhone": "0234-2842382"
+    }
+},
+{
+    "model": "MaterialSuppliers.supplierapproveditems",
+    "pk": 5,
+    "fields": {
+        "S_ID": 1,
+        "MCode": "2.01.001.00145"
+    }
+},
+{
+    "model": "MaterialSuppliers.supplierapproveditems",
+    "pk": 6,
+    "fields": {
+        "S_ID": 1,
+        "MCode": "1.01.001.00051"
+    }
+},
+{
+    "model": "MaterialSuppliers.supplierapproveditems",
+    "pk": 7,
+    "fields": {
+        "S_ID": 2,
+        "MCode": "1.01.001.00051"
+    }
+},
+{
+    "model": "MaterialSuppliers.supplierapproveditems",
+    "pk": 8,
+    "fields": {
+        "S_ID": 1,
+        "MCode": "RM0001"
+    }
+},
+{
+    "model": "MaterialSuppliers.supplierapproveditems",
+    "pk": 9,
+    "fields": {
+        "S_ID": 1,
+        "MCode": "RM002"
+    }
+},
+{
+    "model": "MaterialSuppliers.supplierapproveditems",
+    "pk": 10,
+    "fields": {
+        "S_ID": 1,
+        "MCode": "RM0002"
+    }
+}
