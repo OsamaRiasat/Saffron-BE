@@ -158,7 +158,7 @@ class RMReceivingDetailsView(APIView):
     def get(self,IGPNo):
         data = RMReceiving.objects.get(pk=IGPNo)
         dic = {}
-        dic[""] = data.RMCode.Material
+        dic["Material"] = data.RMCode.Material
         dic["demandedQuantity"] = data.Quantity
         dic["balance"] = data.Pending
         dic["demandedQuantity"] = data.Quantity

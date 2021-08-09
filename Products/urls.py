@@ -5,9 +5,9 @@ from .views import *
 router = DefaultRouter()
 
 # Products
-router.register('Products', ProductViews, basename='Products')
-router.register('DosageForms', DosageFormsViews, basename='DosageForms')
-router.register('PackSizes', PackSizesViews, basename='PackSizes')
+# router.register('Products', ProductViews, basename='Products')
+# router.register('DosageForms', DosageFormsViews, basename='DosageForms')
+# router.register('PackSizes', PackSizesViews, basename='PackSizes')
 
 
 urlpatterns = [

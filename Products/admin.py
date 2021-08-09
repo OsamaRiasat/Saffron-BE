@@ -6,7 +6,7 @@ from .models import *
 admin.site.register(Products)
 admin.site.register(DosageForms)
 admin.site.register(PackSizes)
-
+admin.site.register(PackSizesListForFrontEnd)
 
 
 
