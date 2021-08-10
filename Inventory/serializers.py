@@ -159,3 +159,11 @@ class RMIGPSerializer(serializers.ModelSerializer):
     #     # PO.save()
     #
     #     return IGP
+
+
+# GRN
+
+class IGPNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RMReceiving
+        fields = ['IGPNo', ]

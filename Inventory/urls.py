@@ -53,6 +53,8 @@ urlpatterns = [
     path('RMPurchaseOrderItemsCodesForReceiving/<str:PONo>/', RMPurchaseOrderItemsCodesForReceivingView.as_view()),
     path('RMPurchaseOrderDetails/<str:PONo>/<str:RMCode>/', RMPurchaseOrderDetailsView.as_view()),
     path('RMHighestIGPNO', RMHighestIGPNO.as_view()),
-    path('RMIGP', RMIGPView.as_view())
+    path('RMIGP', RMIGPView.as_view()),
 
+    # GRN
+    path('IGPNo/',IGPNoView),
 ]

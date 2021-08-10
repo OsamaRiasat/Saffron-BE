@@ -10,8 +10,11 @@ router = DefaultRouter()
 # router.register('PackSizes', PackSizesViews, basename='PackSizes')
 
 
+
 urlpatterns = [
     path('viewset/', include(router.urls)),
     path('viewset/<str:pk>/', include(router.urls)),
 
+# RM Formulation
+    path('RMFormulation/', FormulationsView.as_view()),
 ]

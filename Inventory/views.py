@@ -174,3 +174,10 @@ class RMReceivingDetailsView(APIView):
         dic["suppplierID"] = data.SID.S_ID
 
         return Response(dic)
+
+
+# IGP
+
+class IGPNoView(generics.ListAPIView):
+        queryset = RMReceiving.objects.all()
+        serializer_class = IGPNoSerializer
