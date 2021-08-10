@@ -55,6 +55,5 @@ urlpatterns = [
     path('RMHighestIGPNO', RMHighestIGPNO.as_view()),
     path('RMIGP', RMIGPView.as_view()),
 
-    # GRN
-    path('IGPNo/',IGPNoView),
+
 ]

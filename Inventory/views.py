@@ -176,8 +176,3 @@ class RMReceivingDetailsView(APIView):
         return Response(dic)
 
 
-# IGP
-
-class IGPNoView(generics.ListAPIView):
-        queryset = RMReceiving.objects.all()
-        serializer_class = IGPNoSerializer
