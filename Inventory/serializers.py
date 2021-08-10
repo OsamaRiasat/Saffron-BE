@@ -159,3 +159,26 @@ class RMIGPSerializer(serializers.ModelSerializer):
     #     # PO.save()
     #
     #     return IGP
+
+
+#Generate GRN
+class IGPNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=RMReceiving
+        fields=['IGPNo',]
+class UpdateRMRecievingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=RMReceiving
+        fields=['batchNo','quantityReceived','containersReceived','MFG_Date','EXP_Date','GRNo','remarks',]
+    def update(self, instance, validated_data):
+        instance.batchNo=validated_data.get('batchNo',instance.batchNo)
+        instance.quantityRecieved=validated_data.get('quantityReceived',instance.quantityReceived)
+        instance.containersReceived=validated_data.get('containersReceived',instance.containersReceived)
+        instance.MFG_Date=validated_data.get('MFG_Date',instance.MFG_Date)
+        instance.EXP_Date=validated_data.get('EXP_Date',instance.EXP_Date)
+        instance.GRNo=validated_data.get('GRNo',instance.GRNo)
+        instance.remarks=validated_data.get('remarks',instance.remarks)
+        instance.status="Under_Test"
+        instance.save()
+        return instance
+        

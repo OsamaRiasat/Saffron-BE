@@ -160,17 +160,32 @@ class RMIGPView(generics.CreateAPIView):
 
 
 
-# change
-class RMReceivingDetailsView(APIView):
-    def get(self,IGPNo):
-        data = RMReceiving.objects.get(pk=IGPNo)
-        dic = {}
-        dic["Material"] = data.RMCode.Material
-        dic["demandedQuantity"] = data.Quantity
-        dic["balance"] = data.Pending
-        dic["demandedQuantity"] = data.Quantity
-        dic["units"] = data.RMCode.Units
-        dic["supplierName"] = data.SID.S_Name
-        dic["suppplierID"] = data.SID.S_ID
 
+
+#Generate GRN
+class IGPNoView(generics.ListAPIView):
+    queryset=RMReceiving.objects.all()
+    serializer_class=IGPNoSerializer
+class RMHighestGRNO(APIView):
+    def get(self, request):
+        GRNo = RMReceiving.objects.all().aggregate(Max('GRNo'))
+        print(GRNo)
+        return Response(GRNo)
+class RMReceivingDetailsView(APIView):
+    def get(self,request,IGPNo):
+        data = RMReceiving.objects.get(pk=IGPNo)
+        material=RawMaterials.objects.get(RMCode=data.RMCode)
+        #sname=Suppliers.objects.filter(S_ID=data.S_ID)
+        dic = {}
+        dic["Recieving_Date"]=data.IGPDate
+        dic["Code"] = data.RMCode
+        dic["Material"] = material.Material
+        dic["supplierName"] = data.S_ID.S_Name
+        dic["Batch_No"]=data.batchNo
+        dic["Recieved_Quantity"]=data.quantityReceived
+        dic["units"] = material.Units
+        dic["Containers"]=data.containersReceived
         return Response(dic)
+class UpdateRMReceivingDetailsView(generics.UpdateAPIView):
+    serializer_class=UpdateRMRecievingSerializer
+    queryset=RMReceiving.objects.all()
