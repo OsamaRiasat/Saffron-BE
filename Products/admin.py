@@ -7,6 +7,7 @@ admin.site.register(Products)
 admin.site.register(DosageForms)
 admin.site.register(PackSizes)
 admin.site.register(PackSizesListForFrontEnd)
+admin.site.register(Formulation)
 
 
 

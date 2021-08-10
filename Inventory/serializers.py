@@ -145,7 +145,7 @@ class RMPurchaseOrderItemsRMCodesSerializer(serializers.ModelSerializer):
 
 # RM Receiving
 
-class RMIGP(serializers.ModelSerializer):
+class RMIGPSerializer(serializers.ModelSerializer):
     class Meta:
         model = RMReceiving
         fields = ['RMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo','S_ID']

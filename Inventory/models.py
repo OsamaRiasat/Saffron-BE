@@ -104,7 +104,7 @@ class RMReceiving(models.Model):
     IGPDate = models.DateTimeField(auto_now_add=True)
     S_ID = models.ForeignKey(Suppliers, on_delete=models.CASCADE)
 
-    GRNo = models.IntegerField(null=True, blank=True, unique=True)
+    GRNo = models.IntegerField(default=0)
     MFG_Date = models.DateField(blank=True, null=True)
     EXP_Date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=20, default="QUARANTINED")

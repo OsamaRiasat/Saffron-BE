@@ -43,11 +43,16 @@ urlpatterns = [
     path('RMPurchaseOrderHighestPONo/', RMPurchaseOrderHighestPONoView.as_view()),
     path('RMPurchaseOrderListOfMaterialsForForm/<str:SID>/<int:DNo>',
          RMPurchaseOrderListOfMaterialsForFormView.as_view()),
-    path('RMPurchaseOrderPONOsWithPendingStatus/', RMDemandsDNosWithPendingStatus.as_view()),
     path('RMPurchaseOrder/', RMPurchaseOrdersViews.as_view()),
-    path('RMPurchaseOrderItemsCodesForReceiving/<str:PONo>/', RMPurchaseOrderItemsCodesForReceivingView.as_view()),
+
 
     # RM Receiving
+
+    # IGP
+    path('RMPurchaseOrderPONOsWithPendingStatus/', RMDemandsDNosWithPendingStatus.as_view()),
+    path('RMPurchaseOrderItemsCodesForReceiving/<str:PONo>/', RMPurchaseOrderItemsCodesForReceivingView.as_view()),
     path('RMPurchaseOrderDetails/<str:PONo>/<str:RMCode>/', RMPurchaseOrderDetailsView.as_view()),
+    path('RMHighestIGPNO', RMHighestIGPNO.as_view()),
     path('RMIGP', RMIGPView.as_view())
+
 ]

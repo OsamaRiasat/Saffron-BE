@@ -141,19 +141,26 @@ class RMPurchaseOrderDetailsView(APIView):
         dic["Material"] = data.RMCode.Material
         dic["demandedQuantity"] = data.Quantity
         dic["balance"] = data.Pending
-        dic["demandedQuantity"] = data.Quantity
+        #dic["demandedQuantity"] = data.Quantity
         dic["units"] = data.RMCode.Units
         dic["supplierName"] = data.SID.S_Name
         dic["suppplierID"] = data.SID.S_ID
 
         return Response(dic)
 
+class RMHighestIGPNO(APIView):
+    def get(self, request):
+        IGPNo = RMReceiving.objects.all().aggregate(Max('IGPNo'))
+        print(IGPNo)
+        return Response(IGPNo)
 
 class RMIGPView(generics.CreateAPIView):
-    serializer_class = RMIGP
+    serializer_class = RMIGPSerializer
     queryset = RMReceiving.objects.all()
 
 
+
+# change
 class RMReceivingDetailsView(APIView):
     def get(self,IGPNo):
         data = RMReceiving.objects.get(pk=IGPNo)

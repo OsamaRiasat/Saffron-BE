@@ -1,5 +1,5 @@
 from django.db import models
-
+from Inventory.models import RawMaterials
 
 # Products
 
@@ -38,3 +38,19 @@ class PackSizesListForFrontEnd(models.Model):
 
     def __str__(self):
         return self.PackSizes
+
+
+# Formulation
+
+class Formulation(models.Model):
+    ProductCode = models.ForeignKey(Products,on_delete=models.CASCADE)
+    RMCode = models.ForeignKey(RawMaterials, on_delete=models.CASCADE)
+    batchSize = models.IntegerField()
+    quantity = models.DecimalField(decimal_places=3,max_digits=10)
+    date = models.DateField()
+    docNo = models.CharField(max_length=10)
+
+    version = models.DecimalField(max_digits=4,decimal_places=1,default=1.0)
+
+    def __str__(self):
+        return self.ProductCode.Product
