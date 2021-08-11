@@ -2,6 +2,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 from .views import *
 
+
 router = DefaultRouter()
 
 # Raw Materials
@@ -54,6 +55,17 @@ urlpatterns = [
     path('RMPurchaseOrderDetails/<str:PONo>/<str:RMCode>/', RMPurchaseOrderDetailsView.as_view()),
     path('RMHighestIGPNO', RMHighestIGPNO.as_view()),
     path('RMIGP', RMIGPView.as_view()),
+
+
+    #Generate GRN
+    path('IGPNoList/',IGPNoView.as_view(),name='IGPNo'),
+    path('HighestGRNo/',RMHighestGRNO.as_view()),
+    path('RMRecievingDetail/<int:IGPNo>/',RMReceivingDetailsView.as_view()),
+    path('UpdateRMRecieving/<int:pk>/',UpdateRMReceivingDetailsView.as_view()),
+    #POST GRN
+    path('RMRecievingDetailByGRNo/<int:GRNo>/',RMReceivingDetailsByGRNoView.as_view()),
+    path('GRNoList/',GRNoView.as_view(),name='GRNo'),
+    path('RMBinCard/',RMBinCardView.as_view()),
 
 
 ]
