@@ -50,7 +50,7 @@ urlpatterns = [
     # RM Receiving
 
     # IGP
-    path('RMPurchaseOrderPONOsWithPendingStatus/', RMDemandsDNosWithPendingStatus.as_view()),
+    path('RMPurchaseOrderPONOsWithPendingStatus/', RMPurchaseOrdersWithOpenStatusView.as_view()),
     path('RMPurchaseOrderItemsCodesForReceiving/<str:PONo>/', RMPurchaseOrderItemsCodesForReceivingView.as_view()),
     path('RMPurchaseOrderDetails/<str:PONo>/<str:RMCode>/', RMPurchaseOrderDetailsView.as_view()),
     path('RMHighestIGPNO', RMHighestIGPNO.as_view()),
