@@ -189,3 +189,48 @@ class RMReceivingDetailsView(APIView):
 class UpdateRMReceivingDetailsView(generics.UpdateAPIView):
     serializer_class=UpdateRMRecievingSerializer
     queryset=RMReceiving.objects.all()
+
+#POST GRN
+class GRNoView(generics.ListAPIView):
+    queryset=RMReceiving.objects.all()
+    serializer_class=GRNoSerializer
+class RMReceivingDetailsByGRNoView(APIView):
+    def get(self,request,GRNo):
+        data = RMReceiving.objects.get(pk=GRNo)
+        material=RawMaterials.objects.get(RMCode=data.RMCode)
+        
+        dic = {}
+        dic["Approval_Date"]=data.approval_Date
+        dic["Material"] = material.Material
+        dic["supplierName"] = data.S_ID.S_Name
+        dic["Batch_No"]=data.batchNo
+        dic["Recieved_Quantity"]=data.quantityReceived
+        dic["units"] = material.Units
+        dic["Approved_Quantity"]=data.quantityApproved
+        dic["QC_No"]=data.QCNo
+        dic["MFG"]=data.MFG_Date
+        dic["Exp_Date"]=data.EXP_Date
+        return Response(dic)
+
+class RMBinCardView(APIView):
+    serializer_class=GRNoSerializer
+    def post(self,request):
+        data=request.data
+        grno=data.get('GRNo',None)
+        data = RMReceiving.objects.get(pk=grno)
+        material=RawMaterials.objects.get(RMCode=data.RMCode)
+        bin=RMBinCards.objects.create(
+        particulars=data.S_ID.S_Name,
+        batchNo=data.batchNo,
+        received=data.quantityApproved,
+        balance=data.quantityApproved,
+        QCNo=data.QCNo,
+        GRBalance=data.quantityApproved,
+        RMCode=material
+        )
+        bin.save()
+        serializer=RMBinCardsSerializer(bin)
+        # if serializer.is_valid():
+        #     serializer.save()
+        return Response(serializer.data)
+
