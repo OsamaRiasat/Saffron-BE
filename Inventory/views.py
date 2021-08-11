@@ -159,10 +159,8 @@ class RMIGPView(generics.CreateAPIView):
     queryset = RMReceiving.objects.all()
 
 
+# Generate GRN
 
-
-
-#Generate GRN
 class IGPNoView(generics.ListAPIView):
     queryset=RMReceiving.objects.all()
     serializer_class=IGPNoSerializer
@@ -171,6 +169,7 @@ class RMHighestGRNO(APIView):
         GRNo = RMReceiving.objects.all().aggregate(Max('GRNo'))
         print(GRNo)
         return Response(GRNo)
+
 class RMReceivingDetailsView(APIView):
     def get(self,request,IGPNo):
         data = RMReceiving.objects.get(pk=IGPNo)
@@ -186,14 +185,17 @@ class RMReceivingDetailsView(APIView):
         dic["units"] = material.Units
         dic["Containers"]=data.containersReceived
         return Response(dic)
+
 class UpdateRMReceivingDetailsView(generics.UpdateAPIView):
     serializer_class=UpdateRMRecievingSerializer
     queryset=RMReceiving.objects.all()
 
-#POST GRN
+# POST GRN
+
 class GRNoView(generics.ListAPIView):
     queryset=RMReceiving.objects.all()
     serializer_class=GRNoSerializer
+
 class RMReceivingDetailsByGRNoView(APIView):
     def get(self,request,GRNo):
         data = RMReceiving.objects.get(pk=GRNo)
@@ -220,15 +222,14 @@ class RMBinCardView(APIView):
         grno=data.get('GRNo',None)
         data = RMReceiving.objects.get(pk=grno)
         material=RawMaterials.objects.get(RMCode=data.RMCode)
-        bin=RMBinCards.objects.create(
-        particulars=data.S_ID.S_Name,
-        batchNo=data.batchNo,
-        received=data.quantityApproved,
-        balance=data.quantityApproved,
-        QCNo=data.QCNo,
-        GRBalance=data.quantityApproved,
-        RMCode=material
-        )
+        bin=RMBinCards.objects.create(particulars=data.S_ID.S_Name,
+                                    batchNo=data.batchNo,
+                                    received=data.quantityApproved,
+                                    balance=data.quantityApproved,
+                                    #balance= RMBinCards.objects.all().aggregate(Max('DateTime')),
+                                    QCNo=data.QCNo,
+                                    GRBalance=data.quantityApproved,
+                                    RMCode=material)
         bin.save()
         serializer=RMBinCardsSerializer(bin)
         # if serializer.is_valid():
