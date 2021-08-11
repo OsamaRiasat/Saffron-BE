@@ -61,5 +61,9 @@ urlpatterns = [
     path('HighestGRNo/',RMHighestGRNO.as_view()),
     path('RMRecievingDetail/<int:IGPNo>/',RMReceivingDetailsView.as_view()),
     path('UpdateRMRecieving/<int:pk>/',UpdateRMReceivingDetailsView.as_view()),
+    #POST GRN
+    path('RMRecievingDetailByGRNo/<int:GRNo>/',RMReceivingDetailsByGRNoView.as_view()),
+    path('GRNoList/',GRNoView.as_view(),name='GRNo'),
+    path('RMBinCard/',RMBinCardView.as_view()),
 
 ]

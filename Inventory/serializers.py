@@ -1,3 +1,4 @@
+from django.db.models import fields
 from rest_framework import serializers
 from .models import *
 
@@ -181,4 +182,12 @@ class UpdateRMRecievingSerializer(serializers.ModelSerializer):
         instance.status="Under_Test"
         instance.save()
         return instance
-        
+#POST GRN
+class GRNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=RMReceiving
+        fields=['GRNo',]
+class RMBinCardsSerializer(serializers.ModelSerializer):
+        class Meta:
+            model=RMBinCards
+            fields=['particulars','batchNo','received','QCNo','RMCode',]

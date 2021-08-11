@@ -24,8 +24,8 @@ class RMBinCards(models.Model):
     particulars = models.CharField(max_length=20, blank=True, null=True)
     batchNo = models.CharField(max_length=20, unique=True)
     received = models.DecimalField(max_digits=10, decimal_places=2)
-    issued = models.DecimalField(max_digits=10, decimal_places=2)
-    balance = models.DecimalField(max_digits=10, decimal_places=2)
+    issued = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    balance = models.DecimalField(max_digits=10, decimal_places=2) #recieved
     QCNo = models.CharField(max_length=20)
     GRBalance = models.DecimalField(max_digits=10, decimal_places=2)
     RMCode = models.ForeignKey(RawMaterials, on_delete=models.CASCADE)
