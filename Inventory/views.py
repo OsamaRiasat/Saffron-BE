@@ -119,7 +119,7 @@ class RMPurchaseOrderListOfMaterialsForFormView(APIView):
 
 
 class RMPurchaseOrdersWithOpenStatusView(APIView):
-    def get(self):
+    def get(self,request):
         data = RMPurchaseOrders.objects.filter(Status="PENDING")
         serialize = RMPurchaseOrderPONosSerializer(data, many=True)
         return Response(serialize.data)
