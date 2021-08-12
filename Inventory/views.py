@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 
 from MaterialSuppliers.utils import supplierApprovedItemsCodesList
-from .utils import demandedItemsCodesList
+from .utils import demandedItemsCodesList, PMdemandedItemsCodesList
 
 
 # Raw Materials
@@ -21,6 +21,7 @@ class RawMaterialTypesViews(viewsets.ModelViewSet):
 class RawMaterialsViews(viewsets.ModelViewSet):
     serializer_class = RawMaterialsSerializer
     queryset = RawMaterials.objects.all()
+
 
 
 class RawMaterialCodesViews(viewsets.ModelViewSet):
@@ -43,11 +44,12 @@ class RawMaterialSearchByRMCode(APIView):
 class RawMaterialSearchByName(APIView):
     def get(self, request, Material, format=None):
         data = RawMaterials.objects.filter(Material=Material).first()
-        serializer = RawMaterialCodeTypeUnitSerializer(data, many=True)
+        serializer = RawMaterialCodeTypeUnitSerializer(data)
         return Response(serializer.data)
 
 
 # Packing Materials
+
 
 class PackingMaterialTypesViews(viewsets.ModelViewSet):
     serializer_class = PackingMaterialTypesSerializer
@@ -58,6 +60,30 @@ class PackingMaterialsViews(viewsets.ModelViewSet):
     serializer_class = PackingMaterialsSerializer
     queryset = PackingMaterials.objects.all()
 
+
+
+class PackingMaterialCodesViews(viewsets.ModelViewSet):
+    serializer_class = PackingMaterialCodesSerializer
+    queryset = PackingMaterials.objects.all()
+
+
+class PackingMaterialNamesViews(viewsets.ModelViewSet):
+    serializer_class = PackingMaterialNamesSerializer
+    queryset = PackingMaterials.objects.all()
+
+
+class PackingMaterialSearchByRMCode(APIView):
+    def get(self, request, PMCode, format=None):
+        data = PackingMaterials.objects.filter(RMCode=PMCode)
+        serializer = PackingMaterialNameTypeUnitSerializer(data, many=True)
+        return Response(serializer.data)
+
+
+class PackingMaterialSearchByName(APIView):
+    def get(self, request, Material, format=None):
+        data = PackingMaterials.objects.filter(Material=Material).first()
+        serializer = PackingMaterialCodeTypeUnitSerializer(data, many=True)
+        return Response(serializer.data)
 
 # Raw Material Demands
 
@@ -81,6 +107,31 @@ class RMDemandsDNosWithPendingStatus(APIView):
     def get(self, request):
         data = RMDemands.objects.only('DNo').filter(demandStatus="PENDING")
         serialize = RMDemandsDNosSerializer(data, many=True)
+        return Response(serialize.data)
+
+
+# Packing Material Demands
+
+class PMDemandedItemsView(viewsets.ModelViewSet):
+    serializer_class = PMDemandItemsSerializer
+    queryset = PMDemandedItems.objects.all()
+
+
+class PMDemandsView(generics.CreateAPIView):
+    serializer_class = PMDemandSerializer
+    queryset = PMDemands.objects.all()
+
+
+class PMDemandHighestDNoView(APIView):
+    def get(self, request):
+        DNo = PMDemands.objects.all().aggregate(Max('DNo'))
+        return Response(DNo)
+
+
+class PMDemandsDNosWithPendingStatus(APIView):
+    def get(self, request):
+        data = PMDemands.objects.only('DNo').filter(demandStatus="PENDING")
+        serialize = PMDemandsDNosSerializer(data, many=True)
         return Response(serialize.data)
 
 
@@ -132,7 +183,58 @@ class RMPurchaseOrderItemsCodesForReceivingView(APIView):
         return Response(serialize.data)
 
 
-# --------------- RECEIVING ------------------------
+
+
+# Packing Material Purchase Orders
+
+class PMPurchaseOrdersItemsView(viewsets.ModelViewSet):
+    serializer_class = PMPurchaseOrderItemsSerializer
+    queryset = PMPurchaseOrderItems.objects.all()
+
+
+class PMPurchaseOrdersViews(generics.CreateAPIView):
+    serializer_class = PMPurchaseOrdersSerializer
+    queryset = PMPurchaseOrders.objects.all()
+
+
+class PMPurchaseOrderHighestPONoView(APIView):
+    def get(self, request):
+        PONo = PMPurchaseOrders.objects.all().aggregate(Max('PONo'))
+        print(PONo)
+        return Response(PONo)
+
+
+class PMPurchaseOrderListOfMaterialsForFormView(APIView):
+    def get(self, request, SID, DNo):
+        # print("RMCode",RMCode)
+        # print("RMCode", DNo)
+        l1 = supplierApprovedItemsCodesList(SID)
+        l2 = PMdemandedItemsCodesList(DNo)
+        intersection = set.intersection(set(l1), set(l2))
+        l = []
+        for PMCode in intersection:
+            dic = {}
+            dic["PMCode"] = PMCode
+            l.append(dic)
+        return Response(l)
+
+
+class PMPurchaseOrdersWithOpenStatusView(APIView):
+    def get(self,request):
+        data = PMPurchaseOrders.objects.filter(Status="PENDING")
+        serialize = PMPurchaseOrderPONosSerializer(data, many=True)
+        return Response(serialize.data)
+
+
+class PMPurchaseOrderItemsCodesForReceivingView(APIView):
+    def get(self, request, PONo):
+        data = PMPurchaseOrderItems.objects.filter(PONo=PONo)
+        serialize = PMPurchaseOrderItemsRMCodesSerializer(data, many=True)
+        return Response(serialize.data)
+
+
+
+# --------------- Raw Materials RECEIVING ------------------------
 
 class RMPurchaseOrderDetailsView(APIView):
     def get(self, request, PONo, RMCode):
@@ -215,6 +317,100 @@ class RMReceivingDetailsByGRNoView(APIView):
         return Response(dic)
 
 
+# --------------- Packing Materials RECEIVING ------------------------
+
+class PMPurchaseOrderDetailsView(APIView):
+    def get(self, request, PONo, PMCode):
+        data = PMPurchaseOrderItems.objects.get(PONo=PONo, PMCode=PMCode)
+        dic = {}
+        dic["Material"] = data.PMCode.Material
+        dic["demandedQuantity"] = data.Quantity
+        dic["balance"] = data.Pending
+        # dic["demandedQuantity"] = data.Quantity
+        dic["units"] = data.PMCode.Units
+        dic["supplierName"] = data.SID.S_Name
+        dic["suppplierID"] = data.SID.S_ID
+
+        return Response(dic)
+
+
+class PMHighestIGPNO(APIView):
+    def get(self, request):
+        IGPNo = PMReceiving.objects.all().aggregate(Max('IGPNo'))
+        print(IGPNo)
+        return Response(IGPNo)
+
+
+class PMIGPView(generics.CreateAPIView):
+    serializer_class = PMIGPSerializer
+    queryset = PMReceiving.objects.all()
+
+
+# Generate GRN
+
+class PMIGPNoView(generics.ListAPIView):
+    queryset = PMReceiving.objects.all()
+    serializer_class = PMIGPNoSerializer
+
+
+class PMHighestGRNO(APIView):
+    def get(self, request):
+        GRNo = PMReceiving.objects.all().aggregate(Max('GRNo'))
+        print(GRNo)
+        return Response(GRNo)
+
+
+class PMReceivingDetailsView(APIView):
+    def get(self, request, IGPNo):
+        data = PMReceiving.objects.get(pk=IGPNo)
+        material = PackingMaterials.objects.get(PMCode=data.PMCode)
+        # sname=Suppliers.objects.filter(S_ID=data.S_ID)
+        dic = {}
+        dic["Recieving_Date"] = data.IGPDate
+        dic["Code"] = data.PMCode
+        dic["Material"] = material.Material
+        dic["supplierName"] = data.S_ID.S_Name
+        dic["Batch_No"] = data.batchNo
+        dic["Recieved_Quantity"] = data.quantityReceived
+        dic["units"] = material.Units
+        dic["Containers"] = data.containersReceived
+        return Response(dic)
+
+
+class UpdatePMReceivingDetailsView(generics.UpdateAPIView):
+    serializer_class = UpdatePMRecievingSerializer
+    queryset = PMReceiving.objects.all()
+
+
+# POST GRN
+
+class PMGRNoView(generics.ListAPIView):
+    queryset = PMReceiving.objects.all()
+    serializer_class = PMGRNoSerializer
+
+
+class PMReceivingDetailsByGRNoView(APIView):
+    def get(self, request, GRNo):
+        data = PMReceiving.objects.get(pk=GRNo)
+        material = PackingMaterials.objects.get(PMCode=data.PMCode)
+
+        dic = {}
+        dic["Approval_Date"] = data.approval_Date
+        dic["Material"] = material.Material
+        dic["supplierName"] = data.S_ID.S_Name
+        dic["Batch_No"] = data.batchNo
+        dic["Recieved_Quantity"] = data.quantityReceived
+        dic["units"] = material.Units
+        dic["Approved_Quantity"] = data.quantityApproved
+        dic["QC_No"] = data.QCNo
+        dic["MFG"] = data.MFG_Date
+        dic["Exp_Date"] = data.EXP_Date
+        return Response(dic)
+
+ # ---------------------- Bin Cards -------------------------
+
+ # Raw Materials
+
 class RMBinCardView(APIView):
     serializer_class=GRNoSerializer
     def post(self,request):
@@ -232,6 +428,31 @@ class RMBinCardView(APIView):
                                     RMCode=material)
         bin.save()
         serializer=RMBinCardsSerializer(bin)
+        # if serializer.is_valid():
+        #     serializer.save()
+        return Response(serializer.data)
+
+
+
+ # Packing Materials
+
+class PMBinCardView(APIView):
+    serializer_class=PMGRNoSerializer
+    def post(self,request):
+        data=request.data
+        grno=data.get('GRNo',None)
+        data = PMReceiving.objects.get(pk=grno)
+        material=PackingMaterials.objects.get(PMCode=data.PMCode)
+        bin=RMBinCards.objects.create(particulars=data.S_ID.S_Name,
+                                    batchNo=data.batchNo,
+                                    received=data.quantityApproved,
+                                    balance=data.quantityApproved,
+                                    #balance= RMBinCards.objects.all().aggregate(Max('DateTime')),
+                                    QCNo=data.QCNo,
+                                    GRBalance=data.quantityApproved,
+                                    RMCode=material)
+        bin.save()
+        serializer=PMBinCardsSerializer(bin)
         # if serializer.is_valid():
         #     serializer.save()
         return Response(serializer.data)
