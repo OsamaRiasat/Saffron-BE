@@ -39,7 +39,7 @@ urlpatterns = [
 
     # Packing Materials
     path('PackingMaterialSearchByName/<str:Material>/', PackingMaterialSearchByName.as_view()),
-    path('PackingMaterialSearchByRMCode/<str:PMCode>/', PackingMaterialSearchByRMCode.as_view()),
+    path('PackingMaterialSearchByPMCode/<str:PMCode>/', PackingMaterialSearchByPMCode.as_view()),
 
     # RMDemands
     path('RMDemands/', RMDemandsView.as_view()),

@@ -72,9 +72,9 @@ class PackingMaterialNamesViews(viewsets.ModelViewSet):
     queryset = PackingMaterials.objects.all()
 
 
-class PackingMaterialSearchByRMCode(APIView):
+class PackingMaterialSearchByPMCode(APIView):
     def get(self, request, PMCode, format=None):
-        data = PackingMaterials.objects.filter(RMCode=PMCode)
+        data = PackingMaterials.objects.filter(PMCode=PMCode)
         serializer = PackingMaterialNameTypeUnitSerializer(data, many=True)
         return Response(serializer.data)
 
@@ -82,7 +82,7 @@ class PackingMaterialSearchByRMCode(APIView):
 class PackingMaterialSearchByName(APIView):
     def get(self, request, Material, format=None):
         data = PackingMaterials.objects.filter(Material=Material).first()
-        serializer = PackingMaterialCodeTypeUnitSerializer(data, many=True)
+        serializer = PackingMaterialCodeTypeUnitSerializer(data)
         return Response(serializer.data)
 
 # Raw Material Demands
@@ -443,14 +443,14 @@ class PMBinCardView(APIView):
         grno=data.get('GRNo',None)
         data = PMReceiving.objects.get(pk=grno)
         material=PackingMaterials.objects.get(PMCode=data.PMCode)
-        bin=RMBinCards.objects.create(particulars=data.S_ID.S_Name,
+        bin=PMBinCards.objects.create(particulars=data.S_ID.S_Name,
                                     batchNo=data.batchNo,
                                     received=data.quantityApproved,
                                     balance=data.quantityApproved,
                                     #balance= RMBinCards.objects.all().aggregate(Max('DateTime')),
                                     QCNo=data.QCNo,
                                     GRBalance=data.quantityApproved,
-                                    RMCode=material)
+                                    PMCode=material)
         bin.save()
         serializer=PMBinCardsSerializer(bin)
         # if serializer.is_valid():

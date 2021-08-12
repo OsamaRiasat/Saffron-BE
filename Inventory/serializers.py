@@ -144,7 +144,7 @@ class PMDemandSerializer(serializers.ModelSerializer):
         demand.save()
 
         for i in dItems:
-            demands = PMDemandedItems.objects.create(DNo=demand, QuantityPending=i['DemandedQty'], RMCode=i['RMCode'],
+            demands = PMDemandedItems.objects.create(DNo=demand, QuantityPending=i['DemandedQty'], PMCode=i['PMCode'],
                                                      Priority=i['Priority'],
                                                      DemandedQty=i['DemandedQty'])
             demands.save()
