@@ -18,6 +18,8 @@ urlpatterns = [
     path('GoodsStockDetails/<str:ProductCode>/<str:PackSize>/<int:Packs>/<str:isFGS>/<str:isWIP>/',GoodsStockDetailsView.as_view()),
     path('PostPlan/',PostPlanView.as_view()),
 
+# B-Material Packing
+    path('PlanMaterialCalculation/<int:planNo>/', PlanMaterialCalculationView.as_view())
     # path('PMRecievingDetailByGRNo/<int:GRNo>/', PMReceivingDetailsByGRNoView.as_view()),
     # path('PMGRNoList/', PMGRNoView.as_view(), name='GRNo'),
     # path('PMBinCard/', PMBinCardView.as_view()),

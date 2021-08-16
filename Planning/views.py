@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from Products.models import PackSizes,Formulation
 from .utils import *
+
 # A-Product Selection
 
 class ProductNamesViews(viewsets.ModelViewSet):
@@ -85,6 +86,44 @@ class GoodsStockDetailsView(APIView):
                          "Inhand_Packs":Inhand_Packs,
                          "packsToBePlanned":packsToBePlanned,
                          "batchesToBePlanned":batchesToBePlanned})
+
+
+# B-Material Calculation
+
+class  PlanMaterialCalculationView(APIView):
+    def get(self,request, planNo):
+        # data = PlanItems.objects.filter(planNo=planNo).exclude(noOfBatchesToBePlanned=0)
+        # tempBinCards={}
+        # for obj in data:
+        #     formulation  = Formulation.objects.filter(ProductCode=obj.ProductCode)
+        #     for i in formulation:
+        #         requiredQuantity = obj.noOfBatchesToBePlanned*i.quantity
+        #         inHandQty = 0
+        #         if i.RMCode in tempBinCards:
+        #             inHandQty = tempBinCards[i.RMCode]
+        #         else:
+        #             inHandQty = 200 # Value from BinCard
+        #         inHandQty2 = inHandQty
+        #         demandedQty = requiredQuantity - inHandQty
+        #         if demandedQty<0:
+        #             demandedQty=0
+        #         inHandQty = inHandQty-demandedQty
+        #         if inHandQty<0:
+        #             inHandQty=0
+        #         tempBinCards[i.RMCode]= inHandQty
+        #         plan = Plan.objects.get(planNo=planNo)
+        #         planItemMaterial = ProductMaterials.objects.create(planNo= plan,
+        #                                                            ProductCode=obj.ProductCode,
+        #                                                            PackSize=obj.PackSize,
+        #                                                            RMCode=i.RMCode,
+        #                                                            requiredQuantity=requiredQuantity,
+        #                                                            demandedQuantity=demandedQty,
+        #                                                            inHandQuantity=inHandQty2)
+        #         planItemMaterial.save()
+
+        resp = MergeMaterials(planNo)
+
+        return  Response(resp)
 
 # class RMDemandedItemsView(viewsets.ModelViewSet):
 #     serializer_class = RMDemandItemsSerializer

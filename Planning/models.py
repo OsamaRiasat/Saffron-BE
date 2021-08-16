@@ -33,7 +33,7 @@ class ProductMaterials(models.Model):
     RMCode = models.ForeignKey(RawMaterials,on_delete=models.CASCADE)
     requiredQuantity = models.DecimalField(max_digits=10, decimal_places=2)
     inHandQuantity = models.DecimalField(max_digits=10, decimal_places=2)
-
+    demandedQuantity = models.DecimalField(max_digits=10, decimal_places=2)
     # def __str__(self):
     #     return self.planNo.planNo
 
