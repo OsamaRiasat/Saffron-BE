@@ -66,6 +66,8 @@ urlpatterns = [
     path('RMRecievingDetailByGRNo/<int:GRNo>/',RMReceivingDetailsByGRNoView.as_view()),
     path('GRNoList/',GRNoView.as_view(),name='GRNo'),
     path('RMBinCard/',RMBinCardView.as_view()),
+    #Populate RawMaterial Model
+    path('PopulateRawMaterial/',PopulateRawMaterialView.as_view()),
 
 
 ]

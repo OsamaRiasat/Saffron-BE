@@ -6,7 +6,7 @@ from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
-
+import pandas as pd
 from MaterialSuppliers.utils import supplierApprovedItemsCodesList
 from .utils import demandedItemsCodesList
 
@@ -236,4 +236,22 @@ class RMBinCardView(APIView):
         #     serializer.save()
         return Response(serializer.data)
 
+#Populate Database
+
+class PopulateRawMaterialView(APIView):
+    def get(self,request):
+        workbook = pd.read_excel(r'C:\Users\hp\Desktop\Store\saff-apis\Inventory\rmTable02.xlsb',sheet_name='RMList')
+        workbook=workbook.to_numpy()
+        print(workbook)
+        for i in workbook:
+            t=str(i[3])
+            type=RawMaterialTypes.objects.get(Type=t)
+            rw=RawMaterials.objects.create(
+                RMCode=i[0],
+                Material=i[1],
+                Units=i[2],
+                Type=type
+            )
+            rw.save()
+        return Response({"Populate":"Done"})
 
