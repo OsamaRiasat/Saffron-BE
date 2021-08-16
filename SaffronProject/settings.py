@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Products',
     'Inventory',
     'MaterialSuppliers',
+    'Planning',
     'Account',
     'rest_framework.authtoken',
     'drf_spectacular',

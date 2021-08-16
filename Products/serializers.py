@@ -3,7 +3,10 @@ from .models import *
 
 
 # Products
-#
+
+
+
+
 # class ProductsSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Products
@@ -27,27 +30,6 @@ from .models import *
 #     class Meta:
 #         model = Formulation
 #         fields = ['ProductCode', 'RMCode', 'batchSize', 'quantity', 'date', 'docNo']
-#
-# class AddRMFormulationSerializer(serializers.ModelSerializer):
-#     formulationItems = FormulationItemsSerializer(many=True,write_only=True)
-#     class Meta:
-#         model = Formulation
-#         fields = ['formulationItems']
-
-    # def create(self, validated_data):
-    #     fItems = validated_data.pop('formulationItems')
-    #     var = object
-    #     for i in fItems:
-    #         fItem = Formulation.objects.create(ProductCode=i['ProductCode'],
-    #                                              RMCode=i['RMCode'],
-    #                                              batchSize=i['batchSize'],
-    #                                              quantity=i['quantity'],
-    #                                              date=i['date'],
-    #                                              docNo=i['docNo'])
-    #         fItem.save()
-    #         var = fItem
-
-    #  return var.ProductCode.Product
 
 
 

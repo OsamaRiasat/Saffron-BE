@@ -5,7 +5,7 @@ from Inventory.models import RawMaterials
 
 class DosageForms(models.Model):
     dosageForm = models.CharField(max_length=20, primary_key=True)  # Tablet, Injection, Capsule etc
-
+    batchSizeUnit = models.CharField(max_length=20,default="units")
 
 class Products(models.Model):
     ProductCode = models.CharField(max_length=10, primary_key=True)
@@ -26,10 +26,10 @@ class PackSizes(models.Model):
     PackSize = models.CharField(max_length=20)  # 1x10, 200ml
     PackType = models.CharField(max_length=20, unique=True)  # TS, PS
     MRP = models.FloatField()
-    RegistrationNo = models.ForeignKey(Products, on_delete=models.CASCADE)
+    ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.RegistrationNo.Product
+        return self.PackSize
 
 
 class PackSizesListForFrontEnd(models.Model):
