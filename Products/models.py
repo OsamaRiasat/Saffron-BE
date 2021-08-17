@@ -19,12 +19,12 @@ class Products(models.Model):
     dosageForm = models.ForeignKey(DosageForms, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.Product
+        return self.ProductCode
 
 
 class PackSizes(models.Model):
     PackSize = models.CharField(max_length=20)  # 1x10, 200ml
-    PackType = models.CharField(max_length=20, unique=True)  # TS, PS
+    PackType = models.CharField(max_length=20)  # TS, PS
     MRP = models.FloatField()
     ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
 

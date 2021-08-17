@@ -1,4 +1,4 @@
-
+from django.db.models import Max
 from rest_framework import viewsets, generics
 from .serializers import *
 from .models import *
@@ -8,6 +8,11 @@ from Products.models import PackSizes,Formulation
 from .utils import *
 
 # A-Product Selection
+
+class highestPlanNoView(APIView):
+    def get(self, request):
+        planNo = Plan.objects.all().aggregate(Max('planNo'))
+        return Response(planNo)
 
 class ProductNamesViews(viewsets.ModelViewSet):
     serializer_class = ProductNamesSerializer
@@ -59,13 +64,13 @@ class GoodsStockDetailsView(APIView):
         dosageForm = Products.objects.get(ProductCode=ProductCode).dosageForm.dosageForm
 
         if isFGS=="True" and isWIP=="True":
-            FGS_Packs = 2000  # No of Packs from Goods Stock
-            WIP_Units = 20000  # No of Units From Production
+            FGS_Packs = 20000  # No of Packs from Goods Stock
+            WIP_Units = 40000  # No of Units From Production
             WIP_Packs = convertUnitsToPacks(WIP_Units,PackSize,dosageForm)
         elif isFGS=="True":
-            FGS_Packs = 2000  # No of Packs From Goods Stock
+            FGS_Packs = 20000  # No of Packs From Goods Stock
         elif isWIP=="True":
-            WIP_Units = 20000  # No of Units From Production
+            WIP_Units = 40000  # No of Units From Production
             WIP_Packs = convertUnitsToPacks(WIP_Units, PackSize, dosageForm)
 
 
@@ -85,45 +90,59 @@ class GoodsStockDetailsView(APIView):
                          "WIP_Packs":WIP_Packs,
                          "Inhand_Packs":Inhand_Packs,
                          "packsToBePlanned":packsToBePlanned,
-                         "batchesToBePlanned":batchesToBePlanned})
+                         "batchesToBePlanned":round(batchesToBePlanned,3)})
 
 
 # B-Material Calculation
 
 class  PlanMaterialCalculationView(APIView):
-    def get(self,request, planNo):
-        # data = PlanItems.objects.filter(planNo=planNo).exclude(noOfBatchesToBePlanned=0)
-        # tempBinCards={}
-        # for obj in data:
-        #     formulation  = Formulation.objects.filter(ProductCode=obj.ProductCode)
-        #     for i in formulation:
-        #         requiredQuantity = obj.noOfBatchesToBePlanned*i.quantity
-        #         inHandQty = 0
-        #         if i.RMCode in tempBinCards:
-        #             inHandQty = tempBinCards[i.RMCode]
-        #         else:
-        #             inHandQty = 200 # Value from BinCard
-        #         inHandQty2 = inHandQty
-        #         demandedQty = requiredQuantity - inHandQty
-        #         if demandedQty<0:
-        #             demandedQty=0
-        #         inHandQty = inHandQty-demandedQty
-        #         if inHandQty<0:
-        #             inHandQty=0
-        #         tempBinCards[i.RMCode]= inHandQty
-        #         plan = Plan.objects.get(planNo=planNo)
-        #         planItemMaterial = ProductMaterials.objects.create(planNo= plan,
-        #                                                            ProductCode=obj.ProductCode,
-        #                                                            PackSize=obj.PackSize,
-        #                                                            RMCode=i.RMCode,
-        #                                                            requiredQuantity=requiredQuantity,
-        #                                                            demandedQuantity=demandedQty,
-        #                                                            inHandQuantity=inHandQty2)
-        #         planItemMaterial.save()
+    def get(self,request, planNo, isQuarantine, isPIP):
+        data = PlanItems.objects.filter(planNo=planNo).exclude(noOfBatchesToBePlanned=0)
+        tempBinCards={}
+        for obj in data:
+            formulation  = Formulation.objects.filter(ProductCode=obj.ProductCode)
+            for i in formulation:
+                requiredQuantity = obj.noOfBatchesToBePlanned*i.quantity
+                inHandQty = 0
+                if i.RMCode in tempBinCards:
+                    inHandQty = tempBinCards[i.RMCode]
+                else:
+                    inHandQty = 200 # Value from BinCard
+                inHandQty2 = inHandQty
+                demandedQty = requiredQuantity - inHandQty
+                if demandedQty<0:
+                    demandedQty=0
+                inHandQty = inHandQty-demandedQty
+                if inHandQty<0:
+                    inHandQty=0
+                tempBinCards[i.RMCode]= inHandQty
+                plan = Plan.objects.get(planNo=planNo)
+                noOfBatchesToBePlanned = PlanItems.objects.get(planNo=planNo,ProductCode=obj.ProductCode).noOfBatchesToBePlanned
+                workableBatches = (noOfBatchesToBePlanned/requiredQuantity)*inHandQty2
+                planItemMaterial = ProductMaterials.objects.create(planNo= plan,
+                                                                   ProductCode=obj.ProductCode,
+                                                                   PackSize=obj.PackSize,
+                                                                   RMCode=i.RMCode,
+                                                                   requiredQuantity=requiredQuantity,
+                                                                   demandedQuantity=demandedQty,
+                                                                   inHandQuantity=inHandQty2,
+                                                                   workableBatches=round(workableBatches,1))
+                planItemMaterial.save()
 
         resp = MergeMaterials(planNo)
+        l=[]
+        for item in resp:
+            l.append(resp[item])
+        return  Response({"list":l})
 
-        return  Response(resp)
+# C-Production Calculation
+
+class ProductionCalculationView(APIView):
+    def get(self,request, planNo):
+
+        resp = ProductionCalculationUtil(planNo)
+        return Response({"list":resp})
+
 
 # class RMDemandedItemsView(viewsets.ModelViewSet):
 #     serializer_class = RMDemandItemsSerializer
