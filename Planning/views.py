@@ -117,7 +117,7 @@ class  PlanMaterialCalculationView(APIView):
                     inHandQty=0
                 tempBinCards[i.RMCode]= inHandQty
                 plan = Plan.objects.get(planNo=planNo)
-                noOfBatchesToBePlanned = PlanItems.objects.get(planNo=planNo,ProductCode=obj.ProductCode).noOfBatchesToBePlanned
+                noOfBatchesToBePlanned = PlanItems.objects.get(planNo=planNo,ProductCode=obj.ProductCode,PackSize=obj.PackSize).noOfBatchesToBePlanned
                 workableBatches = (noOfBatchesToBePlanned/requiredQuantity)*inHandQty2
                 planItemMaterial = ProductMaterials.objects.create(planNo= plan,
                                                                    ProductCode=obj.ProductCode,
