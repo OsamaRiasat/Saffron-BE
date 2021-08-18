@@ -92,13 +92,13 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 class RolesView(APIView):
     def get(self, request):
-        Role = [
+        role = [
             {"Role": "Admin"},
             {"Role": "Store"},
             {"Role": "Inventory"},
             {"Role": "Production"},
             {"Role": "Quality Control"},
-            {"Role": "Quality Assureance"},
+            {"Role": "Quality Assurance"},
             {"Role": "RD"}
         ]
-        return Response({"role": Role})
+        return Response( role)
