@@ -8,6 +8,7 @@ class Plan(models.Model):
     planNo = models.AutoField(primary_key=True)
     date = models.DateField(auto_now_add=True)
 
+    REQUIRED =['planNo']
 
 
 class PlanItems(models.Model):

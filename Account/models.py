@@ -3,9 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 
 
-
-
-#Create your models here.
+# Create your models here.
 
 class CustomUserManager(BaseUserManager):
     """
@@ -41,24 +39,22 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    GEEKS_CHOICES =(
-    ("Admin", "Admin"),
-    ("Store", "Store"),
-    ("Inventory", "Inventory"),
-    ("Production", "Production"),
-    ("Quality Control", "Quality Control"),
-    ("Quality Assurnace", "Quality Assureance"),
-    ("RD", "RD"),
-)
-    username = models.CharField(max_length=255,verbose_name='username', unique=True)
-    email=models.EmailField(verbose_name='email',unique=True)
-    role=models.CharField(max_length=255, choices=GEEKS_CHOICES)
+    GEEKS_CHOICES = (
+        ("Admin", "Admin"),
+        ("Store", "Store"),
+        ("Inventory", "Inventory"),
+        ("Production", "Production"),
+        ("Quality Control", "Quality Control"),
+        ("Quality Assurnace", "Quality Assureance"),
+        ("RD", "RD"),
+    )
+    username = models.CharField(max_length=255, verbose_name='username', unique=True)
+    image = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+    role = models.CharField(max_length=255, choices=GEEKS_CHOICES)
 
-    
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
 
     def __str__(self):
         return f'{self.id}: {self.username}'
-

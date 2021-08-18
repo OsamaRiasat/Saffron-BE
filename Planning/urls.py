@@ -21,10 +21,9 @@ urlpatterns = [
 
 # B-Material Packing
     path('PlanMaterialCalculation/<int:planNo>/<str:isQuarantine>/<str:isPIP>/', PlanMaterialCalculationView.as_view()),
+    path('BackToProductSelection/<int:planNo>/', BackToProductSelectionView.as_view()),
+
 # C-Production
     path('ProductionCalculation/<int:planNo>',ProductionCalculationView.as_view()),
-    # path('PMRecievingDetailByGRNo/<int:GRNo>/', PMReceivingDetailsByGRNoView.as_view()),
-    # path('PMGRNoList/', PMGRNoView.as_view(), name='GRNo'),
-    # path('PMBinCard/', PMBinCardView.as_view()),
 
 ]

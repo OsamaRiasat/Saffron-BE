@@ -135,6 +135,28 @@ class  PlanMaterialCalculationView(APIView):
             l.append(resp[item])
         return  Response({"list":l})
 
+
+class BackToProductSelectionView(APIView):
+
+    def get(self, request, planNo):
+        data = PlanItems.objects.only('ProductCode', 'PackSize', 'inHandPacks', 'packsToBePlanned', 'noOfBatchesToBePlanned').filter(planNo=planNo)
+        l = []
+
+        for obj in data:
+            dic = {}
+            dic["Product"] = obj.ProductCode.Product
+            dic["ProductCode"]=obj.ProductCode.ProductCode
+            dic["PackSize"] = obj.PackSize
+            dic["inHandPacks"] = obj.inHandPacks
+            dic["packsToBePlanned"] = obj.packsToBePlanned
+            dic["noOfBatchesToBePlanned"] = obj.noOfBatchesToBePlanned
+            l.append(dic)
+
+        # plan = Plan.objects.get(planNo=planNo)
+        # plan.delete()
+
+        return Response(l)
+
 # C-Production Calculation
 
 class ProductionCalculationView(APIView):
@@ -143,10 +165,6 @@ class ProductionCalculationView(APIView):
         resp = ProductionCalculationUtil(planNo)
         return Response({"list":resp})
 
-
-# class RMDemandedItemsView(viewsets.ModelViewSet):
-#     serializer_class = RMDemandItemsSerializer
-#     queryset = RMDemandedItems.objects.all()
 
 class PostPlanView(generics.CreateAPIView):
     serializer_class = PostPlanSerializer
