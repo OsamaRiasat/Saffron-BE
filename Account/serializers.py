@@ -6,36 +6,31 @@ from rest_framework.serializers import ValidationError
 from django.contrib.auth.hashers import make_password
 
 class RegisterSerializer(serializers.ModelSerializer):
-    confirmpassword=serializers.CharField(write_only=True)
+    
     class Meta:
         model = User
-        fields = ('email', 'username', 'role', 'password','confirmpassword')
-      
-        extra_kwargs = {'password': {'write_only': True},'confirmpassword': {'write_only': True}}
-
-    
-    def validate(self, data):
-        password = data.get('password')
-        confirm_password = data.get('confirmpassword')
-        if password != confirm_password:
-            raise ValidationError('Password didnt match')
-        return data
+        fields = ('username', 'role','image', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
     def create(self, validated_data):
         user = User.objects.create(
-        username=validated_data['username'],
-        email=validated_data['email'],
-        role=validated_data['role'],
-        
-        
-        
-        password=make_password(validated_data['password']))
+        username = validated_data['username'],
+        role = validated_data['role'],
+        image = validated_data['image'],
+        password = make_password(validated_data['password']))
         user.save()
         return user
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields='__all__'
+
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields=['username','password',]
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
