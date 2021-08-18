@@ -49,7 +49,7 @@ class User(AbstractUser):
         ("RD", "RD"),
     )
     username = models.CharField(max_length=255, verbose_name='username', unique=True)
-    image = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+    #image = models.ImageField(upload_to='profile_pics', null=True, blank=True)
     role = models.CharField(max_length=255, choices=GEEKS_CHOICES)
 
     USERNAME_FIELD = 'username'
