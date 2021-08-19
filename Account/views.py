@@ -84,7 +84,7 @@ class ChangePasswordView(generics.UpdateAPIView):
                 'message': 'Password updated successfully',
                 'data': []
             }
-            request.user.auth_token.delete()
+            #request.user.auth_token.delete()
             return Response(response)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
