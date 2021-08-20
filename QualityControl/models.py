@@ -39,12 +39,13 @@ class RMSpecifications(models.Model):
 class RMSpecificationsItems(models.Model):
     parameter = models.ForeignKey(RMParameters, on_delete=models.CASCADE)
     reference = models.ForeignKey(RMReferences, on_delete=models.CASCADE)
-    specID = models.ForeignKey(RMSpecifications, on_delete=models.CASCADE)
+    specID = models.ForeignKey(RMSpecifications,related_name='items', on_delete=models.CASCADE)
     specification = models.TextField(max_length=200)
 
     REQUIRED  = ['parameter','reference','specID','specification']
 
     def __str__(self):
         return self.specID.RMCode.RMCode
+
 
     
