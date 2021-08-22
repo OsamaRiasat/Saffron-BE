@@ -45,7 +45,8 @@ class User(AbstractUser):
         ("Inventory", "Inventory"),
         ("Production", "Production"),
         ("Quality Control", "Quality Control"),
-        ("Quality Assurnace", "Quality Assureance"),
+        ("QC_Analyst", "QC_Analyst"),
+        ("Quality Assurance", "Quality Assurance"),
         ("RD", "RD"),
     )
     username = models.CharField(max_length=255, verbose_name='username', unique=True)

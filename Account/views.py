@@ -99,6 +99,7 @@ class RolesView(APIView):
             {"Role": "Production"},
             {"Role": "Quality Control"},
             {"Role": "Quality Assurance"},
+            {"Role": "QC_Analyst"},
             {"Role": "RD"}
         ]
         return Response( role)

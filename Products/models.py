@@ -39,6 +39,12 @@ class PackSizesListForFrontEnd(models.Model):
     def __str__(self):
         return self.PackSizes
 
+class Stages(models.Model):
+    DosageForms = models.ForeignKey(DosageForms, on_delete=models.CASCADE)  # According to this dosage Form
+    stage = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.DosageForms.dosageForm
 
 # Formulation
 
