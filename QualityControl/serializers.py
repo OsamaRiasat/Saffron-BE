@@ -26,38 +26,39 @@ class RMParameterSerializer(serializers.ModelSerializer):
 class RMSpecificationsItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = RMSpecificationsItems
-        fields = ['parameter','reference','specification',]
+        fields = ['parameter','specification',]
 
 class RMSpecificationsSerializer(serializers.ModelSerializer):
     items = RMSpecificationsItemsSerializer(many=True)
     class Meta:
         model = RMSpecifications
-        fields = ['RMCode','items',]
+        fields = ['RMCode','reference','items']
     def create(self, validated_data):
-        item = validated_data.pop('items')
+
         try:
             sopno = RMSpecifications.objects.last().SOPNo
         except:
             sopno = "DRL/RMSA/0"
+
+        item = validated_data.pop('items')
         sopno = sopno.split('/')
         no = int(sopno[2])
         no = no+1
         sopno = sopno[0]+"/"+sopno[1]+"/"+str(no)
-        specs = RMSpecifications.objects.create(RMCode=validated_data.get('RMCode'),SOPNo=sopno)
+        ref = RMReferences.objects.get(reference=validated_data.get('reference'))
+        specs = RMSpecifications.objects.create(RMCode=validated_data.get('RMCode'),SOPNo=sopno, reference=ref)
         specs.save()
         for i in item:
             par = RMParameters.objects.get(parameter=i['parameter'])
-            ref = RMReferences.objects.get(reference=i['reference'])
             itemspecs = RMSpecificationsItems.objects.create(
             specID = specs,
             parameter = par,
-            reference = ref,
             specification = i['specification']
             )
             itemspecs.save()
         return specs
 
-class AcquireSpecificationsItems(serializers.ModelSerializer):
+class AcquireSpecificationsItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = RMSpecificationsItems
         fields = ['parameter','specification',]

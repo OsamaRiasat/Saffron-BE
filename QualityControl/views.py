@@ -31,9 +31,44 @@ class PopulateParametersView(APIView):
 
         return Response({"Populate": "Done"})
 
-# --------------------- RAW MATERIALS ------------------------
+# --------------------- SPECIFICATIONS ------------------------
 
-# RM New Specs
+# A. Raw Materials
+
+# View Specs
+
+class RMCodeListOfSpecificationsView(generics.ListAPIView):
+    queryset = RMSpecifications.objects.only('RMCode').filter(QAStatus="ALLOWED")
+    serializer_class = AcquireRMCodeListSerializer
+
+class RMMaterialListOfSpecificationsView(APIView):
+    def get(self, request):
+        rm = RMSpecifications.objects.only('RMCode').filter(QAStatus="ALLOWED")
+        li = []
+        for i in rm:
+            dic = {}
+            dic['Material'] = i.RMCode.Material
+            li.append(dic)
+        return Response(li)
+
+class RMViewSpecificationsView(APIView):
+    def get(self, request, RMCode):
+        data = {}
+        spec = RMSpecifications.objects.get(RMCode=RMCode)
+        str1 = spec.SOPNo+" Version:"+str(spec.version)+ " Date:"+ str(spec.date.strftime('%d-%m-%Y'))
+        data["FirstData"] = str1
+        data["SecondData"] = spec.reference.reference
+        spec_items = RMSpecificationsItems.objects.filter(specID=spec)
+        l = []
+        for obj in spec_items:
+            spec_item = {}
+            spec_item["paramater"] = obj.parameter.parameter
+            spec_item["specification"] = obj.specification
+            l.append(spec_item)
+        data["list"] = l
+        return Response(data)
+
+# New Specs
 
 class RMCodeView(APIView):
     def get(self, request):
@@ -61,12 +96,12 @@ class RMaterialView(APIView):
 
 
 class RMNameByRMCodeView(APIView):
-    def get(self, request, id):
-        check = RMSpecifications.objects.filter(RMCode=id)
+    def get(self, request, RMCode):
+        check = RMSpecifications.objects.filter(RMCode=RMCode)
         if check:
             return Response({'message': 'Material have already specifications'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            rmcode = RawMaterials.objects.get(RMCode=id)
+            rmcode = RawMaterials.objects.get(RMCode=RMCode)
             serializer = RMaterialSerializer(rmcode)
             return Response(serializer.data)
 
@@ -90,11 +125,11 @@ class RMSpecificationsView(generics.CreateAPIView):
     serializer_class = RMSpecificationsSerializer
 
 
-class AcquireSpecificationsView(APIView):
-    def get(self, request, id):
-        spec = RMSpecifications.objects.get(RMCode=id)
+class RMAcquireSpecificationsView(APIView):
+    def get(self, request, RMCode):
+        spec = RMSpecifications.objects.get(RMCode=RMCode)
         spec_items = RMSpecificationsItems.objects.filter(specID=spec)
-        serializer = AcquireSpecificationsItems(spec_items, many=True)
+        serializer = AcquireSpecificationsItemsSerializer(spec_items, many=True)
         return Response(serializer.data)
 
 

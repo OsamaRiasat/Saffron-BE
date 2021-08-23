@@ -34,22 +34,45 @@ class RMSpecifications(models.Model):
     version = models.DecimalField(max_digits=3, decimal_places=2, default=Decimal("1.00"))
     SOPNo = models.CharField(max_length=20, unique=True)
     QAStatus = models.CharField(max_length=10, default="ALLOWED") # Change default value to "PENDING" when QA is Done
-
-    REQUIRED = ['RMCode','SOPNo']
+    reference = models.ForeignKey(RMReferences, on_delete=models.CASCADE)
+    REQUIRED = ['RMCode','SOPNo','reference']
 
     def __str__(self):
         return self.RMCode.RMCode
 
 class RMSpecificationsItems(models.Model):
     parameter = models.ForeignKey(RMParameters, on_delete=models.CASCADE)
-    reference = models.ForeignKey(RMReferences, on_delete=models.CASCADE)
     specID = models.ForeignKey(RMSpecifications, on_delete=models.CASCADE)
     specification = models.TextField(max_length=200)
 
-    REQUIRED  = ['parameter','reference','specID','specification']
+    REQUIRED  = ['parameter','specID','specification']
 
     def __str__(self):
         return self.specID.RMCode.RMCode
+
+class TempRMSpecifications(models.Model):
+    specID = models.AutoField(primary_key=True)
+    date = models.DateField(auto_now=True)
+    RMCode = models.OneToOneField(RawMaterials, on_delete=models.CASCADE)
+    version = models.DecimalField(max_digits=3, decimal_places=2, default=Decimal("1.00"))
+    SOPNo = models.CharField(max_length=20, unique=True)
+    QAStatus = models.CharField(max_length=10,default="EDIT")  # Change default value to "PENDING" when QA is Done
+    reference = models.ForeignKey(RMReferences, on_delete=models.CASCADE)
+    REQUIRED = ['RMCode', 'SOPNo', 'reference']
+
+    def __str__(self):
+        return self.RMCode.RMCode
+
+class TempRMSpecificationsItems(models.Model):
+    parameter = models.ForeignKey(RMParameters, on_delete=models.CASCADE)
+    specID = models.ForeignKey(TempRMSpecifications, on_delete=models.CASCADE)
+    specification = models.TextField(max_length=200)
+
+    REQUIRED = ['parameter', 'specID', 'specification']
+
+    def __str__(self):
+        return self.specID.RMCode.RMCode
+
 
 
 
@@ -130,16 +153,39 @@ class ProductSpecificationsItems(models.Model):
 
 # QA will make a object (QCNo, IGPNo) of this whenever he takes a sample and also gives that QCNo to RMReceiving
 class RMSamples(models.Model):
+    # When QA takes sample
     QCNo = models.CharField(max_length=20,primary_key=True)
     IGPNo = models.ForeignKey(RMReceiving, on_delete=models.CASCADE)
     deliveredBy = models.CharField(max_length=40 )
     receivedBy = models.CharField(max_length=40)
+    samplingDateTime = models.DateTimeField(auto_now=True)
+
+    # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
     analysisDateTime = models.DateTimeField(blank=True, null=True)
     result = models.CharField(max_length=20, blank=True, null=True)
-    analyst = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, blank=True, null=True)
+    analyst = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=20, default="PENDING")
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
     REQUIRED = ['QCNo', 'IGPNo', 'deliveredBy', 'receivedBy']
-
+#
+# class RMAnalysis(models.Model):
+#     RMAnalysisID = models.AutoField(primary_key=True)
+#     workingStd = models.CharField(max_length=40)
+#     QCNo = models.ForeignKey(RMSamples, on_delete=models.CASCADE)
+#     analysisDateTime = models.DateTimeField(blank=True, null=True)
+#     retestDate = models.DateTimeField(blank=True, null=True)
+#     quantityApproved  = models.DecimalField(max_digits=10, decimal_places=2)
+#     quantityRejected = models.DecimalField(max_digits=10, decimal_places=2)
+#     remarks = models.CharField(max_length=40 , blank=True, null=True )
+#
+#     REQUIRED = ['QCNo', 'workingStd', 'analysisDateTime', 'retestDate', 'quantityApproved', 'quantityRejected', 'remarks']
+#
+# class RMAnalysisItems(models.Model):
+#     RMAnalysisID = models.ForeignKey(RMAnalysis, on_delete=models.CASCADE)
+#     parameter = models.CharField( max_length=20)
+#     specification = models.TextField(max_length=200)
+#     result = models.CharField( max_length=20)
+#
+#     REQUIRED = ['RMAnalysisID', 'parameter' , 'specification', 'result']

@@ -15,16 +15,24 @@ urlpatterns = [
     path('viewset/<str:pk>/', include(router.urls)),
     # path('populateRMParameters/', PopulateParametersView.as_view()),
 
-    # RM New Specs
+    #RM View Specs
+    path('RMCodeListOfSpecifications/', RMCodeListOfSpecificationsView.as_view()),
+    path('RMMaterialListOfSpecifications/', RMMaterialListOfSpecificationsView.as_view()),
+    path('RMViewSpecifications/<str:RMCode>/', RMViewSpecificationsView.as_view()),
 
+    # RM New Specs
     path('RMCodeList/', RMCodeView.as_view()),
     path('RMCodeByRMName/<str:name>/', RMCodeByNameView.as_view()),
     path('RMaterialList/', RMaterialView.as_view()),
-    path('RMNameByRMCode/<str:id>/', RMNameByRMCodeView.as_view()),
-    path('reference/', RMReferenceView.as_view()),
-    path('parameters/', RMParametersView.as_view()),
-    path('rmspecifications/', RMSpecificationsView.as_view()),
-    path('acquirespecifications/<str:id>/', AcquireSpecificationsView.as_view()),
-    path('acquireRMCode/', AcquireRMCodeListView.as_view()),
-    path('acquirermaterial/', AcquireRMaterialListView.as_view()),
+    path('RMNameByRMCode/<str:RMCode>/', RMNameByRMCodeView.as_view()),
+    path('RMReference/', RMReferenceView.as_view()),
+    path('RMParameters/', RMParametersView.as_view()),
+    path('RMspecifications/', RMSpecificationsView.as_view()),
+    path('RMAcquirespecifications/<str:RMCode>/', RMAcquireSpecificationsView.as_view()),
+    path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
+    path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
+
+    # RM Edit Specs
+
+
 ]
