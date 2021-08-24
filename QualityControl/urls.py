@@ -33,6 +33,15 @@ urlpatterns = [
     path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
 
     # RM Edit Specs
+    # path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
+    # path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
+    path('RMEditSpecifications/<str:RMCode>/', RMEditSpecsView.as_view()),
+    path('TempRMSpecifications/',TEMPRMSpecificationsView.as_view()),
+    
+    # RM Sample Assignment
+    path('RMSamples/',RMSamplesView.as_view()),
+    path('Analysts/',AnalystView.as_view()),
+    path('AssignAnalyst/<str:pk>/',AssignAnalystView.as_view())
 
 
 ]

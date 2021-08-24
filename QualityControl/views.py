@@ -1,5 +1,5 @@
-from datetime import date
 import re
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -8,7 +8,7 @@ import pandas as pd
 from .models import *
 from Inventory.models import RawMaterials
 from .serializers import *
-
+from Account.models import User
 
 # Create your views here.
 
@@ -147,3 +147,61 @@ class AcquireRMaterialListView(APIView):
             dic['Material'] = i.RMCode.Material
             li.append(dic)
         return Response(li)
+
+#Edit RM Specs
+
+class RMEditSpecsView(APIView):
+    def get(self,request,RMCode):
+        # rm=RawMaterials.objects.get(RMCode=RMCode)
+        specs = RMSpecifications.objects.get(RMCode=RMCode)
+        specs_items = RMSpecificationsItems.objects.filter(specID=specs)
+        dict = {}
+        dict['RMCode'] = specs.RMCode.RMCode
+        dict['reference'] = specs.reference.reference
+        dict['SOPNo'] = specs.SOPNo
+        dict['date'] = specs.date
+        dict['version'] = specs.version
+        lis = []
+        for i in specs_items:
+            dic = {}
+            dic['parameter'] = i.parameter.parameter
+            dic['specification'] = i.specification
+            lis.append(dic)
+        dict['items']=lis
+        return Response(dict)
+
+class TEMPRMSpecificationsView(generics.CreateAPIView):
+    queryset = TempRMSpecifications.objects.all()
+    serializer_class = TempRMSpecificationsSerializer
+
+#RM Sample Assignment
+class RMSamplesView(APIView):
+    def get(self,request):
+        samples = RMSamples.objects.all()
+        dict = []
+        for i in samples:
+            dic = {}
+            dic['QCNo'] = i.QCNo
+            rm_receiving = RMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
+            rm = RawMaterials.objects.get(RMCode=rm_receiving.RMCode)
+            dic['Date'] = i.samplingDateTime
+            dic['Material'] = rm.Material
+            dic['Unit'] = rm.Units
+            dic['Quantity'] = rm_receiving.quantityReceived
+            dict.append(dic)
+        return Response(dict)
+
+class AnalystView(APIView):
+    def get(self,request):
+        analysts = User.objects.filter(role="QC_Analyst")
+        print(analysts)
+        serializer = AnalystSerializer(analysts,many=True)
+        return Response(serializer.data)
+
+class AssignAnalystView(generics.UpdateAPIView):
+   queryset = RMSamples.objects.all()
+   serializer_class = AssignAnalystSerializer
+
+# class CheckAnalystSampleView(APIView):
+#     def get(self,request,analyst):
+#         sample=RMSamples.objects.filter

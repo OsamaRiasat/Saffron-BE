@@ -42,7 +42,7 @@ class RMSpecifications(models.Model):
 
 class RMSpecificationsItems(models.Model):
     parameter = models.ForeignKey(RMParameters, on_delete=models.CASCADE)
-    specID = models.ForeignKey(RMSpecifications, on_delete=models.CASCADE)
+    specID = models.ForeignKey(RMSpecifications,related_name='items', on_delete=models.CASCADE)
     specification = models.TextField(max_length=200)
 
     REQUIRED  = ['parameter','specID','specification']
@@ -65,7 +65,7 @@ class TempRMSpecifications(models.Model):
 
 class TempRMSpecificationsItems(models.Model):
     parameter = models.ForeignKey(RMParameters, on_delete=models.CASCADE)
-    specID = models.ForeignKey(TempRMSpecifications, on_delete=models.CASCADE)
+    specID = models.ForeignKey(TempRMSpecifications,related_name='items', on_delete=models.CASCADE)
     specification = models.TextField(max_length=200)
 
     REQUIRED = ['parameter', 'specID', 'specification']
@@ -155,7 +155,7 @@ class ProductSpecificationsItems(models.Model):
 class RMSamples(models.Model):
     # When QA takes sample
     QCNo = models.CharField(max_length=20,primary_key=True)
-    IGPNo = models.ForeignKey(RMReceiving, on_delete=models.CASCADE)
+    IGPNo = models.ForeignKey(RMReceiving,related_name='rmsamples', on_delete=models.CASCADE)
     deliveredBy = models.CharField(max_length=40 )
     receivedBy = models.CharField(max_length=40)
     samplingDateTime = models.DateTimeField(auto_now=True)
