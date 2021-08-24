@@ -4,10 +4,7 @@ from .views import *
 
 router = DefaultRouter()
 
-
-
 # router.register('Products', ProductViews, basename='Products')
-
 
 
 urlpatterns = [
@@ -15,7 +12,7 @@ urlpatterns = [
     path('viewset/<str:pk>/', include(router.urls)),
     # path('populateRMParameters/', PopulateParametersView.as_view()),
 
-    #RM View Specs
+    # RM View Specs
     path('RMCodeListOfSpecifications/', RMCodeListOfSpecificationsView.as_view()),
     path('RMMaterialListOfSpecifications/', RMMaterialListOfSpecificationsView.as_view()),
     path('RMViewSpecifications/<str:RMCode>/', RMViewSpecificationsView.as_view()),
@@ -33,6 +30,14 @@ urlpatterns = [
     path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
 
     # RM Edit Specs
+    # path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
+    # path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
+    path('RMEditSpecifications/<str:RMCode>/', RMEditSpecsView.as_view()),
+    path('TempRMSpecifications/', TEMPRMSpecificationsView.as_view()),
 
+    # RM Sample Assignment
+    path('RMSamples/', RMSamplesView.as_view()),
+    path('Analysts/', AnalystView.as_view()),
+    path('AssignAnalyst/<str:pk>/', AssignAnalystView.as_view())
 
 ]

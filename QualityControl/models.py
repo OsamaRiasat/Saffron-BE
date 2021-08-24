@@ -86,6 +86,7 @@ class PMParameters(models.Model):
     def __str__(self):
         return self.parameter
 
+
 class PMSpecifications(models.Model):
     specID = models.AutoField(primary_key=True)
     date = models.DateField(auto_now=True)
@@ -148,8 +149,8 @@ class ProductSpecificationsItems(models.Model):
 
 
     # ------------------ SAMPLE COLLECTION ---------------
-
-# Raw Materials
+#
+# # Raw Materials
 
 # QA will make a object (QCNo, IGPNo) of this whenever he takes a sample and also gives that QCNo to RMReceiving
 class RMSamples(models.Model):
@@ -169,23 +170,60 @@ class RMSamples(models.Model):
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
     REQUIRED = ['QCNo', 'IGPNo', 'deliveredBy', 'receivedBy']
-#
-# class RMAnalysis(models.Model):
-#     RMAnalysisID = models.AutoField(primary_key=True)
-#     workingStd = models.CharField(max_length=40)
-#     QCNo = models.ForeignKey(RMSamples, on_delete=models.CASCADE)
-#     analysisDateTime = models.DateTimeField(blank=True, null=True)
-#     retestDate = models.DateTimeField(blank=True, null=True)
-#     quantityApproved  = models.DecimalField(max_digits=10, decimal_places=2)
-#     quantityRejected = models.DecimalField(max_digits=10, decimal_places=2)
-#     remarks = models.CharField(max_length=40 , blank=True, null=True )
-#
-#     REQUIRED = ['QCNo', 'workingStd', 'analysisDateTime', 'retestDate', 'quantityApproved', 'quantityRejected', 'remarks']
-#
-# class RMAnalysisItems(models.Model):
-#     RMAnalysisID = models.ForeignKey(RMAnalysis, on_delete=models.CASCADE)
-#     parameter = models.CharField( max_length=20)
-#     specification = models.TextField(max_length=200)
-#     result = models.CharField( max_length=20)
-#
-#     REQUIRED = ['RMAnalysisID', 'parameter' , 'specification', 'result']
+
+class RMAnalysis(models.Model):
+    RMAnalysisID = models.AutoField(primary_key=True)
+    workingStd = models.CharField(max_length=40)
+    rawDataReference = models.CharField(max_length=40)
+    QCNo = models.ForeignKey(RMSamples, on_delete=models.CASCADE)
+    analysisDateTime = models.DateTimeField(blank=True, null=True)
+    retestDate = models.DateTimeField(blank=True, null=True)
+    quantityApproved  = models.DecimalField(max_digits=10, decimal_places=2)
+    quantityRejected = models.DecimalField(max_digits=10, decimal_places=2)
+    remarks = models.CharField(max_length=40 , blank=True, null=True )
+    specID = models.IntegerField(default=0)
+
+    REQUIRED = ['QCNo','specID', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate', 'quantityApproved', 'quantityRejected', 'remarks']
+
+    def __str__(self):
+        return self.QCNo.QCNo
+
+class RMAnalysisItems(models.Model):
+    RMAnalysisID = models.ForeignKey(RMAnalysis, on_delete=models.CASCADE)
+    parameter = models.CharField( max_length=20)
+    specification = models.TextField(max_length=200)
+    result = models.CharField( max_length=20)
+
+
+    REQUIRED = ['RMAnalysisID', 'parameter' , 'specification', 'result']
+
+    def __str__(self):
+        return self.RMAnalysisID.QCNo.QCNo
+
+class RMAnalysisLog(models.Model):
+    RMAnalysisID = models.AutoField(primary_key=True)
+    workingStd = models.CharField(max_length=40)
+    rawDataReference = models.CharField(max_length=40)
+    QCNo = models.ForeignKey(RMSamples, on_delete=models.CASCADE)
+    analysisDateTime = models.DateTimeField(blank=True, null=True)
+    retestDate = models.DateTimeField(blank=True, null=True)
+    quantityApproved  = models.DecimalField(max_digits=10, decimal_places=2)
+    quantityRejected = models.DecimalField(max_digits=10, decimal_places=2)
+    remarks = models.CharField(max_length=40 , blank=True, null=True )
+    specID = models.IntegerField()
+
+    REQUIRED = ['QCNo', 'specID', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate', 'quantityApproved', 'quantityRejected', 'remarks','specID']
+
+    def __str__(self):
+        return self.QCNo.QCNo
+
+class RMAnalysisItemsLog(models.Model):
+    RMAnalysisID = models.ForeignKey(RMAnalysisLog, on_delete=models.CASCADE)
+    parameter = models.CharField( max_length=20)
+    specification = models.TextField(max_length=200)
+    result = models.CharField( max_length=20)
+
+    REQUIRED = ['RMAnalysisID', 'parameter' , 'specification', 'result']
+
+    def __str__(self):
+        return self.RMAnalysisID.QCNo.QCNo
