@@ -162,7 +162,7 @@ class PMPurchaseOrderItems(models.Model):
 
 class RMReceiving(models.Model):
     IGPNo = models.AutoField(primary_key=True)
-    RMCode = models.CharField(max_length=20)
+    RMCode = models.ForeignKey(RawMaterials,on_delete=models.CASCADE,default="3.01.024.00002")
     quantityReceived = models.DecimalField(max_digits=10, decimal_places=2)
     containersReceived = models.IntegerField()
     batchNo = models.CharField(max_length=20, unique=True)

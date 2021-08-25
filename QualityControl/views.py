@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.utils import serializer_helpers
 from rest_framework.views import APIView
 import pandas as pd
 from .models import *
@@ -209,6 +210,56 @@ class AssignAnalystView(generics.UpdateAPIView):
    queryset = RMSamples.objects.all()
    serializer_class = AssignAnalystSerializer
 
-# class CheckAnalystSampleView(APIView):
-#     def get(self,request,analyst):
-#         sample=RMSamples.objects.filter
+# --------------------- Data Entry ------------------------
+
+# RM Data Entry
+
+class RMQCNoView(APIView):
+    def get(self,request):
+        user=request.user
+
+        qc = RMSamples.objects.filter(analyst=user.id)
+        serializer = RMQCNoSerializer(qc, many=True)
+        return Response(serializer.data)
+
+class RMQCNoSampleView(APIView):
+    def get(self,request,QCNo):
+        sample=RMSamples.objects.get(QCNo=QCNo)
+
+        rm_receiving=RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+        
+        dict={}
+        dict['samplingDateTime']=sample.samplingDateTime
+        dict['QCNo']=QCNo
+        dict['IGPNo']=sample.IGPNo.IGPNo
+        dict['assignedDateTime']=sample.assignedDateTime
+        dict['analyst']=sample.analyst.username
+        
+        dict['RMCode']=rm_receiving.RMCode.RMCode
+        dict['Material']=rm_receiving.RMCode.Material
+        dict['Units']=rm_receiving.RMCode.Units
+        dict['quantityReceived']=rm_receiving.quantityReceived
+        dict['batchNo']=rm_receiving.batchNo
+        dict['MFG_Date']=rm_receiving.MFG_Date
+        dict['EXP_Date']=rm_receiving.MFG_Date
+
+        data = {}
+        spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode.RMCode)
+        str1 = spec.SOPNo+" Version:"+str(spec.version)+ " Date:"+ str(spec.date.strftime('%d-%m-%Y'))
+        data["FirstData"] = str1
+        data["SecondData"] = spec.reference.reference
+        spec_items = RMSpecificationsItems.objects.filter(specID=spec)
+        l = []
+        for obj in spec_items:
+            spec_item = {}
+            spec_item["paramater"] = obj.parameter.parameter
+            spec_item["specification"] = obj.specification
+            l.append(spec_item)
+        data["list"] = l
+        dict['result'] = data
+        return Response(dict)
+
+class PostRMAnalysisView(generics.CreateAPIView):
+    queryset = RMAnalysis.objects.all()
+    serializer_class = PostRMAnalysisSerializer
+

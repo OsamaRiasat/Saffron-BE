@@ -189,7 +189,7 @@ class RMAnalysis(models.Model):
         return self.QCNo.QCNo
 
 class RMAnalysisItems(models.Model):
-    RMAnalysisID = models.ForeignKey(RMAnalysis, on_delete=models.CASCADE)
+    RMAnalysisID = models.ForeignKey(RMAnalysis, related_name='rm_analysis_items', on_delete=models.CASCADE)
     parameter = models.CharField( max_length=20)
     specification = models.TextField(max_length=200)
     result = models.CharField( max_length=20)
