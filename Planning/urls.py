@@ -13,15 +13,17 @@ urlpatterns = [
     path('viewset/<str:pk>/', include(router.urls)),
 
 # A-Product Selection
+    path('highestPlanNo/', highestPlanNoView.as_view()),
     path('ProductDetailsByCode/<str:ProductCode>/', ProductDetailsByCodeView.as_view()),
     path('ProductDetailsByName/<str:Product>/', ProductDetailsByNameView.as_view()),
     path('GoodsStockDetails/<str:ProductCode>/<str:PackSize>/<int:Packs>/<str:isFGS>/<str:isWIP>/',GoodsStockDetailsView.as_view()),
     path('PostPlan/',PostPlanView.as_view()),
 
 # B-Material Packing
-    path('PlanMaterialCalculation/<int:planNo>/', PlanMaterialCalculationView.as_view())
-    # path('PMRecievingDetailByGRNo/<int:GRNo>/', PMReceivingDetailsByGRNoView.as_view()),
-    # path('PMGRNoList/', PMGRNoView.as_view(), name='GRNo'),
-    # path('PMBinCard/', PMBinCardView.as_view()),
+    path('PlanMaterialCalculation/<int:planNo>/<str:isQuarantine>/<str:isPIP>/', PlanMaterialCalculationView.as_view()),
+    path('BackToProductSelection/<int:planNo>/', BackToProductSelectionView.as_view()),
+
+# C-Production
+    path('ProductionCalculation/<int:planNo>',ProductionCalculationView.as_view()),
 
 ]

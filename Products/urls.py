@@ -19,4 +19,7 @@ urlpatterns = [
 
     # RM Formulation
     path('RMFormulation/', FormulationsView.as_view()),
+    #Populate Product Table
+    path('PopulateProductTable/',PopulateProductView.as_view()),
+    path('PopulateFormulationTable/',PopulateRMFormulationView.as_view()),
 ]

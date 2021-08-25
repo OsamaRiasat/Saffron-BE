@@ -15,12 +15,11 @@ class ProductCodesSerializer(serializers.ModelSerializer):
         fields = ['ProductCode', ]
 
 
-
 class PlanItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlanItems
 
-        fields = [ 'ProductCode', 'PackSize', 'requiredPacks', 'inHandPacks', 'packsToBePlanned', 'noOfBatchesToBePlanned' ]
+        fields = [ 'ProductCode','PackSize', 'requiredPacks', 'inHandPacks', 'packsToBePlanned', 'noOfBatchesToBePlanned' ]
 
 
 class PostPlanSerializer(serializers.ModelSerializer):
@@ -28,13 +27,14 @@ class PostPlanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Plan
-        fields = ['planItems', ]
+        fields = ['planItems', 'planNo']
         # extra_kwargs = {
         #     'DNo': {'read_only': True},
         #     'DDate': {'read_only': True},
         # }
 
     def create(self, validated_data):
+        planNo = validated_data.get('planNo')
         pItems = validated_data.pop('planItems')
         plan = Plan.objects.create(**validated_data)
         plan.save()
@@ -50,3 +50,5 @@ class PostPlanSerializer(serializers.ModelSerializer):
                                              pendingPacks=i['packsToBePlanned'])
             items.save()
         return plan
+
+

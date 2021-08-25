@@ -103,5 +103,7 @@ urlpatterns = [
     path('PMRecievingDetailByGRNo/<int:GRNo>/', PMReceivingDetailsByGRNoView.as_view()),
     path('PMGRNoList/', PMGRNoView.as_view(), name='GRNo'),
     path('PMBinCard/', PMBinCardView.as_view()),
+    #Populate RawMaterial Model
+    path('PopulateRawMaterial/',PopulateRawMaterialView.as_view()),
 
 ]

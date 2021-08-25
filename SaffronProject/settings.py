@@ -42,11 +42,12 @@ INSTALLED_APPS = [
     'Inventory',
     'MaterialSuppliers',
     'Planning',
+    'QualityControl',
     'Account',
     'rest_framework.authtoken',
     'drf_spectacular',
     'corsheaders',
-
+    'django_filters',
 ]
 AUTH_USER_MODEL = 'Account.User'
 
