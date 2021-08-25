@@ -51,7 +51,7 @@ class PopulateRMFormulationView(APIView):
                 quantity = i[6],
                 date = i[8],
                 docNo = dno
-                
             )
             rw.save()
         return Response({"Populate":"Done"})
+

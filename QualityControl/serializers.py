@@ -29,6 +29,11 @@ class RMSpecificationsItemsSerializer(serializers.ModelSerializer):
         model = RMSpecificationsItems
         fields = ['parameter','specification',]
 
+class RMSpecificationsItemsForSearchingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RMSpecificationsItems
+        fields = ['parameter','specification','specID']
+
 class RMSpecificationsSerializer(serializers.ModelSerializer):
     items = RMSpecificationsItemsSerializer(many=True)
     class Meta:

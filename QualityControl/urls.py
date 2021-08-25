@@ -38,6 +38,11 @@ urlpatterns = [
     # RM Sample Assignment
     path('RMSamples/', RMSamplesView.as_view()),
     path('Analysts/', AnalystView.as_view()),
-    path('AssignAnalyst/<str:pk>/', AssignAnalystView.as_view())
+    path('AssignAnalyst/<str:pk>/', AssignAnalystView.as_view()),
+
+
+    #Reporting
+
+    path('specificationReporting',specificationReportingView.as_view()),
 
 ]

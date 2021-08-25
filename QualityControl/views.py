@@ -9,12 +9,19 @@ from .models import *
 from Inventory.models import RawMaterials
 from .serializers import *
 from Account.models import User
+from django_filters.rest_framework import DjangoFilterBackend, filters
+
 
 # Create your views here.
 
 
 # Populate Database
 
+class specificationReportingView(generics.ListAPIView):
+    queryset = RMSpecificationsItems.objects.all()
+    serializer_class = RMSpecificationsItemsForSearchingSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['specification','specID__RMCode__Units']
 
 class PopulateParametersView(APIView):
     def get(self, request):
