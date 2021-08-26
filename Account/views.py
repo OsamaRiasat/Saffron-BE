@@ -33,18 +33,25 @@ class LoginAPI(APIView):
         data = request.data
         username = data.get('username', None)
         password = data.get('password', None)
-        user = User.objects.filter(username=username)
+        users = User.objects.filter(username=username)
+        print(users)
+
+        for i in users:
+            user=i
         if user:
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    token, created = Token.objects.get_or_create(user=user)
-                    # login(request,user)
-                    return Response({'Token key': token.key, 'Role': user.role})
+            if user.is_active==True:
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    if user.is_active:
+                        token, created = Token.objects.get_or_create(user=user)
+                        # login(request,user)
+                        return Response({'Token key': token.key, 'Role': user.role})
+                    else:
+                        return Response(status=status.HTTP_404_NOT_FOUND)
                 else:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
+                    return Response({'message': "Credentials not correct"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({'message': "Credentials not correct"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': "You are blocked by admin"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'message': "User does not exits"}, status=status.HTTP_400_BAD_REQUEST)
 

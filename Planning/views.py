@@ -139,7 +139,7 @@ class  PlanMaterialCalculationView(APIView):
 class BackToProductSelectionView(APIView):
 
     def get(self, request, planNo):
-        data = PlanItems.objects.only('ProductCode', 'PackSize', 'inHandPacks', 'packsToBePlanned', 'noOfBatchesToBePlanned').filter(planNo=planNo)
+        data = PlanItems.objects.only('ProductCode', 'PackSize', 'inHandPacks', 'packsToBePlanned', 'noOfBatchesToBePlanned','requiredPacks').filter(planNo=planNo)
         l = []
 
         for obj in data:
@@ -150,6 +150,7 @@ class BackToProductSelectionView(APIView):
             dic["inHandPacks"] = obj.inHandPacks
             dic["packsToBePlanned"] = obj.packsToBePlanned
             dic["noOfBatchesToBePlanned"] = obj.noOfBatchesToBePlanned
+            dic["requiredPacks"]=obj.requiredPacks
             l.append(dic)
 
         # plan = Plan.objects.get(planNo=planNo)
