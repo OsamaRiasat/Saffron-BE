@@ -1,8 +1,8 @@
-from django.db.models import fields
 from rest_framework import serializers
 from .models import *
 from Inventory.models import RawMaterials
 from Account.models import User
+from datetime import date
 
 
 class RMCodeSerializer(serializers.ModelSerializer):
@@ -109,12 +109,14 @@ class TempRMSpecificationsSerializer(serializers.ModelSerializer):
             itemspecs.save()
         return specs
 
+    # ------------------ Sample Assignment-------------------
+
 
 # RM Sample Assignment
 class AnalystSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', ]
+        fields = ['id', 'username', ]
 
 
 class AssignAnalystSerializer(serializers.ModelSerializer):
@@ -122,8 +124,80 @@ class AssignAnalystSerializer(serializers.ModelSerializer):
         model = RMSamples
         fields = ['analyst', ]
 
+    def update(self, instance, validated_data):
+        instance.analyst = validated_data.get('analyst', instance.analyst)
+        instance.assignedDateTime = date.today()
+        instance.save()
+        return instance
 
-# ---------------- DATA ANALYSIS --------------------
+    # --------------------- Data Entry ------------------------
+
+
+# RM Data Entry
+
+class RMQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RMSamples
+        fields = ['QCNo', ]
+
+
+class PostRMAnalysisItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RMAnalysisItems
+        fields = ['parameter', 'specification', 'result', ]
+
+
+class PostRMAnalysisSerializer(serializers.ModelSerializer):
+    rm_analysis_items = PostRMAnalysisItemsSerializer(many=True)
+
+    class Meta:
+        model = RMAnalysis
+        fields = ['QCNo', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate', 'quantityApproved',
+                  'quantityRejected', 'remarks', 'rm_analysis_items', ]
+
+    def create(self, validated_data):
+        item = validated_data.pop('rm_analysis_items')
+        qc = validated_data.get('QCNo')
+        rmcode = RMSamples.objects.get(QCNo=qc.QCNo).IGPNo.RMCode.RMCode
+        specID = RMSpecifications.objects.get(RMCode=rmcode).specID
+        analysis = RMAnalysis.objects.create(
+            QCNo=validated_data['QCNo'],
+            specID=specID,
+            workingStd=validated_data['workingStd'],
+            rawDataReference=validated_data['rawDataReference'],
+            analysisDateTime=validated_data['analysisDateTime'],
+            retestDate=validated_data['retestDate'],
+            quantityApproved=validated_data['quantityApproved'],
+            quantityRejected=validated_data['quantityRejected'],
+            remarks=validated_data['remarks']
+
+        )
+        analysis.save()
+        for i in item:
+            analysis_items = RMAnalysisItems.objects.create(
+                RMAnalysisID=analysis,
+                parameter=i['parameter'],
+                specification=i['specification'],
+                result=i['result']
+            )
+            analysis_items.save()
+
+        return analysis
+
+
+# ----------------- COA APPROVAL ------------------#
+
+class RMAnalysisQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RMAnalysis
+        fields = ['QCNo', ]
+
+
+class RemarksSerializer(serializers.Serializer):
+    remarks = serializers.CharField()
+
+    # ---------------- DATA ANALYSIS --------------------
+
 
 # Raw Materials
 
@@ -136,40 +210,3 @@ class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     class Meta:
         model = RMAnalysisItems
         fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter']
-
-
-
-
-
-
-
-
-# class RMSampleQCNoSerializer
-#
-# class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
-#     version = serializers.CharField(source='RMSpecifications.version')
-#
-#     class Meta:
-#         model = RMSpecificationsItems
-#         fields = '__all__'
-#
-#
-# class RMSpecificationsItemsForSearchingSerializer(serializers.ModelSerializer):
-#     # = RMSpecificationsSerializer(many=True, read_only=True)
-#     QAStatus = serializers.CharField(source='specID.QAStatus')
-#     RMCode = serializers.CharField(source='specID.RMCode.Material')
-#     class Meta:
-#         model = RMSpecificationsItems
-#         # fields = ['parameter', 'specification', 'specID', 'QAStatus','RMCode']
-#         fields = '__all__'
-#
-# class RMSpecForSearchingSerializer(serializers.ModelSerializer):
-#     RMSpecsItems = RMSpecificationsItemsForSearchingSerializer(many=True)
-#
-#     class Meta:
-#         model = RMSpecifications
-#         # fields = ['RMSpecsItems', 'version']
-#         fields = {
-#             'self': ('id', 'parent', 'name'),
-#             'parent': ('id', 'label'),
-#         }
