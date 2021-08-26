@@ -42,9 +42,14 @@ urlpatterns = [
 
 
     #Reporting
-    path('specificationReporting',specificationReportingView.as_view()),
-    path('RMQCNoList/',RMQCNoView.as_view()),
+    path('specificationReporting', specificationReportingView.as_view()),
+    path('RMQCNoList/', RMQCNoView.as_view()),
     # RM Data Entry
-    path('RMQCNoSample/<str:QCNo>/',RMQCNoSampleView.as_view()),
-    path('PostRMAnalysis/',PostRMAnalysisView.as_view()),
+    path('RMQCNoSample/<str:QCNo>/', RMQCNoSampleView.as_view()),
+    path('PostRMAnalysis/', PostRMAnalysisView.as_view()),
+
+    #---------------Block Analyst---------------------#
+
+    path('BlockUnBlockAnalyst/<int:id>', BlockUnBlockAnalystView.as_view()),
+    path('AllAnalyst/', AllAnalystView.as_view()),
 ]

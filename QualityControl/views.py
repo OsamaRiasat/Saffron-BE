@@ -201,7 +201,7 @@ class RMSamplesView(APIView):
 
 class AnalystView(APIView):
     def get(self,request):
-        analysts = User.objects.filter(role="QC_Analyst")
+        analysts = User.objects.filter(role="QC_Analyst", is_active=True)
         print(analysts)
         serializer = AnalystSerializer(analysts,many=True)
         return Response(serializer.data)
@@ -217,10 +217,12 @@ class AssignAnalystView(generics.UpdateAPIView):
 class RMQCNoView(APIView):
     def get(self,request):
         user=request.user
-
-        qc = RMSamples.objects.filter(analyst=user.id)
-        serializer = RMQCNoSerializer(qc, many=True)
-        return Response(serializer.data)
+        if(user.role=='QC_Analyst'):
+            qc = RMSamples.objects.filter(analyst=user.id)
+            serializer = RMQCNoSerializer(qc, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'message':'There is no QC sample for this Analyst'})
 
 class RMQCNoSampleView(APIView):
     def get(self,request,QCNo):
@@ -263,3 +265,30 @@ class PostRMAnalysisView(generics.CreateAPIView):
     queryset = RMAnalysis.objects.all()
     serializer_class = PostRMAnalysisSerializer
 
+    #----------------------Block Analyst------------------------------#
+
+class BlockUnBlockAnalystView(APIView):
+    def get(self,request,id):
+        user=User.objects.get(id=id)
+        if user.is_active==True:
+            user.is_active=False
+        else:
+            user.is_active=True        
+        user.save()
+        return Response({'message':'userblocked'})
+
+class AllAnalystView(APIView):
+    def get(self,request):
+        user=User.objects.filter(role='QC_Analyst')
+        dict=[]
+        for i in user:
+            dic={}
+            dic['id']=i.id
+            dic['username']=i.username
+            if i.is_active==False:
+                dic['status']='UnBlock'
+            else:
+                dic['status']='Block'
+            dict.append(dic)
+        return Response(dict)
+            
