@@ -17,11 +17,13 @@ from django_filters.rest_framework import DjangoFilterBackend, filters
 
 # Populate Database
 
-class specificationReportingView(generics.ListAPIView):
-    queryset = RMSpecificationsItems.objects.all()
-    serializer_class = RMSpecificationsItemsForSearchingSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['specification','specID__RMCode__Units']
+# class specificationReportingView(generics.ListAPIView):
+#     queryset = RMSpecificationsItems.objects.all()
+#     serializer_class = RMSpecificationsItemsForSearchingSerializer
+#     filter_backends = [DjangoFilterBackend]
+#     filterset_fields = ['specification','specID__RMCode__Units']
+#
+
 
 class PopulateParametersView(APIView):
     def get(self, request):
@@ -214,8 +216,12 @@ class AssignAnalystView(generics.UpdateAPIView):
 
 # Raw Materials
 
-
-
+class RMDataAnalysisView(generics.ListAPIView):
+    queryset = RMAnalysisItems.objects.all()
+    serializer_class = RMAnalysisItemsReportingSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['RMAnalysisID__QCNo__IGPNo__RMCode__Material', 'RMAnalysisID__QCNo__IGPNo__batchNo', 'RMAnalysisID__QCNo__QCNo', 'parameter']
+    #filterset_fields = ['RMAnalysisID', 'parameter']
 
 # class CheckAnalystSampleView(APIView):
 #     def get(self,request,analyst):

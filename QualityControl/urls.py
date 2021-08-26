@@ -4,12 +4,8 @@ from .views import *
 
 router = DefaultRouter()
 
-# router.register('Products', ProductViews, basename='Products')
-
-
 urlpatterns = [
-    path('viewset/', include(router.urls)),
-    path('viewset/<str:pk>/', include(router.urls)),
+
     # path('populateRMParameters/', PopulateParametersView.as_view()),
 
     # RM View Specs
@@ -24,10 +20,10 @@ urlpatterns = [
     path('RMNameByRMCode/<str:RMCode>/', RMNameByRMCodeView.as_view()),
     path('RMReference/', RMReferenceView.as_view()),
     path('RMParameters/', RMParametersView.as_view()),
-    path('RMspecifications/', RMSpecificationsView.as_view()),
-    path('RMAcquirespecifications/<str:RMCode>/', RMAcquireSpecificationsView.as_view()),
+    path('RMspecifications/', RMSpecificationsView.as_view()),  # Post Specifications
     path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
     path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
+    path('RMAcquirespecifications/<str:RMCode>/', RMAcquireSpecificationsView.as_view()),
 
     # RM Edit Specs
     # path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
@@ -40,9 +36,8 @@ urlpatterns = [
     path('Analysts/', AnalystView.as_view()),
     path('AssignAnalyst/<str:pk>/', AssignAnalystView.as_view()),
 
-
-    #Reporting
-
-    path('specificationReporting',specificationReportingView.as_view()),
+    # Reporting
+    path('RMDataAnalysis', RMDataAnalysisView.as_view()),
+    # /QualityControl/RMDataAnalysis?RMAnalysisID__QCNo__IGPNo__RMCode__Material=New%20Coat%20Brown&RMAnalysisID__QCNo__IGPNo__batchNo=ok-12-12&RMAnalysisID__QCNo__QCNo=RM23232&parameter=Taste
 
 ]
