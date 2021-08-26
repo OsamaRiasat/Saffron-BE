@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import *
 from Inventory.models import RawMaterials
 from Account.models import User
+from datetime import date
 
 class RMCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -110,6 +111,11 @@ class AssignAnalystSerializer(serializers.ModelSerializer):
     class Meta:
         model = RMSamples
         fields = ['analyst',]
+    def update(self, instance, validated_data):
+        instance.analyst = validated_data.get('analyst',instance.analyst)
+        instance.assignedDateTime = date.today()
+        instance.save()
+        return instance
     
 # --------------------- Data Entry ------------------------
 
@@ -158,3 +164,13 @@ class PostRMAnalysisSerializer(serializers.ModelSerializer):
             analysis_items.save()
             
         return analysis
+
+#----------------- COA APPROVAL ------------------#
+
+class RMAnalysisQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RMAnalysis
+        fields = ['QCNo',]
+
+class RemarksSerializer(serializers.Serializer):
+    remarks = serializers.CharField()

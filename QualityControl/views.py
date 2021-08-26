@@ -243,7 +243,7 @@ class RMQCNoSampleView(APIView):
         dict['quantityReceived']=rm_receiving.quantityReceived
         dict['batchNo']=rm_receiving.batchNo
         dict['MFG_Date']=rm_receiving.MFG_Date
-        dict['EXP_Date']=rm_receiving.MFG_Date
+        dict['EXP_Date']=rm_receiving.EXP_Date
 
         data = {}
         spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode.RMCode)
@@ -270,12 +270,15 @@ class PostRMAnalysisView(generics.CreateAPIView):
 class BlockUnBlockAnalystView(APIView):
     def get(self,request,id):
         user=User.objects.get(id=id)
+        check=''
         if user.is_active==True:
             user.is_active=False
+            check="Blocked"
         else:
-            user.is_active=True        
+            user.is_active=True     
+            check="UnBlock"   
         user.save()
-        return Response({'message':'userblocked'})
+        return Response({'message':check})
 
 class AllAnalystView(APIView):
     def get(self,request):
@@ -286,9 +289,105 @@ class AllAnalystView(APIView):
             dic['id']=i.id
             dic['username']=i.username
             if i.is_active==False:
-                dic['status']='UnBlock'
+                dic['status']='Blocked'
             else:
-                dic['status']='Block'
+                dic['status']='UnBlock'
             dict.append(dic)
         return Response(dict)
             
+#--------------------- COA APPROVAL ------------------------#
+
+class RMAnalysisQCNoView(APIView):
+    def get(self,request):
+        qcno = RMAnalysis.objects.all()
+        serializer = RMAnalysisQCNoSerializer(qcno,many=True)
+        return Response(serializer.data)
+
+class RMAnalysisView(APIView):
+    def get(self, request,QCNo):
+        analysis = RMAnalysis.objects.get(QCNo=QCNo)
+        samples = RMSamples.objects.get(QCNo=QCNo)
+        rm_receiving = RMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
+        dict = {}
+        dict['samplingDateTime'] = samples.samplingDateTime
+        dict['QCNo'] = QCNo
+        dict['IGPNo'] = rm_receiving.IGPNo
+        dict['RMCode'] = rm_receiving.RMCode.RMCode
+        dict['Material'] = rm_receiving.RMCode.Material
+        dict['Units'] = rm_receiving.RMCode.Units
+        dict['quantityReceived'] = rm_receiving.quantityReceived
+        dict['batchNo'] = rm_receiving.batchNo
+        dict['MFG_Date'] = rm_receiving.MFG_Date
+        dict['EXP_Date'] = rm_receiving.EXP_Date
+        dict['quantityApproved'] = analysis.quantityApproved
+        dict['quantityRejected'] = analysis.quantityRejected
+        dict['rawDataReference'] = analysis.rawDataReference
+        dict['workingStd'] = analysis.workingStd
+        dict['analysisDateTime'] = analysis.analysisDateTime
+        dict['retestDate'] = analysis.retestDate
+        dict['assignedDateTime']=samples.assignedDateTime
+        dict['analyst']=samples.analyst.username
+        items = RMAnalysisItems.objects.filter(RMAnalysisID=analysis.RMAnalysisID)
+        l = []
+        for obj in items:
+            spec_item = {}
+            spec_item["parameter"] = obj.parameter
+            spec_item["specification"] = obj.specification
+            spec_item["result"]=obj.result
+            l.append(spec_item)
+        dict['items']=l
+        return Response(dict)
+        
+class RejectRMAnalysisView(APIView):
+    serializer_class = RemarksSerializer
+    def post(self,request,QCNo):
+        data = request.data
+        analysis = RMAnalysis.objects.get(QCNo=QCNo)
+        analysis.delete()
+        sample = RMSamples.objects.get(QCNo=QCNo)
+        sample.analyst = None
+        sample.assignedDateTime = None
+        sample.save()
+        return Response({"message":"Rejected"})
+
+class ReleaseRMAnalysisView(APIView):
+    serializer_class = RemarksSerializer
+    def post(self,request,QCNo):
+        data = request.data
+        remarks = data.get('remarks',None)
+        sample=RMSamples.objects.get(QCNo=QCNo)
+        analysis = RMAnalysis.objects.get(QCNo=QCNo)
+        log_analysis = RMAnalysisLog.objects.create(
+            workingStd = analysis.workingStd,
+            rawDataReference = analysis.rawDataReference,
+            QCNo = sample,
+            analysisDateTime = analysis.analysisDateTime,
+            retestDate = analysis.retestDate,
+            quantityApproved  = analysis.quantityApproved,
+            quantityRejected = analysis.quantityRejected,
+            remarks = remarks,
+            specID = analysis.specID
+        )
+        log_analysis.save()
+        analysis_items = RMAnalysisItems.objects.filter(RMAnalysisID=analysis.RMAnalysisID)
+        for i in analysis_items:
+            item=RMAnalysisItemsLog.objects.create(
+                RMAnalysisID = log_analysis,
+                parameter = i.parameter,
+                specification = i.specification,
+                result = i.result
+            )
+            item.save()
+        sample=RMSamples.objects.get(QCNo=QCNo)
+        rm=RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+        rm.quantityApproved=analysis.quantityApproved
+        rm.quantityRejected=analysis.quantityRejected
+        rm.save()
+        sample.status="APPROVED"
+        sample.result="Released"
+        sample.save()
+        analysis.delete()
+        return Response({"message":"Released"})
+
+
+        

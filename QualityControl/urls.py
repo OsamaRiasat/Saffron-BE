@@ -37,7 +37,7 @@ urlpatterns = [
 
     # RM Sample Assignment
     path('RMSamples/', RMSamplesView.as_view()),
-    path('Analysts/', AnalystView.as_view()),
+    path('UnBlockedAnalysts/', AnalystView.as_view()),
     path('AssignAnalyst/<str:pk>/', AssignAnalystView.as_view()),
 
 
@@ -52,4 +52,11 @@ urlpatterns = [
 
     path('BlockUnBlockAnalyst/<int:id>', BlockUnBlockAnalystView.as_view()),
     path('AllAnalyst/', AllAnalystView.as_view()),
+
+    #------------ COA Approval --------------#
+    path('RMAnalysisQCNo/', RMAnalysisQCNoView.as_view()),
+    path('RMAnalysis/<str:QCNo>/', RMAnalysisView.as_view()),
+    path('RejectAnalysis/<str:QCNo>/', RejectRMAnalysisView.as_view()),
+    path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
+
 ]
