@@ -47,7 +47,7 @@ urlpatterns = [
     #         --------------    DATA ENTRY     -----------
 
     # RM Data Entry
-    path('RMQCNoList/', RMQCNoListView.as_view()),
+    path('RMQCNoList/', RMQCNoView.as_view()),
     path('RMQCNoSample/<str:QCNo>/', RMQCNoSampleView.as_view()),
     path('PostRMAnalysis/', PostRMAnalysisView.as_view()),
 
