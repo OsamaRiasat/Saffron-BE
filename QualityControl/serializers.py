@@ -158,6 +158,9 @@ class PostRMAnalysisSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         item = validated_data.pop('rm_analysis_items')
         qc = validated_data.get('QCNo')
+        RMSample = RMSamples.objects.get(QCNo=qc)
+        RMSample.status = "TESTED"
+        RMSample.save()
         rmcode = RMSamples.objects.get(QCNo=qc.QCNo).IGPNo.RMCode.RMCode
         specID = RMSpecifications.objects.get(RMCode=rmcode).specID
         analysis = RMAnalysis.objects.create(
@@ -194,7 +197,11 @@ class RMAnalysisQCNoSerializer(serializers.ModelSerializer):
 
 
 class RemarksSerializer(serializers.Serializer):
-    remarks = serializers.CharField()
+    remarks = serializers.CharField(default="")
+    isRetest = serializers.BooleanField(default=False)
+    retestReason = serializers.CharField(default="")
+    result = serializers.CharField()
+
 
     # ---------------- DATA ANALYSIS --------------------
 
