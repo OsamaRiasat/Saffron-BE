@@ -35,7 +35,7 @@ class LoginAPI(APIView):
         password = data.get('password', None)
         users = User.objects.filter(username=username)
         print(users)
-
+        user=None
         for i in users:
             user=i
         if user:

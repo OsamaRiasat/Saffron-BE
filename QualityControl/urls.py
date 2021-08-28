@@ -4,18 +4,18 @@ from .views import *
 
 router = DefaultRouter()
 
+# router.register('Products', ProductViews, basename='Products')
+
+
 urlpatterns = [
-
+    path('viewset/', include(router.urls)),
+    path('viewset/<str:pk>/', include(router.urls)),
     # path('populateRMParameters/', PopulateParametersView.as_view()),
-
-    #           -------------   SPECIFICATIONS  -----------
 
     # RM View Specs
     path('RMCodeListOfSpecifications/', RMCodeListOfSpecificationsView.as_view()),
     path('RMMaterialListOfSpecifications/', RMMaterialListOfSpecificationsView.as_view()),
     path('RMViewSpecifications/<str:RMCode>/', RMViewSpecificationsView.as_view()),
-    path('RMNameByRMCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
-    path('RMCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
 
     # RM New Specs
     path('RMCodeList/', RMCodeView.as_view()),
@@ -24,51 +24,31 @@ urlpatterns = [
     path('RMNameByRMCode/<str:RMCode>/', RMNameByRMCodeView.as_view()),
     path('RMReference/', RMReferenceView.as_view()),
     path('RMParameters/', RMParametersView.as_view()),
-    path('RMspecifications/', RMSpecificationsView.as_view()),  # Post Specifications
+    path('RMspecifications/', RMSpecificationsView.as_view()),
+    path('RMAcquirespecifications/<str:RMCode>/', RMAcquireSpecificationsView.as_view()),
     path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
     path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
-    path('RMAcquirespecifications/<str:RMCode>/', RMAcquireSpecificationsView.as_view()),
 
     # RM Edit Specs
     # path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
     # path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
-    # path('RMNameByRMCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
-    # path('RMCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
     path('RMEditSpecifications/<str:RMCode>/', RMEditSpecsView.as_view()),
     path('TempRMSpecifications/', TEMPRMSpecificationsView.as_view()),
-
-    #         --------------    SAMPLE ASSIGNMENT   -----------
 
     # RM Sample Assignment
     path('RMSamples/', RMSamplesView.as_view()),
     path('Analysts/', AnalystView.as_view()),
     path('AssignAnalyst/<str:pk>/', AssignAnalystView.as_view()),
 
-    #         --------------    DATA ENTRY     -----------
 
-    # RM Data Entry
-    path('RMQCNoList/', RMQCNoListView.as_view()),
-    path('RMQCNoSample/<str:QCNo>/', RMQCNoSampleView.as_view()),
-    path('PostRMAnalysis/', PostRMAnalysisView.as_view()),
+    #Reporting
 
-    #         --------------    COA APPROVAL    -----------
+    # path('specificationReporting', specificationReportingView.as_view()),
 
-    # RM COA Approval
-    path('RMAnalysisQCNo/', RMAnalysisQCNoView.as_view()),
-    path('RMAnalysis/<str:QCNo>/', RMAnalysisView.as_view()),
-    path('PostRMCOAApproval/<str:QCNo>/', PostRMCOAApprovalView.as_view()),
-    #path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
-
-    #         --------------    REPORTING   -----------
-
-    # RM Reporting
-    path('RMDataAnalysis', RMDataAnalysisView.as_view()),
-    # /QualityControl/RMDataAnalysis?RMAnalysisID__QCNo__IGPNo__RMCode__Material=&RMAnalysisID__QCNo__IGPNo__batchNo=&RMAnalysisID__QCNo__QCNo=&parameter=
-
-    #         --------------    ANALYST MANAGEMENT  -----------
-
-    # Analyst Management
-    path('BlockUnBlockAnalyst/<int:id>', BlockUnBlockAnalystView.as_view()),
-    path('AllAnalyst/', AllAnalystView.as_view()),
+    #Fetch assigned sample of analyst
+    path('AnalystSample/<int:id>/', AnalystSampleView.as_view()),
+    #Fetch assigned sample of current analyst
+    path('CurrentAnalystSample/', CurrentAnalystSampleView.as_view()),
+    
 
 ]
