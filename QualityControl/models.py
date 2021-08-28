@@ -223,9 +223,10 @@ class RMAnalysisLog(models.Model):
     quantityRejected = models.DecimalField(max_digits=10, decimal_places=2)
     remarks = models.CharField(max_length=40, blank=True, null=True)
     specID = models.IntegerField()
+    result = models.CharField(max_length=20)
 
     REQUIRED = ['QCNo', 'specID', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate',
-                'quantityApproved', 'quantityRejected', 'remarks', 'specID']
+                'quantityApproved', 'quantityRejected', 'remarks', 'specID','result']
 
     def __str__(self):
         return self.QCNo.QCNo

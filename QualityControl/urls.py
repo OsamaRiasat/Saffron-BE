@@ -14,6 +14,8 @@ urlpatterns = [
     path('RMCodeListOfSpecifications/', RMCodeListOfSpecificationsView.as_view()),
     path('RMMaterialListOfSpecifications/', RMMaterialListOfSpecificationsView.as_view()),
     path('RMViewSpecifications/<str:RMCode>/', RMViewSpecificationsView.as_view()),
+    path('RMNameByRMCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
+    path('RMCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
 
     # RM New Specs
     path('RMCodeList/', RMCodeView.as_view()),
@@ -30,6 +32,8 @@ urlpatterns = [
     # RM Edit Specs
     # path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
     # path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
+    # path('RMNameByRMCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
+    # path('RMCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
     path('RMEditSpecifications/<str:RMCode>/', RMEditSpecsView.as_view()),
     path('TempRMSpecifications/', TEMPRMSpecificationsView.as_view()),
 
@@ -43,6 +47,7 @@ urlpatterns = [
     #         --------------    DATA ENTRY     -----------
 
     # RM Data Entry
+    path('RMQCNoList/', RMQCNoListView.as_view()),
     path('RMQCNoSample/<str:QCNo>/', RMQCNoSampleView.as_view()),
     path('PostRMAnalysis/', PostRMAnalysisView.as_view()),
 
@@ -51,14 +56,14 @@ urlpatterns = [
     # RM COA Approval
     path('RMAnalysisQCNo/', RMAnalysisQCNoView.as_view()),
     path('RMAnalysis/<str:QCNo>/', RMAnalysisView.as_view()),
-    path('RejectAnalysis/<str:QCNo>/', RejectRMAnalysisView.as_view()),
-    path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
+    path('PostRMCOAApproval/<str:QCNo>/', PostRMCOAApprovalView.as_view()),
+    #path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
 
     #         --------------    REPORTING   -----------
 
     # RM Reporting
     path('RMDataAnalysis', RMDataAnalysisView.as_view()),
-    # /QualityControl/RMDataAnalysis?RMAnalysisID__QCNo__IGPNo__RMCode__Material=New%20Coat%20Brown&RMAnalysisID__QCNo__IGPNo__batchNo=ok-12-12&RMAnalysisID__QCNo__QCNo=RM23232&parameter=Taste
+    # /QualityControl/RMDataAnalysis?RMAnalysisID__QCNo__IGPNo__RMCode__Material=&RMAnalysisID__QCNo__IGPNo__batchNo=&RMAnalysisID__QCNo__QCNo=&parameter=
 
     #         --------------    ANALYST MANAGEMENT  -----------
 
