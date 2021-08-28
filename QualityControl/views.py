@@ -190,7 +190,7 @@ class RMSamplesView(APIView):
             dic = {}
             dic['QCNo'] = i.QCNo
             rm_receiving = RMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
-            rm = RawMaterials.objects.get(RMCode=rm_receiving.RMCode)
+            rm = RawMaterials.objects.get(RMCode=rm_receiving.RMCode.RMCode)
             dic['Date'] = i.samplingDateTime
             dic['Material'] = rm.Material
             dic['Unit'] = rm.Units
