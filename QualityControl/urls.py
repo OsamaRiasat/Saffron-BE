@@ -14,6 +14,8 @@ urlpatterns = [
     path('RMCodeListOfSpecifications/', RMCodeListOfSpecificationsView.as_view()),
     path('RMMaterialListOfSpecifications/', RMMaterialListOfSpecificationsView.as_view()),
     path('RMViewSpecifications/<str:RMCode>/', RMViewSpecificationsView.as_view()),
+    path('RMNameByRMCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
+    path('RMCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
 
     # RM New Specs
     path('RMCodeList/', RMCodeView.as_view()),
@@ -30,6 +32,8 @@ urlpatterns = [
     # RM Edit Specs
     # path('AcquireRMCode/', AcquireRMCodeListView.as_view()),
     # path('Acquirermaterial/', AcquireRMaterialListView.as_view()),
+    # path('RMNameByRMCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
+    # path('RMCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
     path('RMEditSpecifications/<str:RMCode>/', RMEditSpecsView.as_view()),
     path('TempRMSpecifications/', TEMPRMSpecificationsView.as_view()),
 

@@ -12,18 +12,6 @@ from Account.models import User
 from django_filters.rest_framework import DjangoFilterBackend, filters
 
 
-# Create your views here.
-
-
-# Populate Database
-
-# class specificationReportingView(generics.ListAPIView):
-#     queryset = RMSpecificationsItems.objects.all()
-#     serializer_class = RMSpecificationsItemsForSearchingSerializer
-#     filter_backends = [DjangoFilterBackend]
-#     filterset_fields = ['specification','specID__RMCode__Units']
-#
-
 
 class PopulateParametersView(APIView):
     def get(self, request):
@@ -63,6 +51,21 @@ class RMMaterialListOfSpecificationsView(APIView):
         return Response(li)
 
 
+
+class RMCodeByNameForViewSpecsView(APIView):
+    def get(self, request, RMName):
+        rmcode = RawMaterials.objects.get(Material=RMName)
+        serializer = RMCodeSerializer(rmcode)
+        return Response(serializer.data)
+
+class RMNameByRMCodeForViewSpecsView(APIView):
+    def get(self, request, RMCode):
+        rmcode = RawMaterials.objects.get(RMCode=RMCode)
+        serializer = RMaterialSerializer(rmcode)
+        return Response(serializer.data)
+
+
+
 class RMViewSpecificationsView(APIView):
     def get(self, request, RMCode):
         data = {}
@@ -79,6 +82,8 @@ class RMViewSpecificationsView(APIView):
             l.append(spec_item)
         data["list"] = l
         return Response(data)
+
+
 
 
 # New Specs
@@ -392,7 +397,7 @@ class RMDataAnalysisView(generics.ListAPIView):
     serializer_class = RMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['RMAnalysisID__QCNo__IGPNo__RMCode__Material', 'RMAnalysisID__QCNo__IGPNo__batchNo',
-                        'RMAnalysisID__QCNo__QCNo', 'parameter']
+                        'RMAnalysisID__QCNo__QCNo', 'parameter'] # Add Parameter here
 
     #         --------------    ANALYST MANAGEMENT  -----------
 
