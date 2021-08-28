@@ -196,6 +196,44 @@ class TEMPRMSpecificationsView(generics.CreateAPIView):
 
 # RM Sample Assignment
 
+
+class AnalystView(APIView):
+    def get(self, request):
+        analysts = User.objects.filter(role="QC_Analyst", is_active=True)
+        print(analysts)
+        serializer = AnalystSerializer(analysts, many=True)
+        return Response(serializer.data)
+
+class AnalystSampleView(APIView):
+    def get(self,request,id):
+        samples = RMSamples.objects.filter(analyst=id)
+        dict = []
+        for i in samples:
+            dic = {}
+            name = i.IGPNo.RMCode.Material
+            dic['QCNo'] = i.QCNo
+            dic['Material'] = name
+            dic['assignedDateTime'] = i.assignedDateTime
+            dic['status'] = i.status
+            dict.append(dic)
+        return Response(dict)
+
+class AnalystSampleView(APIView):
+    def get(self, request, id):
+        samples = RMSamples.objects.filter(analyst=id)
+        dict = []
+        for i in samples:
+            dic = {}
+            name = i.IGPNo.RMCode.Material
+            dic['QCNo'] = i.QCNo
+            dic['Material'] = name
+            dic['assignedDateTime'] = i.assignedDateTime
+            dic['status'] = i.status
+            dict.append(dic)
+        return Response(dict)
+
+
+
 class RMQCNoListView(generics.ListAPIView):
     queryset = RMSamples.objects.all().only('QCNo')
     serializer_class = RMAnalysisQCNoSerializer
@@ -218,14 +256,6 @@ class RMSamplesView(APIView):
             dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M:%S"))
             dict.append(dic)
         return Response(dict)
-
-
-class AnalystView(APIView):
-    def get(self, request):
-        analysts = User.objects.filter(role="QC_Analyst", is_active=True)
-        print(analysts)
-        serializer = AnalystSerializer(analysts, many=True)
-        return Response(serializer.data)
 
 
 class AssignAnalystView(generics.UpdateAPIView):
@@ -421,7 +451,7 @@ class PostRMCOAApprovalView(APIView):
 #         remarks = data.get('remarks', None)
 
 
-    # --------------------- Data Analysis ------------------------
+# --------------------- Data Analysis ------------------------
 
 
 # Raw Materials
@@ -464,3 +494,23 @@ class AllAnalystView(APIView):
                 dic['status'] = 'UnBlock'
             dict.append(dic)
         return Response(dict)
+
+    # -------------- ANALYST LOGIN -------------
+
+
+class CurrentAnalystSampleView(APIView):
+    def get(self, request):
+        user = request.user
+        if user.role == 'QC_Analyst':
+            samples = RMSamples.objects.filter(analyst=user.id)
+            dict = []
+            for i in samples:
+                dic = {}
+                name = i.IGPNo.RMCode.Material
+                dic['QCNo'] = i.QCNo
+                dic['Material'] = name
+                dic['assignedDateTime'] = i.assignedDateTime
+                dict.append(dic)
+            return Response(dict)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

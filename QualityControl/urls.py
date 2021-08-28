@@ -42,12 +42,13 @@ urlpatterns = [
     # RM Sample Assignment
     path('RMSamples/', RMSamplesView.as_view()),
     path('Analysts/', AnalystView.as_view()),
+    path('AnalystSample/<int:id>/', AnalystSampleView.as_view()),
     path('AssignAnalyst/<str:pk>/', AssignAnalystView.as_view()),
 
     #         --------------    DATA ENTRY     -----------
 
     # RM Data Entry
-    path('RMQCNoList/', RMQCNoListView.as_view()),
+    path('RMQCNoList/', RMQCNoView.as_view()),
     path('RMQCNoSample/<str:QCNo>/', RMQCNoSampleView.as_view()),
     path('PostRMAnalysis/', PostRMAnalysisView.as_view()),
 
@@ -64,6 +65,11 @@ urlpatterns = [
     # RM Reporting
     path('RMDataAnalysis', RMDataAnalysisView.as_view()),
     # /QualityControl/RMDataAnalysis?RMAnalysisID__QCNo__IGPNo__RMCode__Material=&RMAnalysisID__QCNo__IGPNo__batchNo=&RMAnalysisID__QCNo__QCNo=&parameter=
+
+    #       ----------------    Analyst Login   ------------
+
+    path('CurrentAnalystSample/', CurrentAnalystSampleView.as_view()),
+
 
     #         --------------    ANALYST MANAGEMENT  -----------
 
