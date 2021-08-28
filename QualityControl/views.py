@@ -244,5 +244,5 @@ class CurrentAnalystSampleView(APIView):
                 dict.append(dic)
             return Response(dict)
         else:
-            return Response({"message":"Current User is not analyst"})
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
