@@ -175,7 +175,7 @@ class RMEditSpecsView(APIView):
         dict['RMCode'] = specs.RMCode.RMCode
         dict['reference'] = specs.reference.reference
         dict['SOPNo'] = specs.SOPNo
-        dict['date'] = specs.date
+        dict['date'] = specs.date.strftime("%d.%m.%Y")
         dict['version'] = specs.version
         lis = []
         for i in specs_items:
@@ -204,19 +204,6 @@ class AnalystView(APIView):
         serializer = AnalystSerializer(analysts, many=True)
         return Response(serializer.data)
 
-class AnalystSampleView(APIView):
-    def get(self,request,id):
-        samples = RMSamples.objects.filter(analyst=id)
-        dict = []
-        for i in samples:
-            dic = {}
-            name = i.IGPNo.RMCode.Material
-            dic['QCNo'] = i.QCNo
-            dic['Material'] = name
-            dic['assignedDateTime'] = i.assignedDateTime
-            dic['status'] = i.status
-            dict.append(dic)
-        return Response(dict)
 
 class AnalystSampleView(APIView):
     def get(self, request, id):
@@ -227,11 +214,10 @@ class AnalystSampleView(APIView):
             name = i.IGPNo.RMCode.Material
             dic['QCNo'] = i.QCNo
             dic['Material'] = name
-            dic['assignedDateTime'] = i.assignedDateTime
+            dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y %H:%M")
             dic['status'] = i.status
             dict.append(dic)
         return Response(dict)
-
 
 
 class RMQCNoListView(generics.ListAPIView):
@@ -248,12 +234,12 @@ class RMSamplesView(APIView):
             dic['QCNo'] = i.QCNo
             rm_receiving = RMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
             rm = RawMaterials.objects.get(RMCode=rm_receiving.RMCode.RMCode)
-            dic['Date'] = i.samplingDateTime
+            dic['Date'] = i.samplingDateTime.strftime("%d.%m.%Y %H:%M")
             dic['Material'] = rm.Material
             dic['Unit'] = rm.Units
             dic['Quantity'] = rm_receiving.quantityReceived
             dic['Analyst'] = i.analyst.username
-            dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M:%S"))
+            dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
             dict.append(dic)
         return Response(dict)
 
@@ -285,10 +271,10 @@ class RMQCNoSampleView(APIView):
         rm_receiving = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
 
         dict = {}
-        dict['samplingDateTime'] = sample.samplingDateTime
+        dict['samplingDateTime'] = sample.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
         dict['IGPNo'] = sample.IGPNo.IGPNo
-        dict['assignedDateTime'] = sample.assignedDateTime
+        dict['assignedDateTime'] = sample.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = sample.analyst.username
 
         dict['RMCode'] = rm_receiving.RMCode.RMCode
@@ -296,8 +282,8 @@ class RMQCNoSampleView(APIView):
         dict['Units'] = rm_receiving.RMCode.Units
         dict['quantityReceived'] = rm_receiving.quantityReceived
         dict['batchNo'] = rm_receiving.batchNo
-        dict['MFG_Date'] = rm_receiving.MFG_Date
-        dict['EXP_Date'] = rm_receiving.EXP_Date
+        dict['MFG_Date'] = rm_receiving.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = rm_receiving.EXP_Date.strftime("%d.%m.%Y")
 
         data = {}
         spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode.RMCode)
@@ -336,7 +322,7 @@ class RMAnalysisView(APIView):
         samples = RMSamples.objects.get(QCNo=QCNo)
         rm_receiving = RMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
         dict = {}
-        dict['samplingDateTime'] = samples.samplingDateTime.strftime(("%d.%m.%Y %H:%M:%S"))
+        dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
         dict['IGPNo'] = rm_receiving.IGPNo
         dict['RMCode'] = rm_receiving.RMCode.RMCode
@@ -350,9 +336,9 @@ class RMAnalysisView(APIView):
         dict['quantityRejected'] = analysis.quantityRejected
         dict['rawDataReference'] = analysis.rawDataReference
         dict['workingStd'] = analysis.workingStd
-        dict['analysisDateTime'] = analysis.analysisDateTime
-        dict['retestDate'] = analysis.retestDate.strftime("%d.%m.%Y %H:%M:%S")
-        dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M:%S")
+        dict['analysisDateTime'] = analysis.analysisDateTime.strftime("%d.%m.%Y %H:%M")
+        dict['retestDate'] = analysis.retestDate.strftime("%d.%m.%Y %H:%M")
+        dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = samples.analyst.username
         items = RMAnalysisItems.objects.filter(RMAnalysisID=analysis.RMAnalysisID)
         l = []
@@ -382,8 +368,8 @@ class PostRMCOAApprovalView(APIView):
                 workingStd=analysis.workingStd,
                 rawDataReference=analysis.rawDataReference,
                 QCNo=analysis,
-                analysisDateTime=analysis.analysisDateTime,
-                retestDate=analysis.retestDate,
+                analysisDateTime=analysis.analysisDateTime.strftime("%d.%m.%Y %H:%M"),
+                retestDate=analysis.retestDate.strftime("%d.%m.%Y"),
                 quantityApproved=analysis.quantityApproved,
                 quantityRejected=analysis.quantityRejected,
                 remarks=remarks,
@@ -414,8 +400,8 @@ class PostRMCOAApprovalView(APIView):
                 workingStd=analysis.workingStd,
                 rawDataReference=analysis.rawDataReference,
                 QCNo=sample,
-                analysisDateTime=analysis.analysisDateTime,
-                retestDate=analysis.retestDate,
+                analysisDateTime=analysis.analysisDateTime.strftime("%d.%m.%Y %H:%M"),
+                retestDate=analysis.retestDate.strftime("%d.%m.%Y"),
                 quantityApproved=analysis.quantityApproved,
                 quantityRejected=analysis.quantityRejected,
                 remarks=remarks,
@@ -456,12 +442,23 @@ class PostRMCOAApprovalView(APIView):
 
 # Raw Materials
 
+class RMMaterialsListReportingView(generics.ListAPIView):
+    queryset = RMAnalysisItems.objects.all()
+    serializer_class = RMMaterialsListReportingSerializer
+
+
+class RMBatchNoListReportingView(generics.ListAPIView):
+    queryset = RMAnalysisItems.objects.all()
+    serializer_class = RMBatchNoListReportingSerializer
+
+
 class RMDataAnalysisView(generics.ListAPIView):
     queryset = RMAnalysisItems.objects.all()
     serializer_class = RMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['RMAnalysisID__QCNo__IGPNo__RMCode__Material', 'RMAnalysisID__QCNo__IGPNo__batchNo',
-                        'RMAnalysisID__QCNo__QCNo', 'parameter']  # Add Parameter here
+                        'RMAnalysisID__QCNo__QCNo', 'parameter',
+                        'RMAnalysisID__QCNo__IGPNo__S_ID__S_Name']  # Add Parameter here
 
     #         --------------    ANALYST MANAGEMENT  -----------
 
@@ -498,6 +495,8 @@ class AllAnalystView(APIView):
     # -------------- ANALYST LOGIN -------------
 
 
+#   Pending RM Samples
+
 class CurrentAnalystSampleView(APIView):
     def get(self, request):
         user = request.user
@@ -509,7 +508,7 @@ class CurrentAnalystSampleView(APIView):
                 name = i.IGPNo.RMCode.Material
                 dic['QCNo'] = i.QCNo
                 dic['Material'] = name
-                dic['assignedDateTime'] = i.assignedDateTime
+                dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y")
                 dict.append(dic)
             return Response(dict)
         else:

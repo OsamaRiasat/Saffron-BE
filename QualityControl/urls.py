@@ -48,7 +48,7 @@ urlpatterns = [
     #         --------------    DATA ENTRY     -----------
 
     # RM Data Entry
-    path('RMQCNoList/', RMQCNoView.as_view()),
+    path('RMQCNo/', RMQCNoView.as_view()),
     path('RMQCNoSample/<str:QCNo>/', RMQCNoSampleView.as_view()),
     path('PostRMAnalysis/', PostRMAnalysisView.as_view()),
 
@@ -63,6 +63,8 @@ urlpatterns = [
     #         --------------    REPORTING   -----------
 
     # RM Reporting
+    # path('RMMaterialsListReporting/', RMMaterialsListReportingView.as_view()),
+    # path('RMMaterialsListReporting/', RMMaterialsListReportingView.as_view()),
     path('RMDataAnalysis', RMDataAnalysisView.as_view()),
     # /QualityControl/RMDataAnalysis?RMAnalysisID__QCNo__IGPNo__RMCode__Material=&RMAnalysisID__QCNo__IGPNo__batchNo=&RMAnalysisID__QCNo__QCNo=&parameter=
 
