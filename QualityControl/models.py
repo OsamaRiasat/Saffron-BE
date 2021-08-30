@@ -189,7 +189,6 @@ class PMParameters(models.Model):
         return self.parameter
 
 
-
 class PMSpecifications(models.Model):
     specID = models.AutoField(primary_key=True)
     date = models.DateField(auto_now=True)
