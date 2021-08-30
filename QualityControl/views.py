@@ -456,10 +456,11 @@ class RMDataAnalysisView(generics.ListAPIView):
     queryset = RMAnalysisItems.objects.all()
     serializer_class = RMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['RMAnalysisID__QCNo__IGPNo__RMCode__Material', 'RMAnalysisID__QCNo__IGPNo__batchNo',
-                        'RMAnalysisID__QCNo__QCNo', 'parameter',
-                        'RMAnalysisID__QCNo__IGPNo__S_ID__S_Name']  # Add Parameter here
-
+    filterset_fields = ['RMAnalysisID__QCNo__IGPNo__RMCode__Material',
+                        'RMAnalysisID__QCNo__IGPNo__batchNo',
+                        'RMAnalysisID__QCNo__QCNo',
+                        'parameter',
+                        'RMAnalysisID__QCNo__IGPNo__S_ID__S_Name']
     #         --------------    ANALYST MANAGEMENT  -----------
 
 
