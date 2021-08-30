@@ -238,8 +238,13 @@ class RMSamplesView(APIView):
             dic['Material'] = rm.Material
             dic['Unit'] = rm.Units
             dic['Quantity'] = rm_receiving.quantityReceived
-            dic['Analyst'] = i.analyst.username
-            dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
+            try:
+                dic['Analyst'] = i.analyst.username
+                dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
+            except:
+                dic['Analyst'] = "N/A"
+                dic['AssigneDate'] = "N/A"
+
             dict.append(dic)
         return Response(dict)
 
