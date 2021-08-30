@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'MaterialSuppliers',
     'Planning',
     'QualityControl',
+    'Production',
     'Account',
     'rest_framework.authtoken',
     'drf_spectacular',

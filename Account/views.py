@@ -35,11 +35,11 @@ class LoginAPI(APIView):
         password = data.get('password', None)
         users = User.objects.filter(username=username)
         print(users)
-
+        user = None
         for i in users:
-            user=i
+            user = i
         if user:
-            if user.is_active==True:
+            if user.is_active == True:
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     if user.is_active:
@@ -109,4 +109,4 @@ class RolesView(APIView):
             {"Role": "QC_Analyst"},
             {"Role": "RD"}
         ]
-        return Response( role)
+        return Response(role)
