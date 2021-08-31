@@ -277,11 +277,11 @@ class RMHighestGRNO(APIView):
 class RMReceivingDetailsView(APIView):
     def get(self, request, IGPNo):
         data = RMReceiving.objects.get(pk=IGPNo)
-        material = RawMaterials.objects.get(RMCode=data.RMCode)
+        material = RawMaterials.objects.get(RMCode=data.RMCode.RMCode)
         # sname=Suppliers.objects.filter(S_ID=data.S_ID)
         dic = {}
         dic["Recieving_Date"] = data.IGPDate
-        dic["Code"] = data.RMCode
+        dic["Code"] = data.RMCode.RMCode
         dic["Material"] = material.Material
         dic["supplierName"] = data.S_ID.S_Name
         dic["Batch_No"] = data.batchNo
@@ -316,7 +316,7 @@ class GRNoView(APIView):
 class RMReceivingDetailsByGRNoView(APIView):
     def get(self, request, GRNo):
         data = RMReceiving.objects.get(GRNo=GRNo)
-        material = RawMaterials.objects.get(RMCode=data.RMCode)
+        material = RawMaterials.objects.get(RMCode=data.RMCode.RMCode)
 
         dic = {}
         dic["Approval_Date"] = data.approval_Date
@@ -382,7 +382,7 @@ class PMReceivingDetailsView(APIView):
         # sname=Suppliers.objects.filter(S_ID=data.S_ID)
         dic = {}
         dic["Recieving_Date"] = data.IGPDate
-        dic["Code"] = data.PMCode
+        dic["Code"] = data.PMCode.PMCode
         dic["Material"] = material.Material
         dic["supplierName"] = data.S_ID.S_Name
         dic["Batch_No"] = data.batchNo
@@ -444,7 +444,7 @@ class RMBinCardView(APIView):
         data = request.data
         grno = data.get('GRNo', None)
         data = RMReceiving.objects.get(GRNo=grno)
-        material = RawMaterials.objects.get(RMCode=data.RMCode)
+        material = RawMaterials.objects.get(RMCode=data.RMCode.RMCode)
         bin = RMBinCards.objects.create(particulars=data.S_ID.S_Name,
                                         batchNo=data.batchNo,
                                         received=data.quantityApproved,
@@ -469,7 +469,7 @@ class PMBinCardView(APIView):
         data = request.data
         grno = data.get('GRNo', None)
         data = PMReceiving.objects.get(GRNo=grno)
-        material = PackingMaterials.objects.get(PMCode=data.PMCode)
+        material = PackingMaterials.objects.get(PMCode=data.PMCode.PMCode)
         bin = PMBinCards.objects.create(particulars=data.S_ID.S_Name,
                                         batchNo=data.batchNo,
                                         received=data.quantityApproved,

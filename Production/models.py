@@ -10,7 +10,7 @@ class Stages(models.Model):
     stage = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.stage
+        return self.dosageForm.dosageForm
 
 
 class BatchIssuanceRequest(models.Model):
@@ -63,3 +63,18 @@ class BatchStages(models.Model):
 
     def __str__(self):
         return self.currentStage
+
+
+class PackingLog(models.Model):
+    date = models.DateField(auto_now_add=True)
+    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="bN")
+    packSize = models.CharField(max_length=20)
+    noOfPacks = models.IntegerField()  # Qty
+    totalPacks = models.IntegerField()  # if there is an existing object to this batchNo
+    # than that's object totalPacks = totalPacks + this.totalPacks
+    isRepack = models.BooleanField()
+
+    REQUIRED = ['batchNo', 'packSize', 'packSize', 'noOfPacks', 'isRepack']
+
+    def __str__(self):
+        return self.batchNo.batchNo

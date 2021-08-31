@@ -8,7 +8,6 @@ from MaterialSuppliers.models import Suppliers
 
 # Raw Material
 
-# Classes
 
 class RawMaterialTypes(models.Model):
     Type = models.CharField(max_length=20, primary_key=True)
@@ -28,10 +27,10 @@ class RMBinCards(models.Model):
     received = models.DecimalField(max_digits=10, decimal_places=2)
 
     issued = models.DecimalField(default=0, max_digits=10, decimal_places=2)
-    balance = models.DecimalField(max_digits=10, decimal_places=2) #recieved
+    balance = models.DecimalField(max_digits=10, decimal_places=2)  # recieved
 
     QCNo = models.CharField(max_length=20)
-    GRBalance = models.DecimalField(max_digits=10, decimal_places=2) # received by default
+    GRBalance = models.DecimalField(max_digits=10, decimal_places=2)  # received by default
     RMCode = models.ForeignKey(RawMaterials, on_delete=models.CASCADE)
 
 
@@ -44,6 +43,7 @@ class PackingMaterials(models.Model):
     Material = models.CharField(max_length=50)
     Units = models.CharField(max_length=10)
     Type = models.ForeignKey(PackingMaterialTypes, on_delete=models.CASCADE)
+
 
 class PMBinCards(models.Model):
     DateTime = models.DateTimeField(auto_now_add=True)
@@ -82,6 +82,7 @@ class RMDemandedItems(models.Model):
     QuantityPending = models.FloatField(max_length=10, default=0)
     Status = models.CharField(max_length=10, default="Pending")
 
+
 # Packing Materials
 
 
@@ -103,9 +104,8 @@ class PMDemandedItems(models.Model):
     QuantityPending = models.FloatField(max_length=10, default=0)
     Status = models.CharField(max_length=10, default="Pending")
 
-
-
     # ------------------ PURCHASE ORDERS -------------------
+
 
 # Raw Materials
 
@@ -130,6 +130,7 @@ class RMPurchaseOrderItems(models.Model):
 
     REQUIRED = ['PONo', 'SID', 'RMCode', 'Quantity']
 
+
 # Packing Materials
 
 class PMPurchaseOrders(models.Model):
@@ -152,8 +153,6 @@ class PMPurchaseOrderItems(models.Model):
     Reason = models.CharField(max_length=10, blank=True, null=True)
 
     REQUIRED = ['PONo', 'SID', 'PMCode', 'Quantity']
-
-
 
     # ------------------ RECEIVING ---------------
 
@@ -181,14 +180,14 @@ class RMReceiving(models.Model):
     remarks = models.TextField(max_length=100, null=True, blank=True)
     retest_Date = models.DateField(blank=True, null=True)
 
-    REQUIRED = ['RMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo','S_ID']
+    REQUIRED = ['RMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo', 'S_ID']
 
 
 # PMReceiving
 
 class PMReceiving(models.Model):
     IGPNo = models.AutoField(primary_key=True)
-    PMCode = models.ForeignKey(RawMaterials, on_delete=models.CASCADE )
+    PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
     quantityReceived = models.DecimalField(max_digits=10, decimal_places=2)
     containersReceived = models.IntegerField()
     batchNo = models.CharField(max_length=20, unique=True)
@@ -207,7 +206,4 @@ class PMReceiving(models.Model):
     remarks = models.TextField(max_length=100, null=True, blank=True)
     retest_Date = models.DateField(blank=True, null=True)
 
-    REQUIRED = ['PMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo','S_ID']
-
-
-
+    REQUIRED = ['PMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo', 'S_ID']
