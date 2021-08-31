@@ -1,3 +1,4 @@
+import re
 from QualityControl.views import PostRMCOAApprovalView
 from Products.models import Formulation
 from django.shortcuts import render
@@ -126,10 +127,28 @@ class GeneralDataBPRLogView(APIView):
         dict['batchSize'] = gdata.batchSize
         dict['MFGDate'] = gdata.MFGDate
         dict['EXPDate'] = gdata.EXPDate
+        li=[]
+        stages=BatchStages.objects.filter(batchNo=batchNo)
+        for i in stages:
+            dic={}
+            dic['currentStage'] = i.currentStage
+            dic['openingDate'] = i.openingDate
+            dic['closingDate'] = i.closingDate
+            dic['units'] = i.units
+            dic['theoreticalYield'] = i.theoreticalYield
+            dic['actualYield'] = i.actualYield
+            dic['yieldPercentage'] = i.yieldPercentage
+            dic['PartialStatus'] = i.PartialStatus
+            li.append(dic)
+        dict['batchStages'] = li
         return Response(dict)
 
 class BatchStagesView(generics.CreateAPIView):
     queryset = BatchStages.objects.all()
     serializer_class = BatchStagesSerializer
 
-
+class DataFromBPRView(APIView):
+    def get(self,request,PCode):
+        data = BPRLog.objects.filter(ProductCode=PCode, batchStatus='OPEN')
+        serializer = DataFromBPRSerializer(data, many=True)
+        return Response(serializer.data)

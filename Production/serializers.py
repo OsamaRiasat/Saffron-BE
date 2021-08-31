@@ -73,3 +73,13 @@ class BatchStagesSerializer(serializers.ModelSerializer):
         bpr.save()
         return super().create(validated_data)
 
+class DataFromBPRSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=BPRLog
+        fields=['batchNo','batchSize','MFGDate','EXPDate','currentStage','packed','inProcess','yieldPercentage','batchStatus',]
+
+class GeneralDataBPRLogSerializer(serializers.ModelSerializer):
+    bNo=BatchStagesSerializer(many=True)
+    class Meta:
+        model=BPRLog
+        fields=['currentStage','ProductCode','batchNo','batchSize','MFGDate','EXPDate','bNo',]

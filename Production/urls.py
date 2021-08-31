@@ -27,4 +27,5 @@ urlpatterns = [
     path('BatchNoBPR/<str:PCode>/', BatchNoBPRView.as_view()),
     path('GeneralDataBPRLog/',GeneralDataBPRLogView.as_view()),
     path('BatchStages/',BatchStagesView.as_view()),
+    path('DataFromBPR/<str:PCode>/',DataFromBPRView.as_view()),
 ]
