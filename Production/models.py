@@ -20,8 +20,6 @@ class BatchIssuanceRequest(models.Model):
 
     REQUIRED = ['planNO', 'ProductCode', 'noOfBatches']
 
-    def __str__(self):
-        return self.planNo.planNo
 
 
 class BPRLog(models.Model):
@@ -70,11 +68,11 @@ class PackingLog(models.Model):
     batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="bN")
     packSize = models.CharField(max_length=20)
     noOfPacks = models.IntegerField()  # Qty
-    totalPacks = models.IntegerField()  # if there is an existing object to this batchNo
+    totalPacks = models.IntegerField(default=0)  # if there is an existing object to this batchNo
     # than that's object totalPacks = totalPacks + this.totalPacks
     isRepack = models.BooleanField()
 
-    REQUIRED = ['batchNo', 'packSize', 'packSize', 'noOfPacks', 'isRepack']
+    REQUIRED = ['batchNo', 'packSize', 'noOfPacks', 'isRepack']
 
     def __str__(self):
         return self.batchNo.batchNo
