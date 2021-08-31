@@ -5,7 +5,13 @@ from Account.models import User
 from datetime import date
 
 
-# --------------------   SERIALIZERS FOR RAW MATERIALS ----------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------     RAW MATERIALS     -----------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
 
 class RMCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -131,7 +137,7 @@ class AssignAnalystSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.analyst = validated_data.get('analyst', instance.analyst)
         instance.assignedDateTime = date.today()
-        # instance.status = "ASSIGNED"
+        instance.status = "ASSIGNED"
         instance.save()
         return instance
 
@@ -217,21 +223,21 @@ class RemarksSerializer(serializers.Serializer):
 
 
 # Raw Materials
-
-class RMMaterialsListReportingSerializer(serializers.ModelSerializer):
-    material = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.RMCode.Material')
-
-    class Meta:
-        model = RMAnalysisItems
-        fields = ['material', ]
-
-
-class RMBatchNoListReportingSerializer(serializers.ModelSerializer):
-    batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
-
-    class Meta:
-        model = RMAnalysisItems
-        fields = ['batchNo', ]
+#
+# class RMMaterialsListReportingSerializer(serializers.ModelSerializer):
+#     material = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.RMCode.Material')
+#
+#     class Meta:
+#         model = RMAnalysisItems
+#         fields = ['material', ]
+#
+#
+# class RMBatchNoListReportingSerializer(serializers.ModelSerializer):
+#     batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
+#
+#     class Meta:
+#         model = RMAnalysisItems
+#         fields = ['batchNo', ]
 
 
 class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
@@ -246,14 +252,14 @@ class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
         fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'supplierName']
 
 
-#   ----------------------------------------------------------------------------------
-#   ----------------------------------------------------------------------------------
-#   ----------------------------------------------------------------------------------
-#   ----------------------------------------------------------------------------------
-#   ----------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------     PACKING MATERIALS     ---------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
 
-
-# --------------------   SERIALIZERS FOR RAW MATERIALS ----------------------
 
 class PMCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -265,6 +271,7 @@ class PMaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackingMaterials
         fields = ['Material', ]
+
 
 #
 # class RMReferencesSerializer(serializers.ModelSerializer):
@@ -289,15 +296,15 @@ class PMSpecificationsSerializer(serializers.ModelSerializer):
     items = PMSpecificationsItemsSerializer(many=True, write_only=True)
 
     class Meta:
-        model = RMSpecifications
-        fields = ['RMCode', 'reference', 'items']
+        model = PMSpecifications
+        fields = ['PMCode', 'reference', 'items']
 
     def create(self, validated_data):
 
         try:
-            sopno = RMSpecifications.objects.last().SOPNo
+            sopno = PMSpecifications.objects.last().SOPNo
         except:
-            sopno = "DRL/RMSA/0"
+            sopno = "DRL/PMSA/0"
 
         item = validated_data.pop('items')
         sopno = sopno.split('/')
@@ -305,11 +312,11 @@ class PMSpecificationsSerializer(serializers.ModelSerializer):
         no = no + 1
         sopno = sopno[0] + "/" + sopno[1] + "/" + str(no)
         ref = RMReferences.objects.get(reference=validated_data.get('reference'))
-        specs = RMSpecifications.objects.create(RMCode=validated_data.get('RMCode'), SOPNo=sopno, reference=ref)
+        specs = PMSpecifications.objects.create(PMCode=validated_data.get('PMCode'), SOPNo=sopno, reference=ref)
         specs.save()
         for i in item:
-            par = RMParameters.objects.get(parameter=i['parameter'])
-            itemspecs = RMSpecificationsItems.objects.create(
+            par = PMParameters.objects.get(parameter=i['parameter'])
+            itemspecs = PMSpecificationsItems.objects.create(
                 specID=specs,
                 parameter=par,
                 specification=i['specification']
@@ -318,40 +325,40 @@ class PMSpecificationsSerializer(serializers.ModelSerializer):
         return specs
 
 
-class AcquireSpecificationsItemsSerializer(serializers.ModelSerializer):
+class PMAcquireSpecificationsItemsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RMSpecificationsItems
+        model = PMSpecificationsItems
         fields = ['parameter', 'specification', ]
 
 
-class AcquireRMCodeListSerializer(serializers.ModelSerializer):
+class AcquirePMCodeListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RMSpecifications
-        fields = ['RMCode', ]
+        model = PMSpecifications
+        fields = ['PMCode', ]
 
 
 # Edit RM Specs
 
-class TempRMSpecificationsItemsSerializer(serializers.ModelSerializer):
+class TempPMSpecificationsItemsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TempRMSpecificationsItems
+        model = TempPMSpecificationsItems
         fields = ['parameter', 'specification', ]
 
 
-class TempRMSpecificationsSerializer(serializers.ModelSerializer):
-    items = TempRMSpecificationsItemsSerializer(many=True, write_only=True)
+class TempPMSpecificationsSerializer(serializers.ModelSerializer):
+    items = TempPMSpecificationsItemsSerializer(many=True, write_only=True)
 
     class Meta:
-        model = TempRMSpecifications
-        fields = ['RMCode', 'SOPNo', 'reference', 'version', 'items', ]
+        model = TempPMSpecifications
+        fields = ['PMCode', 'SOPNo', 'reference', 'version', 'items', ]
 
     def create(self, validated_data):
         item = validated_data.pop('items')
-        specs = TempRMSpecifications.objects.create(**validated_data)
+        specs = TempPMSpecifications.objects.create(**validated_data)
         specs.save()
         for i in item:
-            par = RMParameters.objects.get(parameter=i['parameter'])
-            itemspecs = TempRMSpecificationsItems.objects.create(
+            par = PMParameters.objects.get(parameter=i['parameter'])
+            itemspecs = TempPMSpecificationsItems.objects.create(
                 specID=specs,
                 parameter=par,
                 specification=i['specification']
@@ -364,65 +371,65 @@ class TempRMSpecificationsSerializer(serializers.ModelSerializer):
 
 # RM Sample Assignment
 
+#
+# class AnalystSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ['id', 'username', ]
+#
 
-class AnalystSerializer(serializers.ModelSerializer):
+class PMAssignAnalystSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'username', ]
-
-
-class AssignAnalystSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RMSamples
+        model = PMSamples
         fields = ['analyst', ]
 
     def update(self, instance, validated_data):
         instance.analyst = validated_data.get('analyst', instance.analyst)
         instance.assignedDateTime = date.today()
-        # instance.status = "ASSIGNED"
+        instance.status = "ASSIGNED"
         instance.save()
         return instance
 
-    class RMAnalysisQCNoSerializer(serializers.ModelSerializer):
+    class PMAnalysisQCNoSerializer(serializers.ModelSerializer):
         class Meta:
-            model = RMAnalysis
+            model = PMAnalysis
             fields = ['QCNo', ]
 
     # --------------------- Data Entry ------------------------
 
 
-# RM Data Entry
+# PM Data Entry
 
-class RMQCNoSerializer(serializers.ModelSerializer):
+class PMQCNoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RMSamples
+        model = PMSamples
         fields = ['QCNo', ]
 
 
-class PostRMAnalysisItemsSerializer(serializers.ModelSerializer):
+class PostPMAnalysisItemsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RMAnalysisItems
+        model = PMAnalysisItems
         fields = ['parameter', 'specification', 'result', ]
 
 
-class PostRMAnalysisSerializer(serializers.ModelSerializer):
-    rm_analysis_items = PostRMAnalysisItemsSerializer(many=True, write_only=True)
+class PostPMAnalysisSerializer(serializers.ModelSerializer):
+    pm_analysis_items = PostPMAnalysisItemsSerializer(many=True, write_only=True)
 
     class Meta:
-        model = RMAnalysis
+        model = PMAnalysis
         fields = ['QCNo', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate', 'quantityApproved',
-                  'quantityRejected', 'remarks', 'rm_analysis_items', ]
+                  'quantityRejected', 'remarks', 'pm_analysis_items', ]
 
     def create(self, validated_data):
-        item = validated_data.pop('rm_analysis_items')
+        item = validated_data.pop('pm_analysis_items')
         qc = validated_data.get('QCNo')
         print(qc.QCNo)
-        RMSample = RMSamples.objects.get(QCNo=qc.QCNo)
-        RMSample.status = "TESTED"
-        RMSample.save()
-        rmcode = RMSamples.objects.get(QCNo=qc.QCNo).IGPNo.RMCode.RMCode
-        specID = RMSpecifications.objects.get(RMCode=rmcode).specID
-        analysis = RMAnalysis.objects.create(
+        PMSample = PMSamples.objects.get(QCNo=qc.QCNo)
+        PMSample.status = "TESTED"
+        PMSample.save()
+        pmcode = PMSamples.objects.get(QCNo=qc.QCNo).IGPNo.PMCode.PMCode
+        specID = PMSpecifications.objects.get(PMCode=pmcode).specID
+        analysis = PMAnalysis.objects.create(
             QCNo=validated_data['QCNo'],
             specID=specID,
             workingStd=validated_data['workingStd'],
@@ -436,8 +443,8 @@ class PostRMAnalysisSerializer(serializers.ModelSerializer):
         )
         analysis.save()
         for i in item:
-            analysis_items = RMAnalysisItems.objects.create(
-                RMAnalysisID=analysis,
+            analysis_items = PMAnalysisItems.objects.create(
+                PMAnalysisID=analysis,
                 parameter=i['parameter'],
                 specification=i['specification'],
                 result=i['result']
@@ -449,46 +456,55 @@ class PostRMAnalysisSerializer(serializers.ModelSerializer):
 
 # ----------------- COA APPROVAL ------------------#
 
-class RMAnalysisQCNoSerializer(serializers.ModelSerializer):
+class PMAnalysisQCNoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RMAnalysis
+        model = PMAnalysis
         fields = ['QCNo', ]
 
 
-class RemarksSerializer(serializers.Serializer):
-    remarks = serializers.CharField(default="")
-    isRetest = serializers.BooleanField(default=False)
-    retestReason = serializers.CharField(default="")
-    result = serializers.CharField()
+#
+# class RemarksSerializer(serializers.Serializer):
+#     remarks = serializers.CharField(default="")
+#     isRetest = serializers.BooleanField(default=False)
+#     retestReason = serializers.CharField(default="")
+#     result = serializers.CharField()
 
-    # ---------------- DATA ANALYSIS --------------------
+# ---------------- DATA ANALYSIS --------------------
 
 
 # Raw Materials
+#
+# class PMMaterialsListReportingSerializer(serializers.ModelSerializer):
+#     material = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.PMCode.Material')
+#
+#     class Meta:
+#         model = PMAnalysisItems
+#         fields = ['material', ]
+#
+#
+# class PMBatchNoListReportingSerializer(serializers.ModelSerializer):
+#     batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
+#
+#     class Meta:
+#         model = RMAnalysisItems
+#         fields = ['batchNo', ]
 
-class RMMaterialsListReportingSerializer(serializers.ModelSerializer):
-    material = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.RMCode.Material')
+
+class PMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
+    material = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.PMCode.Material')
+    batchNo = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.batchNo')
+    QCNo = serializers.CharField(source='PMAnalysisID.QCNo.QCNo')
+    analysisDateTime = serializers.CharField(source='PMAnalysisID.analysisDateTime')
+    supplierName = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
 
     class Meta:
-        model = RMAnalysisItems
-        fields = ['material', ]
-
-
-class RMBatchNoListReportingSerializer(serializers.ModelSerializer):
-    batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
-
-    class Meta:
-        model = RMAnalysisItems
-        fields = ['batchNo', ]
-
-
-class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
-    material = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.RMCode.Material')
-    batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
-    QCNo = serializers.CharField(source='RMAnalysisID.QCNo.QCNo')
-    analysisDateTime = serializers.CharField(source='RMAnalysisID.analysisDateTime')
-    supplierName = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
-
-    class Meta:
-        model = RMAnalysisItems
+        model = PMAnalysisItems
         fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'supplierName']
+
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------     PRODUCTS     ----------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------

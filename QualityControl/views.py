@@ -291,7 +291,10 @@ class RMQCNoSampleView(APIView):
         dict['EXP_Date'] = rm_receiving.EXP_Date.strftime("%d.%m.%Y")
 
         data = {}
-        spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode.RMCode)
+        try:
+            spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode.RMCode)
+        except:
+            return Response({"message": "No Specifications for this Material"})
         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
         data["FirstData"] = str1
         data["SecondData"] = spec.reference.reference
@@ -365,6 +368,8 @@ class PostRMCOAApprovalView(APIView):
         remarks = data.get('remarks', None)
         isRetest = data.get('isRetest', None)
         retestReason = data.get('retestReason', None)
+        analysis = RMAnalysis.objects.get(QCNo=QCNo)
+        retestDate = analysis.retestDate
         result = data.get('result', None)
 
         if result == "Reject":
@@ -426,6 +431,9 @@ class PostRMCOAApprovalView(APIView):
             rm = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
             rm.quantityApproved = analysis.quantityApproved
             rm.quantityRejected = analysis.quantityRejected
+            rm.QCNo = QCNo
+            rm.status = "APPROVED"
+            rm.retest_Date = retestDate
             rm.save()
             sample.status = "APPROVED"
             sample.result = "Released"
@@ -446,15 +454,15 @@ class PostRMCOAApprovalView(APIView):
 
 
 # Raw Materials
-
-class RMMaterialsListReportingView(generics.ListAPIView):
-    queryset = RMAnalysisItems.objects.all()
-    serializer_class = RMMaterialsListReportingSerializer
-
-
-class RMBatchNoListReportingView(generics.ListAPIView):
-    queryset = RMAnalysisItems.objects.all()
-    serializer_class = RMBatchNoListReportingSerializer
+#
+# class RMMaterialsListReportingView(generics.ListAPIView):
+#     queryset = RMAnalysisItems.objects.all()
+#     serializer_class = RMMaterialsListReportingSerializer
+#
+#
+# class RMBatchNoListReportingView(generics.ListAPIView):
+#     queryset = RMAnalysisItems.objects.all()
+#     serializer_class = RMBatchNoListReportingSerializer
 
 
 class RMDataAnalysisView(generics.ListAPIView):
@@ -507,7 +515,7 @@ class CurrentAnalystSampleView(APIView):
     def get(self, request):
         user = request.user
         if user.role == 'QC_Analyst':
-            samples = RMSamples.objects.filter(analyst=user.id)
+            samples = RMSamples.objects.filter(analyst=user.id, status="ASSIGNED")
             dict = []
             for i in samples:
                 dic = {}
