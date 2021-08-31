@@ -28,4 +28,14 @@ urlpatterns = [
     path('GeneralDataBPRLog/',GeneralDataBPRLogView.as_view()),
     path('BatchStages/',BatchStagesView.as_view()),
     path('DataFromBPR/<str:PCode>/',DataFromBPRView.as_view()),
+
+    #----------- Packing --------------#
+    # path('PlanNo/', PlanNoView.as_view()),
+    # path('ProductByPlanNo/<int:planNo>/', ProductByPlanNoView.as_view()),
+    path('PackSizeDosage/<str:PCode>/', PackSizeDosageView.as_view()),
+    path('BatchNoFromBPR/<str:PCode>/', BatchNoFromBPRView.as_view()),
+    path('PackingLog/', PackingLogView.as_view()),
+
+
+
 ]

@@ -152,3 +152,30 @@ class DataFromBPRView(APIView):
         data = BPRLog.objects.filter(ProductCode=PCode, batchStatus='OPEN')
         serializer = DataFromBPRSerializer(data, many=True)
         return Response(serializer.data)
+
+#-------- Paking ---------#
+
+class PackSizeDosageView(APIView):
+    def get(self,request,PCode):
+        product = PlanItems.objects.filter(ProductCode=PCode)
+        dosage = Products.objects.get(ProductCode=PCode).dosageForm
+        print(product)
+        dict = {}
+        dict['DosageForm'] = dosage.dosageForm
+        li = []
+        for i in product:
+            dic = {}
+            dic['PackSize'] = i.PackSize
+            li.append(dic)
+        dict['PackSizes'] = li
+        return Response(dict)
+
+class BatchNoFromBPRView(APIView):
+    def get(self, request, PCode):
+        bno = BPRLog.objects.filter(ProductCode=PCode,currentStage='Packing')
+        serializer = BatchNoBPRSerializer(bno,many=True)
+        return Response(serializer.data)
+        
+class PackingLogView(generics.CreateAPIView):
+    queryset = PackingLog.objects.all()
+    serializer_class = PackingLogSerializer
