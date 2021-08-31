@@ -30,7 +30,7 @@ urlpatterns = [
 
 
     path('PCodeBPR/', PCodeBPRView.as_view()), # list of Pcodes
-    path('BatchNoBPR/<str:PCode>/', BatchNoBPRView.as_view()), # List of Batch no
+    path('BPRByPcodeView/<str:PCode>/', BPRByPcodeView.as_view()), # List of Batch no
     path('GeneralDataBPRLog/', GeneralDataBPRLogView.as_view()),
     path('DataFromBPR/<str:PCode>/', DataFromBPRView.as_view()),
     path('BatchStages/', BatchStagesView.as_view()),

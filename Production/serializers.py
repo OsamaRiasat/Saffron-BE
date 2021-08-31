@@ -5,7 +5,7 @@ from Planning.models import PlanItems
 from rest_framework import serializers
 
 
-# ------------------Batch Issuence Request--------------------#
+# ------------------Batch Issuance Request--------------------#
 class PlanNoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlanItems
@@ -66,6 +66,13 @@ class BatchNoBPRSerializer(serializers.ModelSerializer):
         fields = ['batchNo']
 
 
+class BPRSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BPRLog
+        fields = ['batchNo','MFGDate', 'EXPDate','currentStage', 'packed','inProcess',
+                  'yieldPercentage','batchStatus']
+
+
 class PCodeBatchNoBPRSerializer(serializers.ModelSerializer):
     class Meta:
         model = BPRLog
@@ -75,8 +82,9 @@ class PCodeBatchNoBPRSerializer(serializers.ModelSerializer):
 class BatchStagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = BatchStages
-        fields = ['batchNo', 'openingDate', 'closingDate', 'currentStage', 'units', 'theoreticalYield', 'actualYield',
-                  'yieldPercentage', 'PartialStatus', 'remarks']
+        fields = ['batchNo', 'openingDate', 'closingDate', 'currentStage', 'units',
+                  'theoreticalYield', 'actualYield','yieldPercentage', 'PartialStatus',
+                  'remarks']
 
     def create(self, validated_data):
         stage = validated_data.get('currentStage')

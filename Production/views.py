@@ -75,9 +75,9 @@ class IssueBatchNoView(APIView):
         dict['Product'] = product.Product
         dict['Dosage'] = product.dosageForm.dosageForm
         dict['batchSize'] = getStandardBatchSize(Pcode)
-        dict['MFG_Date'] = date.today()
+        dict['MFG_Date'] = date.today().strftime("%d.%m.%Y")
         shelf_life = Products.objects.get(ProductCode=Pcode).ShelfLife
-        dict['EXP_Date'] = (date.today() + relativedelta(years=+shelf_life))
+        dict['EXP_Date'] = (date.today() + relativedelta(years=+shelf_life)).strftime("%d.%m.%Y")
         batchNo = CreateBatchNo(Pcode)
         dict['batchNo'] = batchNo
         return Response(dict)
@@ -120,10 +120,10 @@ class PCodeBPRView(APIView):
         return Response(serializer.data)
 
 
-class BatchNoBPRView(APIView):
+class BPRByPcodeView(APIView):
     def get(self, request, PCode):
         batchNo = BPRLog.objects.filter(ProductCode=PCode)
-        serializer = BatchNoBPRSerializer(batchNo, many=True)
+        serializer = BPRSerializer(batchNo, many=True)
         return Response(serializer.data)
 
 
@@ -155,7 +155,14 @@ class GeneralDataBPRLogView(APIView):
             dic['yieldPercentage'] = i.yieldPercentage
             dic['PartialStatus'] = i.PartialStatus
             li.append(dic)
-        dict['batchStages'] = li
+        dict['ListToBeAddedInTable'] = li
+
+        data = Stages.objects.filter(dosageForm=gdata.ProductCode.dosageForm)
+        l = []
+        for i in data:
+            l.append(i.stage)
+        dict['ListOfStages'] = l
+
         return Response(dict)
 
 
