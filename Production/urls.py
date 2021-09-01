@@ -44,5 +44,14 @@ urlpatterns = [
 
     path('PCodesForLineClearance/', PCodesForLineClearanceView.as_view()),
     path('BatchNoBYPCode/<str:PCode>/', BatchNoBYPCodeView.as_view()),
-    path('WhenBatchNoIsSelected/<str:batchNo>/',WhenBatchNoIsSelectedView.as_view()),
+    path('WhenBatchNoIsSelected/<str:batchNo>/', WhenBatchNoIsSelectedView.as_view()),
+
+    #   ----------------     Raw Material Assessment    -------------------
+
+    path('ListOfPCodeForAssessment/', ListOfPCodeForAssessmentView.as_view()),
+    path('ListOfPNameForAssessment/', ListOfPNameForAssessmentView.as_view()),
+    path('PCodeByPNameAssessment/<str:PName>/', PCodeByPNameAssessmentView.as_view()),
+    path('PackSizesList/<str:PCode>)/',PackSizesListView.as_view()),
+    path('ViewFormulationForAssessment/<str:Pcode>)/<int:batch_size>)/<str:noOfBatches>)/', ViewFormulationForAssessmentView.as_view()),
+
 ]

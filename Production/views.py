@@ -1,7 +1,6 @@
 import re
-from QualityControl.views import PostRMCOAApprovalView
-from Products.models import Formulation
-from django.shortcuts import render
+
+from Products.models import Formulation, PackSizes
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -215,13 +214,12 @@ class PCodesForLineClearanceView(APIView):
         # entries = BPRLog.objects.filter(ProductCode__in=pcode).values('ProductCode').distinct()
         # serializer = PCodeBPRSerializer(entries, many=True)
 
-        l=[]
+        l = []
         d = BPRLog.objects.only('ProductCode').filter(batchStatus='OPEN').distinct()
         for i in d:
             l.append(i.ProductCode.ProductCode)
         l = list(dict.fromkeys(l))
         return Response(l)
-
 
 
 class BatchNoBYPCodeView(APIView):
@@ -259,3 +257,65 @@ class WhenBatchNoIsSelectedView(APIView):
         return Response(dic)
 
 
+#   ------------------------- Raw Material Assessment ---------------------
+
+class ListOfPCodeForAssessmentView(APIView):
+    def get(self, request):
+        data = Formulation.objects.only('ProductCode').all()
+        l = []
+
+        for i in data:
+            l.append(i.ProductCode.ProductCode)
+        l = list(dict.fromkeys(l))
+        return Response({"List": l})
+
+
+class ListOfPNameForAssessmentView(APIView):
+    def get(self, request):
+        data = Formulation.objects.only('ProductCode').all()
+        l = []
+
+        for i in data:
+            l.append(i.ProductCode.Product)
+        l = list(dict.fromkeys(l))
+        return Response({"List": l})
+
+
+class PCodeByPNameAssessmentView(APIView):
+    def get(self, request, PName):
+        try:
+            data = Products.objects.only('ProductCode').get(Product=PName)
+        except:
+            return Response({"message": "No Product Name Against this Code"})
+
+        return Response({"PCode": data.ProductCode})
+
+
+class PackSizesListView(APIView):
+    def get(self, request, PCode):
+        data = PackSizes.objects.filter(ProductCode=PCode)
+        l = []
+        for i in data:
+            l.append(i.PackSize)
+
+        sbs = getStandardBatchSize(PCode)
+        return Response({"list": l,"batchSize":sbs})
+
+
+class ViewFormulationForAssessmentView(APIView):
+    def get(self, request, Pcode, batch_size, noOfBatches):
+        noOfBatches = float(noOfBatches)
+        batch_size  = float(batch_size)
+        sbs = getStandardBatchSize(Pcode)
+        total = (batch_size / sbs) * noOfBatches
+        formulation = Formulation.objects.filter(ProductCode=Pcode)
+        dict = []
+        for i in formulation:
+            dic = {}
+            dic['Type'] = i.RMCode.Type.Type
+            dic['RMCode'] = i.RMCode.RMCode
+            dic['Material'] = i.RMCode.Material
+            dic['Units'] = i.RMCode.Units
+            dic['Quantity'] = round(float(i.quantity) * float(total), 3)
+            dict.append(dic)
+        return Response(dict)
