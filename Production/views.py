@@ -82,7 +82,6 @@ class IssueBatchNoView(APIView):
         dict['batchNo'] = batchNo
         return Response(dict)
 
-
 class FormulationView(APIView):
     serializer_class = PCodeBatchSizeSerializer
 
