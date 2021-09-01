@@ -28,11 +28,21 @@ urlpatterns = [
 
     # -----------------   Batch Track    --------------
 
-
-    path('PCodeBPR/', PCodeBPRView.as_view()), # list of Pcodes
-    path('BPRByPcodeView/<str:PCode>/', BPRByPcodeView.as_view()), # List of Batch no
+    path('PCodeBPR/', PCodeBPRView.as_view()),  # list of Pcodes
+    path('BPRByPcodeView/<str:PCode>/', BPRByPcodeView.as_view()),  # List of Batch no
     path('GeneralDataBPRLog/', GeneralDataBPRLogView.as_view()),
     path('DataFromBPR/<str:PCode>/', DataFromBPRView.as_view()),
     path('BatchStages/', BatchStagesView.as_view()),
 
+    # -----------------    Daily Packing      --------------
+    # path('PlanNo/', PlanNoView.as_view()),
+    # path('ProductByPlanNo/<int:planNo>/', ProductByPlanNoView.as_view()),
+    path('WhenProductIsSelected/<str:PCode>/', WhenProductIsSelectedView.as_view()),
+    path('PackingLog/', PackingLogView.as_view()),
+
+    # -----------------    Line Clearance      --------------
+
+    path('PCodesForLineClearance/', PCodesForLineClearanceView.as_view()),
+    path('BatchNoBYPCode/<str:PCode>/', BatchNoBYPCodeView.as_view()),
+    path('WhenBatchNoIsSelected/<str:batchNo>/',WhenBatchNoIsSelectedView.as_view()),
 ]

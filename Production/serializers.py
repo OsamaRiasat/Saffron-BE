@@ -69,8 +69,8 @@ class BatchNoBPRSerializer(serializers.ModelSerializer):
 class BPRSerializer(serializers.ModelSerializer):
     class Meta:
         model = BPRLog
-        fields = ['batchNo','MFGDate', 'EXPDate','currentStage', 'packed','inProcess',
-                  'yieldPercentage','batchStatus']
+        fields = ['batchNo', 'MFGDate', 'EXPDate', 'currentStage', 'packed', 'inProcess',
+                  'yieldPercentage', 'batchStatus']
 
 
 class PCodeBatchNoBPRSerializer(serializers.ModelSerializer):
@@ -83,7 +83,7 @@ class BatchStagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = BatchStages
         fields = ['batchNo', 'openingDate', 'closingDate', 'currentStage', 'units',
-                  'theoreticalYield', 'actualYield','yieldPercentage', 'PartialStatus',
+                  'theoreticalYield', 'actualYield', 'yieldPercentage', 'PartialStatus',
                   'remarks']
 
     def create(self, validated_data):
@@ -108,3 +108,55 @@ class GeneralDataBPRLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = BPRLog
         fields = ['currentStage', 'ProductCode', 'batchNo', 'batchSize', 'MFGDate', 'EXPDate', 'bNo', ]
+
+
+# -----------------    Daily Packing      --------------
+
+
+class PackingLogItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackingLog
+        fields = ['batchNo', 'packSize', 'noOfPacks', 'isRepack']
+
+
+class PackingLogSerializer(serializers.ModelSerializer):
+    items = PackingLogItemsSerializer(many=True, write_only=True)
+
+    class Meta:
+        model = PackingLog
+        fields = ['items']
+
+    def create(self, validated_data):
+        items = validated_data.get('items')
+
+        for j in items:
+            repack = j['isRepack']
+            print("repack   ", repack)
+            if repack:
+                return super().create(j)
+            else:
+                bno = PackingLog.objects.filter(batchNo=j['batchNo'])
+                total = 0
+                if bno:
+                    for i in bno:
+                        if (i.totalPacks > total):
+                            total = i.totalPacks
+                    pack = PackingLog.objects.create(
+                        batchNo=j['batchNo'],
+                        packSize=j['packSize'],
+                        noOfPacks=j['noOfPacks'],
+                        isRepack=j['isRepack'],
+                        totalPacks=total + j['noOfPacks'],
+                    )
+                    pack.save()
+                    return pack
+                else:
+                    pack = PackingLog.objects.create(
+                        batchNo=j['batchNo'],
+                        packSize=j['packSize'],
+                        noOfPacks=j['noOfPacks'],
+                        isRepack=j['isRepack'],
+                        totalPacks=j['noOfPacks'],
+                    )
+                    pack.save()
+                    return pack

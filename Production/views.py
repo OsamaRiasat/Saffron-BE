@@ -82,6 +82,7 @@ class IssueBatchNoView(APIView):
         dict['batchNo'] = batchNo
         return Response(dict)
 
+
 class FormulationView(APIView):
     serializer_class = PCodeBatchSizeSerializer
 
@@ -175,3 +176,86 @@ class DataFromBPRView(APIView):
         data = BPRLog.objects.filter(ProductCode=PCode, batchStatus='OPEN')
         serializer = DataFromBPRSerializer(data, many=True)
         return Response(serializer.data)
+
+
+# -----------------    Daily Packing      --------------
+
+
+class WhenProductIsSelectedView(APIView):
+    def get(self, request, PCode):
+        product = PlanItems.objects.filter(ProductCode=PCode)
+        dosage = Products.objects.get(ProductCode=PCode).dosageForm
+        print(product)
+        dict = {}
+        dict['DosageForm'] = dosage.dosageForm
+        li = []
+        for i in product:
+            dic = {}
+            dic['PackSize'] = i.PackSize
+            li.append(dic)
+        dict['PackSizes'] = li
+
+        bno = BPRLog.objects.filter(ProductCode=PCode, currentStage='Packing')
+        serializer = BatchNoBPRSerializer(bno, many=True)
+        dict['batchNosList'] = serializer.data
+        return Response(dict)
+
+
+class PackingLogView(generics.CreateAPIView):
+    queryset = PackingLog.objects.all()
+    serializer_class = PackingLogSerializer
+
+
+# -----------------    Line Clearance      --------------
+
+
+class PCodesForLineClearanceView(APIView):
+    def get(self, request):
+        # pcode = BPRLog.objects.distinct().filter(batchStatus='OPEN').values_list('ProductCode').distinct()
+        # entries = BPRLog.objects.filter(ProductCode__in=pcode).values('ProductCode').distinct()
+        # serializer = PCodeBPRSerializer(entries, many=True)
+
+        l=[]
+        d = BPRLog.objects.only('ProductCode').filter(batchStatus='OPEN').distinct()
+        for i in d:
+            l.append(i.ProductCode.ProductCode)
+        l = list(dict.fromkeys(l))
+        return Response(l)
+
+
+
+class BatchNoBYPCodeView(APIView):
+    def get(self, request, PCode):
+        bno = BPRLog.objects.filter(ProductCode=PCode).only('batchNo')
+        serializer = BatchNoBPRSerializer(bno, many=True)
+        return Response(serializer.data)
+
+
+class WhenBatchNoIsSelectedView(APIView):
+    def get(self, request, batchNo):
+        dic = {}
+
+        BPR = BPRLog.objects.get(batchNo=batchNo)
+        dic["currentStage"] = BPR.currentStage
+        dic["product"] = BPR.ProductCode.Product
+        dic["batchNo"] = BPR.batchNo
+        dic["currentStage"] = BPR.batchSize
+        dic["mfgDate"] = BPR.MFGDate
+        dic["expDate"] = BPR.EXPDate
+
+        batchStages = BatchStages.objects.filter(batchNo=batchNo)
+        l = []
+        for stage in batchStages:
+            d = {}
+            d["stage"] = stage.currentStage
+            d["startDate"] = stage.openingDate
+            d["completion"] = stage.closingDate
+            d["yieldPercentage"] = stage.yieldPercentage
+            d["stageStatus"] = stage.PartialStatus
+            l.append(d)
+
+        dic["stagesList"] = l
+
+        return Response(dic)
+
+
