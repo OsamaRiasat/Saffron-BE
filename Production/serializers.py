@@ -130,3 +130,10 @@ class PackingLogSerializer(serializers.ModelSerializer):
                 )
                 pack.save()
                 return pack
+
+#----------- Close Order ------------------#
+class UpdatePlanItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlanItems
+        fields = ['planNo','ProductCode','PackSize','status']
+

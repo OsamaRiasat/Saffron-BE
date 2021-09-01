@@ -4,7 +4,8 @@ from .serializers import *
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from .utils import *
+from QualityControl.serializers import RMCodeSerializer, RMaterialSerializer
 import pandas as pd
 
 class FormulationsView(generics.CreateAPIView):
@@ -54,4 +55,94 @@ class PopulateRMFormulationView(APIView):
             )
             rw.save()
         return Response({"Populate":"Done"})
+
+#----------------------New Formulation ----------------------#
+
+class PCodeView(APIView):
+    def get(self,request):
+        li = Formulation.objects.values_list('ProductCode')
+        pcode = Products.objects.exclude(ProductCode__in=li)
+        serializer = PCodeSerializer(pcode,many=True)
+        return Response(serializer.data)
+
+class PNameView(APIView):
+    def get(self,request):
+        li = Formulation.objects.values_list('ProductCode')
+        pcode = Products.objects.exclude(ProductCode__in=li)
+        serializer = PNameSerializer(pcode,many=True)
+        return Response(serializer.data)
+
+class PCodeByPnameView(APIView):
+    def get(self,request,Product):
+        code = getCode(Product)
+        return Response(code)
+
+class PnameByPCodeView(APIView):
+    def get(self,request,Pcode):
+        name = getName(Pcode)
+        return Response(name)
+
+class RMCodeView(APIView):
+    def get(self, request):
+        rmcode = RawMaterials.objects.all()
+        serializer = RMCodeSerializer(rmcode, many=True)
+        return Response(serializer.data)
+
+class RMNameView(APIView):
+    def get(self, request):
+        rmcode = RawMaterials.objects.all()
+        serializer = RMaterialSerializer(rmcode, many=True)
+        return Response(serializer.data)
+
+
+class RMCodeByNameView(APIView):
+    def get(self, request, RMName):
+        rmcode = RawMaterials.objects.get(Material=RMName)
+        serializer = RMCodeSerializer(rmcode)
+        return Response(serializer.data)
+
+
+class RMNameByRMCodeView(APIView):
+    def get(self, request, RMCode):
+        rmcode = RawMaterials.objects.get(RMCode=RMCode)
+        serializer = RMaterialSerializer(rmcode)
+        return Response(serializer.data)
+
+class RMDataView(APIView):
+    def get(self, request, RMCode):
+        rm=RawMaterials.objects.get(RMCode=RMCode)
+        serializer=RMDataSerializer(rm)
+        return Response(serializer.data)
+
+#---------------- Edit Formulation -----------------------#
+
+class FPCodeView(APIView):
+    def get(self,request):
+        li = Formulation.objects.values_list('ProductCode')
+        pcode = Products.objects.filter(ProductCode__in=li)
+        serializer = PCodeSerializer(pcode,many=True)
+        return Response(serializer.data)
+
+class FPNameView(APIView):
+    def get(self,request):
+        li = Formulation.objects.values_list('ProductCode')
+        pcode = Products.objects.filter(ProductCode__in=li)
+        serializer = PNameSerializer(pcode,many=True)
+        return Response(serializer.data)
+
+class ProductFormulationView(APIView):
+    def get(self,request,Pcode):
+        formulation = Formulation.objects.filter(ProductCode=Pcode)
+        dict=[]
+        for i in formulation:
+            dic={}
+            dic['ProductCode']=i.ProductCode.ProductCode
+            dic['Product'] = i.ProductCode.Product
+            dic['RMCode'] = i.RMCode.RMCode
+            dic['Material'] = i.RMCode.Material
+            dic['batchSize'] = i.batchSize
+            dic['quantity'] = i.quantity
+            dict.append(dic)
+        return Response(dict)
+        
 

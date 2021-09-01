@@ -1,5 +1,3 @@
-import re
-from QualityControl.views import PostRMCOAApprovalView
 from Products.models import Formulation
 from django.shortcuts import render
 from rest_framework import generics
@@ -10,6 +8,8 @@ from .serializers import *
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from .utils import CreateBatchNo, getStandardBatchSize
+from rest_framework import status
+
 # Create your views here.
 
 #------------------Batch Issuence Request--------------------#
@@ -179,3 +179,37 @@ class BatchNoFromBPRView(APIView):
 class PackingLogView(generics.CreateAPIView):
     queryset = PackingLog.objects.all()
     serializer_class = PackingLogSerializer
+
+#------------- Close Order ----------------#
+
+class PlanItemsView(APIView):
+    def get(self,request):
+        plans = PlanItems.objects.filter(status='OPEN')
+        dict=[]
+        for i in plans:
+            dic={}
+            dic['planNo'] = i.planNo.planNo
+            dic['ProductCode'] = i.ProductCode.ProductCode
+            dic['Product'] = i.ProductCode.Product
+            dic['PackSize'] = i.PackSize
+            dic['requiredPacks'] = i.requiredPacks
+            dic['achievedPacks'] = i.achievedPacks
+            dic['pendingPacks'] = i.pendingPacks
+            dic['status'] = i.status
+            dict.append(dic)
+        return Response(dict)
+
+class PlanStatusView(APIView):
+    serializer_class = UpdatePlanItemsSerializer
+    def put(self,request):
+        data = request.data
+        planNo = data.get('planNo',None)
+        ProductCode = data.get('ProductCode',None)
+        PackSize = data.get('PackSize',None)
+        Status = data.get('status',None)
+        plan = PlanItems.objects.get(planNo=planNo,ProductCode=ProductCode,PackSize=PackSize)
+        plan.status = Status
+        plan.save()
+        return Response()
+
+

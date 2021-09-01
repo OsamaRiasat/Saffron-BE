@@ -12,13 +12,13 @@ class Plan(models.Model):
 
 
 class PlanItems(models.Model):
-    planNo = models.ForeignKey(Plan,on_delete=models.CASCADE)
-    ProductCode = models.ForeignKey(Products,on_delete=models.CASCADE)
+    planNo = models.ForeignKey(Plan,related_name='planItems', on_delete=models.CASCADE)
+    ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE) #name b
     PackSize = models.CharField(max_length=20)
     requiredPacks = models.DecimalField(decimal_places=3,max_digits=10)
-    inHandPacks = models.IntegerField()
-    packsToBePlanned = models.IntegerField()
-    noOfBatchesToBePlanned = models.DecimalField(max_digits=10,decimal_places=3)
+    inHandPacks = models.IntegerField() #n
+    packsToBePlanned = models.IntegerField() #n
+    noOfBatchesToBePlanned = models.DecimalField(max_digits=10,decimal_places=3) #n
     achievedPacks = models.IntegerField(default=0)
     pendingPacks = models.IntegerField() # initialise with the required
     status = models.CharField(max_length=10,default="OPEN")

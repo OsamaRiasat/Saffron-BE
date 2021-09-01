@@ -36,6 +36,7 @@ urlpatterns = [
     path('BatchNoFromBPR/<str:PCode>/', BatchNoFromBPRView.as_view()),
     path('PackingLog/', PackingLogView.as_view()),
 
-
-
+    #---------------- Close Order --------------------#
+    path('PlanItems/',PlanItemsView.as_view()),
+    path('PlanStatus/',PlanStatusView.as_view()),
 ]
