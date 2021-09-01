@@ -257,6 +257,41 @@ class WhenBatchNoIsSelectedView(APIView):
         return Response(dic)
 
 
+# -------------      Close Order     ----------------
+
+class PlanItemsView(APIView):
+    def get(self, request):
+        plans = PlanItems.objects.filter(status='OPEN')
+        dict = []
+        for i in plans:
+            dic = {}
+            dic['planNo'] = i.planNo.planNo
+            dic['ProductCode'] = i.ProductCode.ProductCode
+            dic['Product'] = i.ProductCode.Product
+            dic['PackSize'] = i.PackSize
+            dic['requiredPacks'] = i.requiredPacks
+            dic['achievedPacks'] = i.achievedPacks
+            dic['pendingPacks'] = i.pendingPacks
+            dic['status'] = i.status
+            dict.append(dic)
+        return Response(dict)
+
+
+class PlanStatusView(APIView):
+    serializer_class = UpdatePlanItemsSerializer
+
+    def put(self, request):
+        data = request.data
+        planNo = data.get('planNo', None)
+        ProductCode = data.get('ProductCode', None)
+        PackSize = data.get('PackSize', None)
+        Status = data.get('status', None)
+        plan = PlanItems.objects.get(planNo=planNo, ProductCode=ProductCode, PackSize=PackSize)
+        plan.status = Status
+        plan.save()
+        return Response()
+
+
 #   ------------------------- Raw Material Assessment ---------------------
 
 class ListOfPCodeForAssessmentView(APIView):
@@ -299,13 +334,13 @@ class PackSizesListView(APIView):
             l.append(i.PackSize)
 
         sbs = getStandardBatchSize(PCode)
-        return Response({"list": l,"batchSize":sbs})
+        return Response({"list": l, "batchSize": sbs})
 
 
 class ViewFormulationForAssessmentView(APIView):
     def get(self, request, Pcode, batch_size, noOfBatches):
         noOfBatches = float(noOfBatches)
-        batch_size  = float(batch_size)
+        batch_size = float(batch_size)
         sbs = getStandardBatchSize(Pcode)
         total = (batch_size / sbs) * noOfBatches
         formulation = Formulation.objects.filter(ProductCode=Pcode)

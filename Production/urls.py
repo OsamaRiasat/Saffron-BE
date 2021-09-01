@@ -46,6 +46,11 @@ urlpatterns = [
     path('BatchNoBYPCode/<str:PCode>/', BatchNoBYPCodeView.as_view()),
     path('WhenBatchNoIsSelected/<str:batchNo>/', WhenBatchNoIsSelectedView.as_view()),
 
+    # ----------------      Close Order      --------------------
+
+    path('PlanItems/', PlanItemsView.as_view()),
+    path('PlanStatus/', PlanStatusView.as_view()),
+
     #   ----------------     Raw Material Assessment    -------------------
 
     path('ListOfPCodeForAssessment/', ListOfPCodeForAssessmentView.as_view()),
