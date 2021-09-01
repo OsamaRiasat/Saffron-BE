@@ -239,7 +239,7 @@ class WhenBatchNoIsSelectedView(APIView):
         dic["currentStage"] = BPR.currentStage
         dic["product"] = BPR.ProductCode.Product
         dic["batchNo"] = BPR.batchNo
-        dic["currentStage"] = BPR.batchSize
+        dic["batchSize"] = BPR.batchSize
         dic["mfgDate"] = BPR.MFGDate
         dic["expDate"] = BPR.EXPDate
 
