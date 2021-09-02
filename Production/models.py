@@ -20,8 +20,6 @@ class BatchIssuanceRequest(models.Model):
 
     REQUIRED = ['planNO', 'ProductCode', 'noOfBatches']
 
-    def __str__(self):
-        return self.planNo.planNo
 
 
 class BPRLog(models.Model):
