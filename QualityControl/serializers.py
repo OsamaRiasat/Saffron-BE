@@ -413,15 +413,15 @@ class PostPMAnalysisItemsSerializer(serializers.ModelSerializer):
 
 
 class PostPMAnalysisSerializer(serializers.ModelSerializer):
-    pm_analysis_items = PostPMAnalysisItemsSerializer(many=True, write_only=True)
+    rm_analysis_items = PostPMAnalysisItemsSerializer(many=True, write_only=True)
 
     class Meta:
         model = PMAnalysis
         fields = ['QCNo', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate', 'quantityApproved',
-                  'quantityRejected', 'remarks', 'pm_analysis_items', ]
+                  'quantityRejected', 'remarks', 'rm_analysis_items', ]
 
     def create(self, validated_data):
-        item = validated_data.pop('pm_analysis_items')
+        item = validated_data.pop('rm_analysis_items')
         qc = validated_data.get('QCNo')
         print(qc.QCNo)
         PMSample = PMSamples.objects.get(QCNo=qc.QCNo)
