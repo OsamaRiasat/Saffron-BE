@@ -26,6 +26,7 @@ urlpatterns = [
     path('inventory/',include('Inventory.urls')),
     path('planning/',include('Planning.urls')),
     path('QualityControl/',include('QualityControl.urls')),
+    path('QualityAssurance/',include('QualityAssurance.urls')),
     path('Production/',include('Production.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
