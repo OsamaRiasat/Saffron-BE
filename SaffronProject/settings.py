@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'django_filters',
+    'QualityAssurance',
 ]
 AUTH_USER_MODEL = 'Account.User'
 
