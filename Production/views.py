@@ -273,6 +273,7 @@ class PlanItemsView(APIView):
             dic['achievedPacks'] = i.achievedPacks
             dic['pendingPacks'] = i.pendingPacks
             dic['status'] = i.status
+            dic['date'] = i.planNo.date.strftime("%d.%m.%Y")
             dict.append(dic)
         return Response(dict)
 

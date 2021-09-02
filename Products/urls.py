@@ -26,7 +26,7 @@ urlpatterns = [
     # --------------------New Formulation -----------------------#
     path('PCodeList/', PCodeView.as_view()),
     path('PNameList/', PNameView.as_view()),
-    path('PCodeByPname/<str:Product>/', PCodeByPnameView.as_view()),
+    path('PCodeByPname/<path:Product>/', PCodeByPnameView.as_view()),
     path('PnameByPCode/<str:Pcode>/', PnameByPCodeView.as_view()),
     path('RMCodeList/', RMCodeView.as_view()),
     path('RMNameList/', RMNameView.as_view()),
