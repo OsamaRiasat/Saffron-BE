@@ -334,7 +334,8 @@ class PackSizesListView(APIView):
             l.append(i.PackSize)
 
         sbs = getStandardBatchSize(PCode)
-        return Response({"list": l, "batchSize": sbs})
+        productName = Products.objects.only('ProductCode').get(ProductCode=PCode)
+        return Response({"list": l, "batchSize": sbs, "productName": productName.Product})
 
 
 class ViewFormulationForAssessmentView(APIView):

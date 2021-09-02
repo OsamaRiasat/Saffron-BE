@@ -56,7 +56,7 @@ urlpatterns = [
     path('ListOfPCodeForAssessment/', ListOfPCodeForAssessmentView.as_view()),
     path('ListOfPNameForAssessment/', ListOfPNameForAssessmentView.as_view()),
     path('PCodeByPNameAssessment/<str:PName>/', PCodeByPNameAssessmentView.as_view()),
-    path('PackSizesList/<str:PCode>)/',PackSizesListView.as_view()),
-    path('ViewFormulationForAssessment/<str:Pcode>)/<int:batch_size>)/<str:noOfBatches>)/', ViewFormulationForAssessmentView.as_view()),
+    path('PackSizesList/<str:PCode>/',PackSizesListView.as_view()),
+    path('ViewFormulationForAssessment/<str:Pcode>/<int:batch_size>/<str:noOfBatches>/', ViewFormulationForAssessmentView.as_view()),
 
 ]
