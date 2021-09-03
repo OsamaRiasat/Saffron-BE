@@ -378,7 +378,7 @@ class PMHighestGRNO(APIView):
 class PMReceivingDetailsView(APIView):
     def get(self, request, IGPNo):
         data = PMReceiving.objects.get(pk=IGPNo)
-        material = PackingMaterials.objects.get(PMCode=data.PMCode)
+        material = PackingMaterials.objects.get(PMCode=data.PMCode.PMCode)
         # sname=Suppliers.objects.filter(S_ID=data.S_ID)
         dic = {}
         dic["Recieving_Date"] = data.IGPDate
