@@ -15,7 +15,7 @@ class NCCategory(models.Model):
     REQUIRED = ['category', 'subCategory']
 
     def __str__(self):
-        return
+        return self.id
 
 
 class NCR(models.Model):
