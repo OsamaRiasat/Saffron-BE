@@ -105,7 +105,7 @@ urlpatterns = [
     path('PMspecifications/', PMSpecificationsView.as_view()),  # Post Specifications
     path('AcquirePMCode/', AcquirePMCodeListView.as_view()),
     path('PMAcquirermaterial/', AcquirePMaterialListView.as_view()),
-    path('PMAcquirespecifications/<str:PMCode>/', RMAcquireSpecificationsView.as_view()),
+    path('PMAcquirespecifications/<str:PMCode>/', PMAcquireSpecificationsView.as_view()),
 
     # RM Edit Specs
     # path('AcquireRMCode/', AcquireRMCodeListView.as_view()),

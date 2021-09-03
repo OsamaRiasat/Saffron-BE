@@ -48,12 +48,12 @@ class BatchStages(models.Model):
     batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="bNo")
     openingDate = models.DateField()
     closingDate = models.DateField()
-    currentStage = models.CharField(max_length=20)
+    currentStage = models.CharField(max_length=50)
     units = models.CharField(max_length=10)  # kg, g, ml etc
     theoreticalYield = models.IntegerField()
     actualYield = models.IntegerField()
     yieldPercentage = models.FloatField()
-    PartialStatus = models.CharField(max_length=10)
+    PartialStatus = models.CharField(max_length=50)
     remarks = models.TextField(max_length=100)
 
     REQUIRED = ['batchNo', 'openingDate', 'closingDate', 'currentStage', 'units', 'theoreticalYield', 'actualYield',
