@@ -798,7 +798,7 @@ class PMQCNoView(APIView):
     def get(self, request):
         user = request.user
         if (user.role == 'QC_Analyst'):
-            qc = PMSamples.objects.filter(analyst=user.id)
+            qc = PMSamples.objects.filter(analyst=user.id, status="ASSIGNED")
             serializer = PMQCNoSerializer(qc, many=True)
             return Response(serializer.data)
         else:
