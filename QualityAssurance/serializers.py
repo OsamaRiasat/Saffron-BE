@@ -113,6 +113,6 @@ class CloseNCRSerializer(serializers.ModelSerializer):
         model = NCR
         fields = ['rootCause','proposedCorrectiveAction','actionTaken','verifiedBy','closingDate',]
     def update(self, instance, validated_data):
-        instance.status='CLOSED'
+        instance.status = 'CLOSED'
         instance.save()
         return super().update(instance, validated_data)
