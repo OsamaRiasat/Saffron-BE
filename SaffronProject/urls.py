@@ -20,14 +20,14 @@ from django.urls import path,include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('Account/',include('Account.urls')),
-    path('products/',include('Products.urls')),
-    path('suppliers/',include('MaterialSuppliers.urls')),
-    path('inventory/',include('Inventory.urls')),
-    path('planning/',include('Planning.urls')),
+    # path('Account/',include('Account.urls')),
+    # path('products/',include('Products.urls')),
+    # path('suppliers/',include('MaterialSuppliers.urls')),
+    # path('inventory/',include('Inventory.urls')),
+    # path('planning/',include('Planning.urls')),
     path('QualityControl/',include('QualityControl.urls')),
-    path('QualityAssurance/',include('QualityAssurance.urls')),
-    path('Production/',include('Production.urls')),
+    #path('QualityAssurance/',include('QualityAssurance.urls')),
+    # path('Production/',include('Production.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

@@ -112,39 +112,35 @@ class RMViewSpecificationsView(APIView):
 
 class RMCodeView(APIView):
     def get(self, request):
-        rmcode = RawMaterials.objects.all()
-        serializer = RMCodeSerializer(rmcode, many=True)
+       
+        li = RMSpecifications.objects.values_list('RMCode')
+        pcode = RawMaterials.objects.exclude(RMCode__in=li)
+        serializer = RMCodeSerializer(pcode, many=True)
         return Response(serializer.data)
 
 
 class RMCodeByNameView(APIView):
     def get(self, request, name):
-
         rmcode = RawMaterials.objects.get(Material=name)
-        check = RMSpecifications.objects.filter(RMCode=rmcode.RMCode)
-        if check:
-            return Response({'message': 'Material have already specifications'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            serializer = RMCodeSerializer(rmcode)
-            return Response(serializer.data)
+        serializer = RMCodeSerializer(rmcode)
+        return Response(serializer.data)
 
 
 class RMaterialView(APIView):
     def get(self, request):
-        rm = RawMaterials.objects.all()
+        # rm = RawMaterials.objects.all()
+        # serializer = RMaterialSerializer(rm, many=True)
+        li = RMSpecifications.objects.values_list('RMCode')
+        rm = RawMaterials.objects.exclude(RMCode__in=li)
         serializer = RMaterialSerializer(rm, many=True)
         return Response(serializer.data)
 
 
 class RMNameByRMCodeView(APIView):
     def get(self, request, RMCode):
-        check = RMSpecifications.objects.filter(RMCode=RMCode)
-        if check:
-            return Response({'message': 'Material have already specifications'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            rmcode = RawMaterials.objects.get(RMCode=RMCode)
-            serializer = RMaterialSerializer(rmcode)
-            return Response(serializer.data)
+        rmcode = RawMaterials.objects.get(RMCode=RMCode)
+        serializer = RMaterialSerializer(rmcode)
+        return Response(serializer.data)
 
 
 class RMReferenceView(APIView):
@@ -621,7 +617,9 @@ class PMViewSpecificationsView(APIView):
 
 class PMCodeView(APIView):
     def get(self, request):
-        pmcode = PackingMaterials.objects.all()
+        li = PMSpecifications.objects.values_list('PMCode')
+        pmcode = PackingMaterials.objects.exclude(PMCode__in=li)
+        # pmcode = PackingMaterials.objects.all()
         serializer = PMCodeSerializer(pmcode, many=True)
         return Response(serializer.data)
 
@@ -630,30 +628,24 @@ class PMCodeByNameView(APIView):
     def get(self, request, name):
 
         pmcode = PackingMaterials.objects.get(Material=name)
-        check = PMSpecifications.objects.filter(RMCode=pmcode.RMCode)
-        if check:
-            return Response({'message': 'Material have already specifications'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            serializer = PMCodeSerializer(pmcode)
-            return Response(serializer.data)
+        serializer = PMCodeSerializer(pmcode)
+        return Response(serializer.data)
 
 
 class PMaterialView(APIView):
     def get(self, request):
-        pm = PackingMaterials.objects.all()
+        li = PMSpecifications.objects.values_list('PMCode')
+        pm = PackingMaterials.objects.exclude(PMCode__in=li)
+        # pm = PackingMaterials.objects.all()
         serializer = PMaterialSerializer(pm, many=True)
         return Response(serializer.data)
 
 
 class PMNameByPMCodeView(APIView):
     def get(self, request, PMCode):
-        check = PMSpecifications.objects.filter(PMCode=PMCode)
-        if check:
-            return Response({'message': 'Material have already specifications'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            pmcode = PackingMaterials.objects.get(PMCode=PMCode)
-            serializer = PMaterialSerializer(pmcode)
-            return Response(serializer.data)
+        pmcode = PackingMaterials.objects.get(PMCode=PMCode)
+        serializer = PMaterialSerializer(pmcode)
+        return Response(serializer.data)
 
 
 #

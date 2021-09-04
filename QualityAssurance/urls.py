@@ -43,4 +43,33 @@ urlpatterns = [
 
     path('OpenBatches/', OpenBatchesView.as_view()),
     path('CloseBPR/<str:pk>/', CloseBPRView.as_view()),
+
+    #---------------- Add Product -----------------#
+    path('AddProduct/', AddProductView.as_view()),
+    path('AllProductCode/', ProductCodeView.as_view()),
+    path('ProductDetail/<str:pk>/', ProductDetailView.as_view()),
+
+    #-------------- Add Raw Material ----------------#
+    path('AddRawMaterial/', RawMaterialView.as_view()),
+
+    #-------------- Add Packing Material ----------------#
+    path('AddPackingMaterial/', PackingMaterialView.as_view()),
+
+    #-------------- Batch Deviation ----------------#
+    path('HighestBDNo/', HighestBDNoView.as_view()),
+    # path('ProductCode/', PCodesForLineClearanceView.as_view()),
+    # path('BatchNo/<str:Pcode>/', BatchNoView.as_view()),
+    path('BatchDetail/<str:batchNo>/', BatchDetailView.as_view()),
+    path('BatchDeviation/', BatchDeviationView.as_view()),
+
+    #-------------- Batch Deviation ----------------#
+    path('AllBDNo/',AllBDNoView.as_view()),
+    path('BatchDeviationDetail/<int:pk>/',BatchDeviationDetailView.as_view()),
+
+    #------------------ Change Control ---------------------#
+    path('HighestCCNo/', HighestCCNoView.as_view()),
+    # path('ProductCode/', PCodesForLineClearanceView.as_view()),
+    # path('BatchNo/<str:Pcode>/', BatchNoView.as_view()),s
+    path('ChangeControl/', ChangeControlView.as_view()),
+
 ]

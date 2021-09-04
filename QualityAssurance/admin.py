@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(NCCategory)
 admin.site.register(NCR)
 admin.site.register(BatchDeviation)
+admin.site.register(ChangeControl)
