@@ -59,4 +59,5 @@ urlpatterns = [
     path('PackSizesList/<str:PCode>/',PackSizesListView.as_view()),
     path('ViewFormulationForAssessment/<str:Pcode>/<int:batch_size>/<str:noOfBatches>/', ViewFormulationForAssessmentView.as_view()),
 
+
 ]
