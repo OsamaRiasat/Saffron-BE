@@ -54,6 +54,7 @@ class PackingMaterialsSerializer(serializers.ModelSerializer):
         model = PackingMaterials
         fields = '__all__'
 
+
 class PackingMaterialCodesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackingMaterials
@@ -76,7 +77,6 @@ class PackingMaterialCodeTypeUnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackingMaterials
         fields = ['PMCode', 'Type', 'Units', ]
-
 
 
 # RMDemands
@@ -262,7 +262,7 @@ class PMPurchaseOrderItemsRMCodesSerializer(serializers.ModelSerializer):
 class RMIGPSerializer(serializers.ModelSerializer):
     class Meta:
         model = RMReceiving
-        fields = ['RMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo','S_ID']
+        fields = ['RMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo', 'S_ID']
 
     # def create(self, validated_data):
     #     # data = validated_data.pop(**validated_data)
@@ -273,7 +273,6 @@ class RMIGPSerializer(serializers.ModelSerializer):
     #     # PO.save()
     #
     #     return IGP
-
 
 
 # GRN
@@ -283,37 +282,42 @@ class RMIGPSerializer(serializers.ModelSerializer):
 #         model = RMReceiving
 #         fields = ['IGPNo', ]
 
-#Generate GRN
+# Generate GRN
 class IGPNoSerializer(serializers.ModelSerializer):
     class Meta:
-        model=RMReceiving
-        fields=['IGPNo',]
+        model = RMReceiving
+        fields = ['IGPNo', ]
+
+
 class UpdateRMRecievingSerializer(serializers.ModelSerializer):
     class Meta:
-        model=RMReceiving
-        fields=['batchNo','quantityReceived','containersReceived','MFG_Date','EXP_Date','GRNo','remarks',]
+        model = RMReceiving
+        fields = ['batchNo', 'quantityReceived', 'containersReceived', 'MFG_Date', 'EXP_Date', 'GRNo', 'remarks', ]
+
     def update(self, instance, validated_data):
-        instance.batchNo=validated_data.get('batchNo',instance.batchNo)
-        instance.quantityRecieved=validated_data.get('quantityReceived',instance.quantityReceived)
-        instance.containersReceived=validated_data.get('containersReceived',instance.containersReceived)
-        instance.MFG_Date=validated_data.get('MFG_Date',instance.MFG_Date)
-        instance.EXP_Date=validated_data.get('EXP_Date',instance.EXP_Date)
-        instance.GRNo=validated_data.get('GRNo',instance.GRNo)
-        instance.remarks=validated_data.get('remarks',instance.remarks)
-        instance.status="Under_Test"
+        instance.batchNo = validated_data.get('batchNo', instance.batchNo)
+        instance.quantityRecieved = validated_data.get('quantityReceived', instance.quantityReceived)
+        instance.containersReceived = validated_data.get('containersReceived', instance.containersReceived)
+        instance.MFG_Date = validated_data.get('MFG_Date', instance.MFG_Date)
+        instance.EXP_Date = validated_data.get('EXP_Date', instance.EXP_Date)
+        instance.GRNo = validated_data.get('GRNo', instance.GRNo)
+        instance.remarks = validated_data.get('remarks', instance.remarks)
+        instance.status = "Under_Test"
         instance.save()
         return instance
-#POST GRN
+
+
+# POST GRN
 class GRNoSerializer(serializers.ModelSerializer):
     class Meta:
-        model=RMReceiving
-        fields=['GRNo',]
+        model = RMReceiving
+        fields = ['GRNo', ]
+
+
 class RMBinCardsSerializer(serializers.ModelSerializer):
-        class Meta:
-            model=RMBinCards
-            fields=['particulars','batchNo','received','QCNo','RMCode',]
-
-
+    class Meta:
+        model = RMBinCards
+        fields = ['particulars', 'batchNo', 'received', 'QCNo', 'RMCode', ]
 
 
 # PM Receiving
@@ -321,7 +325,7 @@ class RMBinCardsSerializer(serializers.ModelSerializer):
 class PMIGPSerializer(serializers.ModelSerializer):
     class Meta:
         model = PMReceiving
-        fields = ['PMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo','S_ID']
+        fields = ['PMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo', 'S_ID']
 
     # def create(self, validated_data):
     #     # data = validated_data.pop(**validated_data)
@@ -332,7 +336,6 @@ class PMIGPSerializer(serializers.ModelSerializer):
     #     # PO.save()
     #
     #     return IGP
-
 
 
 # GRN
@@ -345,33 +348,36 @@ class PMIGPSerializer(serializers.ModelSerializer):
 # Generate PM GRN
 class PMIGPNoSerializer(serializers.ModelSerializer):
     class Meta:
-        model=PMReceiving
-        fields=['IGPNo',]
+        model = PMReceiving
+        fields = ['IGPNo', ]
+
+
 class UpdatePMRecievingSerializer(serializers.ModelSerializer):
     class Meta:
-        model=PMReceiving
-        fields=['batchNo','quantityReceived','containersReceived','MFG_Date','EXP_Date','GRNo','remarks',]
+        model = PMReceiving
+        fields = ['batchNo', 'quantityReceived', 'containersReceived', 'MFG_Date', 'EXP_Date', 'GRNo', 'remarks', ]
+
     def update(self, instance, validated_data):
-        instance.batchNo=validated_data.get('batchNo',instance.batchNo)
-        instance.quantityRecieved=validated_data.get('quantityReceived',instance.quantityReceived)
-        instance.containersReceived=validated_data.get('containersReceived',instance.containersReceived)
-        instance.MFG_Date=validated_data.get('MFG_Date',instance.MFG_Date)
-        instance.EXP_Date=validated_data.get('EXP_Date',instance.EXP_Date)
-        instance.GRNo=validated_data.get('GRNo',instance.GRNo)
-        instance.remarks=validated_data.get('remarks',instance.remarks)
-        instance.status="Under_Test"
+        instance.batchNo = validated_data.get('batchNo', instance.batchNo)
+        instance.quantityRecieved = validated_data.get('quantityReceived', instance.quantityReceived)
+        instance.containersReceived = validated_data.get('containersReceived', instance.containersReceived)
+        instance.MFG_Date = validated_data.get('MFG_Date', instance.MFG_Date)
+        instance.EXP_Date = validated_data.get('EXP_Date', instance.EXP_Date)
+        instance.GRNo = validated_data.get('GRNo', instance.GRNo)
+        instance.remarks = validated_data.get('remarks', instance.remarks)
+        instance.status = "Under_Test"
         instance.save()
         return instance
-#POST PM GRN
+
+
+# POST PM GRN
 class PMGRNoSerializer(serializers.ModelSerializer):
     class Meta:
-        model=PMReceiving
-        fields=['GRNo',]
+        model = PMReceiving
+        fields = ['GRNo', ]
+
+
 class PMBinCardsSerializer(serializers.ModelSerializer):
-        class Meta:
-            model=PMBinCards
-            fields=['particulars','batchNo','received','QCNo','PMCode',]
-
-
-
-
+    class Meta:
+        model = PMBinCards
+        fields = ['particulars', 'batchNo', 'received', 'QCNo', 'PMCode', ]

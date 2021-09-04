@@ -8,10 +8,10 @@ urlpatterns = [
 
     # path('populateRMParameters/', PopulateParametersView.as_view()),
     # path('populatePMParameters/', PopulatePMParametersView.as_view()),
+    path('populateProductParameters/', PopulateProductParametersView.as_view()),
 
     # -----------------------------------------------------------------------------------------
     # -----------------------------     RAW MATERIALS     -----------------------------------
-
 
     #           -------------   SPECIFICATIONS  -----------
 
@@ -100,7 +100,7 @@ urlpatterns = [
     path('PMCodeByPMName/<str:name>/', PMCodeByNameView.as_view()),
     path('PMaterialList/', PMaterialView.as_view()),
     path('PMNameByPMCode/<str:PMCode>/', PMNameByPMCodeView.as_view()),
-    #path('RMReference/', RMReferenceView.as_view()),
+    # path('RMReference/', RMReferenceView.as_view()),
     path('PMParameters/', PMParametersView.as_view()),
     path('PMspecifications/', PMSpecificationsView.as_view()),  # Post Specifications
     path('AcquirePMCode/', AcquirePMCodeListView.as_view()),
@@ -119,7 +119,7 @@ urlpatterns = [
 
     # PM Sample Assignment
     path('PMSamples/', PMSamplesView.as_view()),
-    #path('Analysts/', AnalystView.as_view()),
+    # path('Analysts/', AnalystView.as_view()),
     path('PMAnalystSample/<int:id>/', PMAnalystSampleView.as_view()),
     path('PMAssignAnalyst/<str:pk>/', PMAssignAnalystView.as_view()),
 
@@ -149,5 +149,39 @@ urlpatterns = [
     #       ----------------    Analyst Login   ------------
 
     path('PMCurrentAnalystSample/', PMCurrentAnalystSampleView.as_view()),
+
+    # -----------------------------------------------------------------------------------------
+    # -----------------------------     RAW MATERIALS     -----------------------------------
+
+    # Product View Specs
+    path('ProductCodeListOfSpecifications/', ProductCodeListOfSpecificationsView.as_view()),
+    path('ProductListOfSpecifications/', ProductListOfSpecificationsView.as_view()),
+    path('ProductStageListOfSpecifications/<str:ProductCode>/',ProductStageListOfSpecificationsView.as_view()),
+    path('ProductViewSpecifications/<str:ProductCode>/<str:stage>/', ProductViewSpecificationsView.as_view()),
+    path('ProductNameByProductCodeForViewSpecs/<str:PMCode>/', ProductNameByProductCodeForViewSpecsView.as_view()),
+    path('ProductCodeByProductNameForViewSpecs/<str:PMName>/', ProductCodeByNameForViewSpecsView.as_view()),
+
+
+    # Product New Specs
+    path('ProductCodeList/', ProductCodeView.as_view()),
+    path('ProductCodeByPMName/<str:name>/', ProductCodeByNameView.as_view()),
+    path('ProductList/', ProductView.as_view()),
+    path('ProductNameByProductCode/<str:PMCode>/', ProductNameByProductCodeView.as_view()),
+    # path('RMReference/', RMReferenceView.as_view()),
+    path('ProductParameters/', ProductParametersView.as_view()),
+    path('Productspecifications/', ProductSpecificationsView.as_view()),  # Post Specifications
+    path('AcquireProductCode/', AcquireProductCodeListView.as_view()),
+    path('ProductAcquirermaterial/', AcquireProductListView.as_view()),
+    # path('ProductStageListOfSpecifications/<str:ProductCode>',ProductStageListOfSpecificationsView.as_view()),
+    path('ProductAcquirespecifications/<str:PMCode>/', ProductAcquireSpecificationsView.as_view()),
+
+    # Product Edit Specs
+    # path('AcquireProductCode/', AcquireRMCodeListView.as_view()),
+    # path('AcquireProduct/', AcquireRMaterialListView.as_view()),
+    # path('ProductStageListOfSpecifications/<str:ProductCode>',ProductStageListOfSpecificationsView.as_view()),
+    # path('ProductNameByProductCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
+    # path('ProductCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
+    path('ProductEditSpecifications/<str:ProductCode>/<str:stage>/', ProductEditSpecsView.as_view()),
+    path('TempProductSpecifications/', TEMPProductSpecificationsView.as_view()),
 
 ]

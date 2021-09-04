@@ -508,3 +508,247 @@ class PMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
 # -----------------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------------
+
+
+class ProductCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Products
+        fields = ['ProductCode', ]
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Products
+        fields = ['Product', ]
+
+
+#
+# class RMReferencesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = RMReferences
+#         fields = ['reference', ]
+
+
+class ProductParameterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductParameters
+        fields = ['parameter', ]
+
+
+class ProductSpecificationsItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSpecificationsItems
+        fields = ['parameter', 'specification', ]
+
+
+class ProductSpecificationsSerializer(serializers.ModelSerializer):
+    items = ProductSpecificationsItemsSerializer(many=True, write_only=True)
+
+    class Meta:
+        model = ProductSpecifications
+        fields = ['ProductCode', 'stage', 'reference', 'items']
+
+    def create(self, validated_data):
+
+        try:
+            sopno = ProductSpecifications.objects.last().SOPNo
+        except:
+            sopno = "DRL/FPSA/0"
+
+        item = validated_data.pop('items')
+        sopno = sopno.split('/')
+        no = int(sopno[2])
+        no = no + 1
+        sopno = sopno[0] + "/" + sopno[1] + "/" + str(no)
+        ref = RMReferences.objects.get(reference=validated_data.get('reference'))
+        specs = ProductSpecifications.objects.create(ProductCode=validated_data.get('ProductCode'),
+                                                     SOPNo=sopno,
+                                                     reference=ref,
+                                                     stage=validated_data.get('stage'))
+        specs.save()
+        for i in item:
+            par = ProductParameters.objects.get(parameter=i['parameter'])
+            itemspecs = ProductSpecificationsItems.objects.create(
+                specID=specs,
+                parameter=par,
+                specification=i['specification']
+            )
+            itemspecs.save()
+        return specs
+
+
+class ProductAcquireSpecificationsItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSpecificationsItems
+        fields = ['parameter', 'specification', ]
+
+
+class AcquireProductCodeListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSpecifications
+        fields = ['ProductCode', ]
+
+
+# Edit RM Specs
+
+class TempProductSpecificationsItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TempProductSpecificationsItems
+        fields = ['parameter', 'specification', ]
+
+
+class TempProductSpecificationsSerializer(serializers.ModelSerializer):
+    items = TempProductSpecificationsItemsSerializer(many=True, write_only=True)
+
+    class Meta:
+        model = TempProductSpecifications
+        fields = ['ProductCode','stage', 'SOPNo', 'reference', 'version', 'items', ]
+
+    def create(self, validated_data):
+        item = validated_data.pop('items')
+        specs = TempProductSpecifications.objects.create(**validated_data)
+        specs.save()
+        for i in item:
+            par = PMParameters.objects.get(parameter=i['parameter'])
+            itemspecs = TempPMSpecificationsItems.objects.create(
+                specID=specs,
+                parameter=par,
+                specification=i['specification']
+            )
+            itemspecs.save()
+        return specs
+
+    # ------------------ Sample Assignment-------------------
+
+
+# Product Sample Assignment
+
+#
+# class AnalystSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ['id', 'username', ]
+#
+
+class ProductAssignAnalystSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSamples
+        fields = ['analyst', ]
+
+    def update(self, instance, validated_data):
+        instance.analyst = validated_data.get('analyst', instance.analyst)
+        instance.assignedDateTime = date.today()
+        instance.status = "ASSIGNED"
+        instance.save()
+        return instance
+
+    class ProductAnalysisQCNoSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = ProductAnalysis
+            fields = ['QCNo', ]
+
+    # --------------------- Data Entry ------------------------
+
+
+# PM Data Entry
+
+class ProductQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSamples
+        fields = ['QCNo', ]
+
+
+class PostProductAnalysisItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductAnalysisItems
+        fields = ['parameter','specification', 'result' ]
+
+
+class PostProductAnalysisSerializer(serializers.ModelSerializer):
+    product_analysis_items = PostProductAnalysisItemsSerializer(many=True, write_only=True)
+
+    class Meta:
+        model = ProductAnalysis
+        fields = ['QCNo', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate', 'quantityApproved',
+                  'quantityRejected', 'remarks', 'product_analysis_items', ]
+
+    def create(self, validated_data):
+        item = validated_data.pop('product_analysis_items')
+        qc = validated_data.get('QCNo')
+        print(qc.QCNo)
+        PMSample = PMSamples.objects.get(QCNo=qc.QCNo)
+        PMSample.status = "TESTED"
+        PMSample.save()
+        productcode = ProductSamples.objects.get(QCNo=qc.QCNo).batchNo.ProductCode.ProductCode
+        specID = ProductSpecifications.objects.get(ProductCode=productcode, stage=qc.QCNo.sampleStage).specID
+        analysis = ProductAnalysis.objects.create(
+            QCNo=validated_data['QCNo'],
+            specID=specID,
+            workingStd=validated_data['workingStd'],
+            rawDataReference=validated_data['rawDataReference'],
+            analysisDateTime=validated_data['analysisDateTime'],
+            retestDate=validated_data['retestDate'],
+            quantityApproved=validated_data['quantityApproved'],
+            quantityRejected=validated_data['quantityRejected'],
+            remarks=validated_data['remarks']
+
+        )
+        analysis.save()
+        for i in item:
+            analysis_items = ProductAnalysisItems.objects.create(
+                PMAnalysisID=analysis,
+                parameter=i['parameter'],
+                specification=i['specification'],
+                result=i['result']
+            )
+            analysis_items.save()
+
+        return analysis
+
+
+# ----------------- COA APPROVAL ------------------#
+
+class ProductAnalysisQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductAnalysis
+        fields = ['QCNo', ]
+
+
+#
+# class RemarksSerializer(serializers.Serializer):
+#     remarks = serializers.CharField(default="")
+#     isRetest = serializers.BooleanField(default=False)
+#     retestReason = serializers.CharField(default="")
+#     result = serializers.CharField()
+
+# ---------------- DATA ANALYSIS --------------------
+
+
+# Raw Materials
+#
+# class PMMaterialsListReportingSerializer(serializers.ModelSerializer):
+#     material = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.PMCode.Material')
+#
+#     class Meta:
+#         model = PMAnalysisItems
+#         fields = ['material', ]
+#
+#
+# class PMBatchNoListReportingSerializer(serializers.ModelSerializer):
+#     batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
+#
+#     class Meta:
+#         model = RMAnalysisItems
+#         fields = ['batchNo', ]
+
+
+class ProductAnalysisItemsReportingSerializer(serializers.ModelSerializer):
+    product = serializers.CharField(source='ProductMAnalysisID.QCNo.batchNo.ProductCode.Product')
+    batchNo = serializers.CharField(source='ProductAnalysisID.QCNo.batchNo.batchNo')
+    QCNo = serializers.CharField(source='ProductAnalysisID.QCNo.QCNo')
+    analysisDateTime = serializers.CharField(source='PMAnalysisID.analysisDateTime')
+    stage = serializers.CharField(source='ProductAnalysisID.QCNo.sampleStage')
+
+    class Meta:
+        model = ProductAnalysisItems
+        fields = ['product', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'stage']

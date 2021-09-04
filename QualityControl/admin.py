@@ -22,3 +22,14 @@ admin.site.register(TempPMSpecificationsItems)
 admin.site.register(PMSamples)
 admin.site.register(PMAnalysis)
 admin.site.register(PMAnalysisItems)
+
+
+# Products
+admin.site.register(ProductParameters)
+admin.site.register(ProductSpecifications)
+admin.site.register(ProductSpecificationsItems)
+admin.site.register(TempProductSpecifications)
+admin.site.register(TempProductSpecificationsItems)
+admin.site.register(ProductSamples)
+admin.site.register(ProductAnalysis)
+admin.site.register(ProductAnalysisItems)
