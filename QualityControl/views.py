@@ -798,7 +798,7 @@ class PMQCNoView(APIView):
     def get(self, request):
         user = request.user
         if (user.role == 'QC_Analyst'):
-            qc = PMSamples.objects.filter(analyst=user.id)
+            qc = PMSamples.objects.filter(analyst=user.id, status="ASSIGNED")
             serializer = PMQCNoSerializer(qc, many=True)
             return Response(serializer.data)
         else:
@@ -869,9 +869,9 @@ class PMAnalysisView(APIView):
         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
         dict['IGPNo'] = pm_receiving.IGPNo
-        dict['RMCode'] = pm_receiving.RMCode.RMCode
-        dict['Material'] = pm_receiving.RMCode.Material
-        dict['Units'] = pm_receiving.RMCode.Units
+        dict['RMCode'] = pm_receiving.PMCode.PMCode
+        dict['Material'] = pm_receiving.PMCode.Material
+        dict['Units'] = pm_receiving.PMCode.Units
         dict['quantityReceived'] = pm_receiving.quantityReceived
         dict['batchNo'] = pm_receiving.batchNo
         dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")

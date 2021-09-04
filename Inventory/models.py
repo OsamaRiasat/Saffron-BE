@@ -136,7 +136,7 @@ class RMPurchaseOrderItems(models.Model):
 class PMPurchaseOrders(models.Model):
     PONo = models.BigAutoField(primary_key=True)
     PODate = models.DateTimeField(auto_now_add=True)
-    DNo = models.ForeignKey(RMDemands, on_delete=models.CASCADE)
+    DNo = models.ForeignKey(PMDemands, on_delete=models.CASCADE)
     Status = models.CharField(max_length=10, default="PENDING")
     REQUIRED = ['DNo']
 
