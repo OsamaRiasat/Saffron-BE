@@ -187,4 +187,6 @@ urlpatterns = [
     path('ProductEditSpecifications/<str:ProductCode>/<str:stage>/', ProductEditSpecsView.as_view()),
     path('TempProductSpecifications/', TEMPProductSpecificationsView.as_view()),
 
+
+
 ]

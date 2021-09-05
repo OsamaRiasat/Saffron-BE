@@ -609,8 +609,8 @@ class TempProductSpecificationsSerializer(serializers.ModelSerializer):
         specs = TempProductSpecifications.objects.create(**validated_data)
         specs.save()
         for i in item:
-            par = PMParameters.objects.get(parameter=i['parameter'])
-            itemspecs = TempPMSpecificationsItems.objects.create(
+            par = ProductParameters.objects.get(parameter=i['parameter'])
+            itemspecs = TempProductSpecificationsItems.objects.create(
                 specID=specs,
                 parameter=par,
                 specification=i['specification']

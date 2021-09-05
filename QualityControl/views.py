@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 import pandas as pd
 
-from Production.models import Stages
+from Production.models import Stages, BatchStages
 from .models import *
 from Inventory.models import RawMaterials
 from .serializers import *
@@ -741,7 +741,7 @@ class TEMPPMSpecificationsView(generics.CreateAPIView):
 # PM Sample Assignment
 
 #
-# class AnalystView(APIView):
+# class PMAnalystView(APIView):
 #     def get(self, request):
 #         analysts = User.objects.filter(role="QC_Analyst", is_active=True)
 #         print(analysts)
@@ -1282,304 +1282,320 @@ class TEMPProductSpecificationsView(generics.CreateAPIView):
 
     #         --------------    SAMPLE ASSIGNMENT   -----------
 
+
 # PM Sample Assignment
 
-#
-# class AnalystView(APIView):
+
+# class PMAnalystView(APIView):
 #     def get(self, request):
 #         analysts = User.objects.filter(role="QC_Analyst", is_active=True)
 #         print(analysts)
 #         serializer = AnalystSerializer(analysts, many=True)
 #         return Response(serializer.data)
 
-#
-# class PMAnalystSampleView(APIView):
-#     def get(self, request, id):
-#         samples = PMSamples.objects.filter(analyst=id)
-#         dict = []
-#         for i in samples:
-#             dic = {}
-#             name = i.IGPNo.PMCode.Material
-#             dic['QCNo'] = i.QCNo
-#             dic['Material'] = name
-#             dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y %H:%M")
-#             dic['status'] = i.status
-#             dict.append(dic)
-#         return Response(dict)
-#
-#
-# class PMQCNoListView(generics.ListAPIView):
-#     queryset = PMSamples.objects.all().only('QCNo')
-#     serializer_class = PMAnalysisQCNoSerializer
-#
-#
-# class PMSamplesView(APIView):
-#     def get(self, request):
-#         samples = PMSamples.objects.all()
-#         dict = []
-#         for i in samples:
-#             dic = {}
-#             dic['QCNo'] = i.QCNo
-#             pm_receiving = PMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
-#             pm = PackingMaterials.objects.get(PMCode=pm_receiving.PMCode.PMCode)
-#             dic['Date'] = i.samplingDateTime.strftime("%d.%m.%Y %H:%M")
-#             dic['Material'] = pm.Material
-#             dic['Unit'] = pm.Units
-#             dic['Quantity'] = pm_receiving.quantityReceived
-#             try:
-#                 dic['Analyst'] = i.analyst.username
-#                 dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
-#             except:
-#                 dic['Analyst'] = "N/A"
-#                 dic['AssigneDate'] = "N/A"
-#
-#             dict.append(dic)
-#         return Response(dict)
-#
-#
-# class PMAssignAnalystView(generics.UpdateAPIView):
-#     queryset = PMSamples.objects.all()
-#     serializer_class = PMAssignAnalystSerializer
-#
-#     # --------------------- Data Entry ------------------------
-#
-#
-# # PM Data Entry
-#
-# class PMQCNoView(APIView):
-#     def get(self, request):
-#         user = request.user
-#         if (user.role == 'QC_Analyst'):
-#             qc = PMSamples.objects.filter(analyst=user.id, status="ASSIGNED")
-#             serializer = PMQCNoSerializer(qc, many=True)
-#             return Response(serializer.data)
-#         else:
-#             return Response({'message': 'There is no QC sample for this Analyst'})
-#
-#
-# class PMQCNoSampleView(APIView):
-#     def get(self, request, QCNo):
-#         sample = PMSamples.objects.get(QCNo=QCNo)
-#
-#         pm_receiving = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
-#
-#         dict = {}
-#         dict['samplingDateTime'] = sample.samplingDateTime.strftime("%d.%m.%Y %H:%M")
-#         dict['QCNo'] = QCNo
-#         dict['IGPNo'] = sample.IGPNo.IGPNo
-#         dict['assignedDateTime'] = sample.assignedDateTime.strftime("%d.%m.%Y %H:%M")
-#         dict['analyst'] = sample.analyst.username
-#
-#         dict['RMCode'] = pm_receiving.PMCode.PMCode
-#         dict['Material'] = pm_receiving.PMCode.Material
-#         dict['Units'] = pm_receiving.PMCode.Units
-#         dict['quantityReceived'] = pm_receiving.quantityReceived
-#         dict['batchNo'] = pm_receiving.batchNo
-#         dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
-#         dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
-#
-#         data = {}
-#         try:
-#             spec = PMSpecifications.objects.get(PMCode=pm_receiving.PMCode.PMCode)
-#         except:
-#             return Response({"message": "No Specifications for this Material"})
-#         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
-#         data["FirstData"] = str1
-#         data["SecondData"] = spec.reference.reference
-#         spec_items = PMSpecificationsItems.objects.filter(specID=spec)
-#         l = []
-#         for obj in spec_items:
-#             spec_item = {}
-#             spec_item["paramater"] = obj.parameter.parameter
-#             spec_item["specification"] = obj.specification
-#             l.append(spec_item)
-#         data["list"] = l
-#         dict['result'] = data
-#         return Response(dict)
-#
-#
-# class PostPMAnalysisView(generics.CreateAPIView):
-#     queryset = PMAnalysis.objects.all()
-#     serializer_class = PostPMAnalysisSerializer
-#
-#
-# # --------------------- COA APPROVAL ------------------------#
-#
-# class PMAnalysisQCNoView(APIView):
-#     def get(self, request):
-#         qcno = PMAnalysis.objects.all()
-#         serializer = PMAnalysisQCNoSerializer(qcno, many=True)
-#         return Response(serializer.data)
-#
-#
-# class PMAnalysisView(APIView):
-#     def get(self, request, QCNo):
-#         analysis = PMAnalysis.objects.get(QCNo=QCNo)
-#         samples = PMSamples.objects.get(QCNo=QCNo)
-#         pm_receiving = PMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
-#         dict = {}
-#         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
-#         dict['QCNo'] = QCNo
-#         dict['IGPNo'] = pm_receiving.IGPNo
-#         dict['RMCode'] = pm_receiving.PMCode.PMCode
-#         dict['Material'] = pm_receiving.PMCode.Material
-#         dict['Units'] = pm_receiving.PMCode.Units
-#         dict['quantityReceived'] = pm_receiving.quantityReceived
-#         dict['batchNo'] = pm_receiving.batchNo
-#         dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
-#         dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
-#         dict['quantityApproved'] = analysis.quantityApproved
-#         dict['quantityRejected'] = analysis.quantityRejected
-#         dict['rawDataReference'] = analysis.rawDataReference
-#         dict['workingStd'] = analysis.workingStd
-#         dict['analysisDateTime'] = analysis.analysisDateTime.strftime("%d.%m.%Y %H:%M")
-#         dict['retestDate'] = analysis.retestDate.strftime("%d.%m.%Y %H:%M")
-#         dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
-#         dict['analyst'] = samples.analyst.username
-#         items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
-#         l = []
-#         for obj in items:
-#             spec_item = {}
-#             spec_item["parameter"] = obj.parameter
-#             spec_item["specification"] = obj.specification
-#             spec_item["result"] = obj.result
-#             l.append(spec_item)
-#         dict['items'] = l
-#         return Response(dict)
-#
-#
-# class PostPMCOAApprovalView(APIView):
+
+class ProductAnalystSampleView(APIView):
+    def get(self, request, id):
+        samples = ProductSamples.objects.filter(analyst=id)
+        dict = []
+        for i in samples:
+            dic = {}
+            name = i.batchNo.ProductCode.Product
+            dic['QCNo'] = i.QCNo
+            dic['Material'] = name
+            dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y %H:%M")
+            dic['status'] = i.status
+            dic['stage'] = i.sampleStage
+            dict.append(dic)
+        return Response(dict)
+
+
+class ProductQCNoListView(generics.ListAPIView):
+    queryset = ProductSamples.objects.all().only('QCNo')
+    serializer_class = ProductAnalysisQCNoSerializer
+
+
+class ProductSamplesView(APIView):
+    def get(self, request):
+        samples = ProductSamples.objects.all()
+        dict = []
+        for i in samples:
+            dic = {}
+            dic['QCNo'] = i.QCNo
+            pm_receiving = BPRLog.objects.get(batchNo=i.batchNo.batchNo)
+            pm = Products.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode)
+            dic['Date'] = i.samplingDateTime.strftime("%d.%m.%Y %H:%M")
+            dic['Material'] = pm.Material
+            dic['Unit'] = pm.Units
+            dic['Quantity'] = pm_receiving.batchSize
+            try:
+                dic['Analyst'] = i.analyst.username
+                dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
+            except:
+                dic['Analyst'] = "N/A"
+                dic['AssigneDate'] = "N/A"
+
+            dict.append(dic)
+        return Response(dict)
+
+
+class ProductAssignAnalystView(generics.UpdateAPIView):
+    queryset = ProductSamples.objects.all()
+    serializer_class = ProductAssignAnalystSerializer
+
+    # --------------------- Data Entry ------------------------
+
+
+# PM Data Entry
+
+class ProductQCNoView(APIView):
+    def get(self, request):
+        user = request.user
+        if (user.role == 'QC_Analyst'):
+            qc = ProductSamples.objects.filter(analyst=user.id, status="ASSIGNED")
+            serializer = ProductQCNoSerializer(qc, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'message': 'There is no QC sample for this Analyst'})
+
+
+class ProductQCNoSampleView(APIView):
+    def get(self, request, QCNo):
+        sample = ProductSamples.objects.get(QCNo=QCNo)
+
+        pm_receiving = BPRLog.objects.get(batchNo=sample.batchNo.batchNo)
+        units=""
+        try:
+            lastStage = BatchStages.objects.filter(batchNo=sample.batchNo.batchNo, currentStage=sample.sampleStage).first()
+            for i in lastStage:
+                units = i.units
+        except:
+            units = "Numbers"
+        dict = {}
+        dict['samplingDateTime'] = sample.samplingDateTime.strftime("%d.%m.%Y %H:%M")
+        dict['QCNo'] = QCNo
+        dict['IGPNo'] = sample.batchNo.batchNo
+        dict['assignedDateTime'] = sample.assignedDateTime.strftime("%d.%m.%Y %H:%M")
+        dict['analyst'] = sample.analyst.username
+
+        dict['RMCode'] = pm_receiving.ProductCode.ProductCode
+        dict['Material'] = pm_receiving.ProductCode.ProductCode
+        dict['Units'] = units
+        dict['quantityReceived'] = pm_receiving.batchSize
+        dict['batchNo'] = pm_receiving.batchNo
+        dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
+
+        data = {}
+        try:
+            spec = ProductSpecifications.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode, stage=sample.sampleStage)
+        except:
+            return Response({"message": "No Specifications for this Material"})
+        str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
+        data["FirstData"] = str1
+        data["SecondData"] = spec.reference.reference
+        spec_items = ProductSpecificationsItems.objects.filter(specID=spec)
+        l = []
+        for obj in spec_items:
+            spec_item = {}
+            spec_item["paramater"] = obj.parameter.parameter
+            spec_item["specification"] = obj.specification
+            l.append(spec_item)
+        data["list"] = l
+        dict['result'] = data
+        return Response(dict)
+
+
+class PostProductAnalysisView(generics.CreateAPIView):
+    queryset = ProductAnalysis.objects.all()
+    serializer_class = PostProductAnalysisSerializer
+
+
+# --------------------- COA APPROVAL ------------------------#
+
+class ProductAnalysisQCNoView(APIView):
+    def get(self, request):
+        qcno = ProductAnalysis.objects.all()
+        serializer = ProductAnalysisQCNoSerializer(qcno, many=True)
+        return Response(serializer.data)
+
+
+class ProductAnalysisView(APIView):
+    def get(self, request, QCNo):
+        analysis = ProductAnalysis.objects.get(QCNo=QCNo)
+        samples = ProductSamples.objects.get(QCNo=QCNo)
+        units = ""
+        try:
+            lastStage = BatchStages.objects.filter(batchNo=samples.batchNo.batchNo,
+                                                   currentStage=samples.sampleStage).first()
+            for i in lastStage:
+                units = i.units
+        except:
+            units = "Numbers"
+        pm_receiving = BPRLog.objects.get(batchNo=samples.batchNo.batchNo)
+        dict = {}
+        dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
+        dict['QCNo'] = QCNo
+        dict['IGPNo'] = pm_receiving.batchNo
+        dict['RMCode'] = pm_receiving.ProductCode.ProductCode
+        dict['Material'] = pm_receiving.ProductCode.Product
+        dict['Units'] = units
+        dict['quantityReceived'] = samples.batchNo.batchSize    # No
+        dict['batchNo'] = pm_receiving.batchNo
+        dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['quantityApproved'] = analysis.quantityApproved
+        dict['quantityRejected'] = analysis.quantityRejected
+        dict['rawDataReference'] = analysis.rawDataReference
+        dict['workingStd'] = analysis.workingStd
+        dict['analysisDateTime'] = analysis.analysisDateTime.strftime("%d.%m.%Y %H:%M")
+        dict['retestDate'] = analysis.retestDate.strftime("%d.%m.%Y %H:%M")
+        dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
+        dict['analyst'] = samples.analyst.username
+        items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
+        l = []
+        for obj in items:
+            spec_item = {}
+            spec_item["parameter"] = obj.parameter
+            spec_item["specification"] = obj.specification
+            spec_item["result"] = obj.result
+            l.append(spec_item)
+        dict['items'] = l
+        return Response(dict)
+
+
+class PostPMCOAApprovalView(APIView):
+    serializer_class = RemarksSerializer
+
+    def post(self, request, QCNo):
+        data = request.data
+        remarks = data.get('remarks', None)
+        isRetest = data.get('isRetest', None)
+        retestReason = data.get('retestReason', None)
+        analysis = PMAnalysis.objects.get(QCNo=QCNo)
+        retestDate = analysis.retestDate
+        result = data.get('result', None)
+
+        if result == "Reject":
+            analysis = PMAnalysis.objects.get(QCNo=QCNo)
+            log_analysis = PMAnalysisLog.objects.create(
+                workingStd=analysis.workingStd,
+                rawDataReference=analysis.rawDataReference,
+                QCNo=analysis.QCNo,
+                analysisDateTime=analysis.analysisDateTime,
+                retestDate=analysis.retestDate,
+                quantityApproved=analysis.quantityApproved,
+                quantityRejected=analysis.quantityRejected,
+                remarks=remarks,
+                specID=analysis.specID,
+                result="REJECTED"
+            )
+            log_analysis.save()
+            analysis_items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
+            for i in analysis_items:
+                item = PMAnalysisItemsLog.objects.create(
+                    PMAnalysisID=log_analysis,
+                    parameter=i.parameter,
+                    specification=i.specification,
+                    result=i.result
+                )
+                item.save()
+            analysis.delete()
+            sample = PMSamples.objects.get(QCNo=QCNo)
+            sample.analyst = None
+            sample.assignedDateTime = None
+            sample.status = "PENDING"
+            sample.save()
+            return Response({"message": "Rejected"})
+        else:
+            sample = PMSamples.objects.get(QCNo=QCNo)
+            analysis = PMAnalysis.objects.get(QCNo=QCNo)
+            log_analysis = PMAnalysisLog.objects.create(
+                workingStd=analysis.workingStd,
+                rawDataReference=analysis.rawDataReference,
+                QCNo=sample,
+                analysisDateTime=analysis.analysisDateTime,
+                retestDate=analysis.retestDate,
+                quantityApproved=analysis.quantityApproved,
+                quantityRejected=analysis.quantityRejected,
+                remarks=remarks,
+                specID=analysis.specID
+            )
+            log_analysis.save()
+            analysis_items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
+            for i in analysis_items:
+                item = PMAnalysisItemsLog.objects.create(
+                    PMAnalysisID=log_analysis,
+                    parameter=i.parameter,
+                    specification=i.specification,
+                    result=i.result
+                )
+                item.save()
+            sample = PMSamples.objects.get(QCNo=QCNo)
+            pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+            pm.quantityApproved = analysis.quantityApproved
+            pm.quantityRejected = analysis.quantityRejected
+            pm.QCNo = QCNo
+            pm.status = "APPROVED"
+            pm.retest_Date = retestDate
+            pm.save()
+            sample.status = "APPROVED"
+            sample.result = "Released"
+            sample.save()
+            analysis.delete()
+            return Response({"message": "Released"})
+
+
+# class ReleaseRMAnalysisView(APIView):
 #     serializer_class = RemarksSerializer
 #
 #     def post(self, request, QCNo):
 #         data = request.data
 #         remarks = data.get('remarks', None)
-#         isRetest = data.get('isRetest', None)
-#         retestReason = data.get('retestReason', None)
-#         analysis = PMAnalysis.objects.get(QCNo=QCNo)
-#         retestDate = analysis.retestDate
-#         result = data.get('result', None)
+
+
+# --------------------- Data Analysis ------------------------
+
+
+# Raw Materials
 #
-#         if result == "Reject":
-#             analysis = PMAnalysis.objects.get(QCNo=QCNo)
-#             log_analysis = PMAnalysisLog.objects.create(
-#                 workingStd=analysis.workingStd,
-#                 rawDataReference=analysis.rawDataReference,
-#                 QCNo=analysis.QCNo,
-#                 analysisDateTime=analysis.analysisDateTime,
-#                 retestDate=analysis.retestDate,
-#                 quantityApproved=analysis.quantityApproved,
-#                 quantityRejected=analysis.quantityRejected,
-#                 remarks=remarks,
-#                 specID=analysis.specID,
-#                 result="REJECTED"
-#             )
-#             log_analysis.save()
-#             analysis_items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
-#             for i in analysis_items:
-#                 item = PMAnalysisItemsLog.objects.create(
-#                     PMAnalysisID=log_analysis,
-#                     parameter=i.parameter,
-#                     specification=i.specification,
-#                     result=i.result
-#                 )
-#                 item.save()
-#             analysis.delete()
-#             sample = PMSamples.objects.get(QCNo=QCNo)
-#             sample.analyst = None
-#             sample.assignedDateTime = None
-#             sample.status = "PENDING"
-#             sample.save()
-#             return Response({"message": "Rejected"})
-#         else:
-#             sample = PMSamples.objects.get(QCNo=QCNo)
-#             analysis = PMAnalysis.objects.get(QCNo=QCNo)
-#             log_analysis = PMAnalysisLog.objects.create(
-#                 workingStd=analysis.workingStd,
-#                 rawDataReference=analysis.rawDataReference,
-#                 QCNo=sample,
-#                 analysisDateTime=analysis.analysisDateTime,
-#                 retestDate=analysis.retestDate,
-#                 quantityApproved=analysis.quantityApproved,
-#                 quantityRejected=analysis.quantityRejected,
-#                 remarks=remarks,
-#                 specID=analysis.specID
-#             )
-#             log_analysis.save()
-#             analysis_items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
-#             for i in analysis_items:
-#                 item = PMAnalysisItemsLog.objects.create(
-#                     PMAnalysisID=log_analysis,
-#                     parameter=i.parameter,
-#                     specification=i.specification,
-#                     result=i.result
-#                 )
-#                 item.save()
-#             sample = PMSamples.objects.get(QCNo=QCNo)
-#             pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
-#             pm.quantityApproved = analysis.quantityApproved
-#             pm.quantityRejected = analysis.quantityRejected
-#             pm.QCNo = QCNo
-#             pm.status = "APPROVED"
-#             pm.retest_Date = retestDate
-#             pm.save()
-#             sample.status = "APPROVED"
-#             sample.result = "Released"
-#             sample.save()
-#             analysis.delete()
-#             return Response({"message": "Released"})
+# class RMMaterialsListReportingView(generics.ListAPIView):
+#     queryset = RMAnalysisItems.objects.all()
+#     serializer_class = RMMaterialsListReportingSerializer
 #
 #
-# # class ReleaseRMAnalysisView(APIView):
-# #     serializer_class = RemarksSerializer
-# #
-# #     def post(self, request, QCNo):
-# #         data = request.data
-# #         remarks = data.get('remarks', None)
-#
-#
-# # --------------------- Data Analysis ------------------------
-#
-#
-# # Raw Materials
-# #
-# # class RMMaterialsListReportingView(generics.ListAPIView):
-# #     queryset = RMAnalysisItems.objects.all()
-# #     serializer_class = RMMaterialsListReportingSerializer
-# #
-# #
-# # class RMBatchNoListReportingView(generics.ListAPIView):
-# #     queryset = RMAnalysisItems.objects.all()
-# #     serializer_class = RMBatchNoListReportingSerializer
-#
-#
-# class PMDataAnalysisView(generics.ListAPIView):
-#     queryset = PMAnalysisItems.objects.all()
-#     serializer_class = PMAnalysisItemsReportingSerializer
-#     filter_backends = [DjangoFilterBackend]
-#     filterset_fields = ['PMAnalysisID__QCNo__IGPNo__PMCode__Material',
-#                         'PMAnalysisID__QCNo__IGPNo__batchNo',
-#                         'PMAnalysisID__QCNo__QCNo',
-#                         'parameter',
-#                         'PMAnalysisID__QCNo__IGPNo__S_ID__S_Name']
-#     # -------------- ANALYST LOGIN -------------
-#
-#
-# #   Pending RM Samples
-#
-# class PMCurrentAnalystSampleView(APIView):
-#     def get(self, request):
-#         user = request.user
-#         if user.role == 'QC_Analyst':
-#             samples = PMSamples.objects.filter(analyst=user.id, status="ASSIGNED")
-#             dict = []
-#             for i in samples:
-#                 dic = {}
-#                 name = i.IGPNo.PMCode.Material
-#                 dic['QCNo'] = i.QCNo
-#                 dic['Material'] = name
-#                 dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y")
-#                 dict.append(dic)
-#             return Response(dict)
-#         else:
-#             return Response(status=status.HTTP_400_BAD_REQUEST)
+# class RMBatchNoListReportingView(generics.ListAPIView):
+#     queryset = RMAnalysisItems.objects.all()
+#     serializer_class = RMBatchNoListReportingSerializer
+
+
+class PMDataAnalysisView(generics.ListAPIView):
+    queryset = PMAnalysisItems.objects.all()
+    serializer_class = PMAnalysisItemsReportingSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['PMAnalysisID__QCNo__IGPNo__PMCode__Material',
+                        'PMAnalysisID__QCNo__IGPNo__batchNo',
+                        'PMAnalysisID__QCNo__QCNo',
+                        'parameter',
+                        'PMAnalysisID__QCNo__IGPNo__S_ID__S_Name']
+    # -------------- ANALYST LOGIN -------------
+
+
+#   Pending RM Samples
+
+class PMCurrentAnalystSampleView(APIView):
+    def get(self, request):
+        user = request.user
+        if user.role == 'QC_Analyst':
+            samples = PMSamples.objects.filter(analyst=user.id, status="ASSIGNED")
+            dict = []
+            for i in samples:
+                dic = {}
+                name = i.IGPNo.PMCode.Material
+                dic['QCNo'] = i.QCNo
+                dic['Material'] = name
+                dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y")
+                dict.append(dic)
+            return Response(dict)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
