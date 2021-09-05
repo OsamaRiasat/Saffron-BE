@@ -158,15 +158,15 @@ urlpatterns = [
     path('ProductListOfSpecifications/', ProductListOfSpecificationsView.as_view()),
     path('ProductStageListOfSpecifications/<str:ProductCode>/',ProductStageListOfSpecificationsView.as_view()),
     path('ProductViewSpecifications/<str:ProductCode>/<str:stage>/', ProductViewSpecificationsView.as_view()),
-    path('ProductNameByProductCodeForViewSpecs/<str:PMCode>/', ProductNameByProductCodeForViewSpecsView.as_view()),
-    path('ProductCodeByProductNameForViewSpecs/<str:PMName>/', ProductCodeByNameForViewSpecsView.as_view()),
+    path('ProductNameByProductCodeForViewSpecs/<str:ProductCode>/', ProductNameByProductCodeForViewSpecsView.as_view()),
+    path('ProductCodeByProductNameForViewSpecs/<str:ProductName>/', ProductCodeByNameForViewSpecsView.as_view()),
 
 
     # Product New Specs
     path('ProductCodeList/', ProductCodeView.as_view()),
     path('ProductCodeByPMName/<str:name>/', ProductCodeByNameView.as_view()),
     path('ProductList/', ProductView.as_view()),
-    path('ProductNameByProductCode/<str:PMCode>/', ProductNameByProductCodeView.as_view()),
+    path('ProductNameByProductCode/<str:ProductCode>/', ProductNameByProductCodeView.as_view()),
     # path('RMReference/', RMReferenceView.as_view()),
     path('ProductParameters/', ProductParametersView.as_view()),
     path('Productspecifications/', ProductSpecificationsView.as_view()),  # Post Specifications
