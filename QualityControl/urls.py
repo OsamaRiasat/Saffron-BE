@@ -164,10 +164,10 @@ urlpatterns = [
 
     # Product New Specs
     path('ProductCodeList/', ProductCodeView.as_view()),
-    path('ProductCodeByPMName/<str:name>/', ProductCodeByNameView.as_view()),
+    path('ProductCodeByProductName/<str:name>/', ProductCodeByNameView.as_view()),
     path('ProductList/', ProductView.as_view()),
     path('ProductNameByProductCode/<str:ProductCode>/', ProductNameByProductCodeView.as_view()),
-    path('newStagelist/<str:stage>',StageByPCodeView.as_view()),
+    path('newStagelist/<str:ProductCode>',StageByPCodeView.as_view()),
     # path('RMReference/', RMReferenceView.as_view()),
     path('ProductParameters/', ProductParametersView.as_view()),
     path('Productspecifications/', ProductSpecificationsView.as_view()),  # Post Specifications
@@ -182,7 +182,8 @@ urlpatterns = [
     # path('AcquireProduct/', AcquireRMaterialListView.as_view()),
     # path('ProductStageListOfSpecifications/<str:ProductCode>',ProductStageListOfSpecificationsView.as_view()),
     # path('ProductNameByProductCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
-    # path('ProductCodeByRMNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
+    # path('ProductCodeByProductNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
+    path('allStagelist/<str:ProductCode>',AllStageByPCodeView.as_view()),
     path('ProductEditSpecifications/<str:ProductCode>/<str:stage>/', ProductEditSpecsView.as_view()),
     path('TempProductSpecifications/', TEMPProductSpecificationsView.as_view()),
 

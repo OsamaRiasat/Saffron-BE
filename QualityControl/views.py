@@ -1149,12 +1149,13 @@ class StageByPCodeView(APIView):
     # queryset = ProductSpecifications.objects.only('ProductCode').filter(QAStatus="ALLOWED")
     # serializer_class = AcquireProductCodeListSerializer
     def get(self, request, ProductCode):
+        product = Products.objects.get(ProductCode=ProductCode)
         li = ProductSpecifications.objects.filter(ProductCode=ProductCode).values_list('stage')
-        stages = Stages.objects.exclude(Stages__in=li)
+        stages = Stages.objects.exclude(stage__in=li,dosageForm=product.dosageForm.dosageForm)
         lis = []
         for i in stages:
             dic = {}
-            dic["stage"] = i
+            dic["stage"] = i.stage
             lis.append(dic)
         return Response(lis)
 
@@ -1239,6 +1240,19 @@ class AcquireProductListView(APIView):
 
 
 # Edit PM Specs
+
+class AllStageByPCodeView(APIView):
+    # queryset = ProductSpecifications.objects.only('ProductCode').filter(QAStatus="ALLOWED")
+    # serializer_class = AcquireProductCodeListSerializer
+    def get(self, request, ProductCode):
+        product = Products.objects.get(ProductCode=ProductCode)
+        stages = Stages.objects.filter(dosageForm=product.dosageForm.dosageForm)
+        lis = []
+        for i in stages:
+            dic = {}
+            dic["stage"] = i.stage
+            lis.append(dic)
+        return Response(lis)
 
 class ProductEditSpecsView(APIView):
     def get(self, request, ProductCode, stage):
