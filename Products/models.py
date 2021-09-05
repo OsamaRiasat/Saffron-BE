@@ -1,11 +1,13 @@
 from django.db import models
 from Inventory.models import RawMaterials
 
+
 # Products
 
 class DosageForms(models.Model):
     dosageForm = models.CharField(max_length=20, primary_key=True)  # Tablet, Injection, Capsule etc
-    batchSizeUnit = models.CharField(max_length=20,default="units")
+    batchSizeUnit = models.CharField(max_length=20, default="units")
+
 
 class Products(models.Model):
     ProductCode = models.CharField(max_length=10, primary_key=True)
@@ -39,6 +41,7 @@ class PackSizesListForFrontEnd(models.Model):
     def __str__(self):
         return self.PackSizes
 
+
 class Stages(models.Model):
     DosageForms = models.ForeignKey(DosageForms, on_delete=models.CASCADE)  # According to this dosage Form
     stage = models.CharField(max_length=20)
@@ -46,19 +49,21 @@ class Stages(models.Model):
     def __str__(self):
         return self.DosageForms.dosageForm
 
+
 # Formulation
 
 class Formulation(models.Model):
-    ProductCode = models.ForeignKey(Products,on_delete=models.CASCADE)
+    ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
     RMCode = models.ForeignKey(RawMaterials, on_delete=models.CASCADE)
     batchSize = models.IntegerField()
-    quantity = models.DecimalField(decimal_places=3,max_digits=10)
+    quantity = models.DecimalField(decimal_places=3, max_digits=10)
 
     date = models.DateField()
     docNo = models.CharField(max_length=10)
 
-    version = models.DecimalField(max_digits=4,decimal_places=1,default=1.0)
+    version = models.DecimalField(max_digits=4, decimal_places=1, default=1.0)
 
     REQUIRED = ['ProductCode', 'RMCode', 'batchSize', 'quantity', 'date', 'docNo']
+
     def __str__(self):
         return self.ProductCode.Product

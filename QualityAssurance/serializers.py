@@ -2,7 +2,7 @@ import re
 from django.db.models import fields
 from .views import *
 from rest_framework import serializers
-from Inventory.models import RMReceiving, PMReceiving
+from Inventory.models import RMReceiving, PMReceiving, PackingMaterials, RawMaterials
 from QualityControl.models import RMSamples, PMSamples
 from .utils import getQCNO, PMgetQCNO
 from Account.models import User
@@ -133,6 +133,7 @@ class CloseNCRSerializer(serializers.ModelSerializer):
         instance.save()
         return super().update(instance, validated_data)
 
+
 #   ---------------- Close Batch    ---------------
 
 
@@ -141,7 +142,53 @@ class CloseBPRSerializer(serializers.ModelSerializer):
         model = BPRLog
         fields = ['batchStatus', 'closingDate']
 
-    # def update(self, instance, validated_data):
-    #     # instance.batchStatus = 'CLOSED'
-    #     # instance.save()
-    #     return super().update(instance, validated_data)
+
+#   -------------- Add Product -----------------
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Products
+        fields = '__all__'
+
+
+class PCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Products
+        fields = ['ProductCode', ]
+
+
+# -------------- Add Raw Material -----------------
+
+class RawMaterialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RawMaterials
+        fields = '__all__'
+
+
+# -------------- Add Packing Material -----------------
+
+class PackingMaterialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackingMaterials
+        fields = '__all__'
+
+
+# -------------- Batch Deviation ----------------
+
+class BatchDeviationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BatchDeviation
+        fields = '__all__'
+
+
+class BatchDeviationNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BatchDeviation
+        fields = ['deviationNo', ]
+
+
+# ---------------- Change Control ---------------
+class ChangeControlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChangeControl
+        fields = '__all__'

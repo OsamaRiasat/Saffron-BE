@@ -59,3 +59,26 @@ class BatchDeviation(models.Model):
     def __str__(self):
         return str(self.deviationNo)
 
+
+class ChangeControl(models.Model):
+    date = models.DateField(auto_now=True)
+    CCNo = models.AutoField(primary_key=True)
+    status = models.CharField(max_length=20, default="OPEN")
+    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="B")
+    initiator = models.CharField(max_length=30)
+    department = models.CharField(max_length=30)
+    natureOfChange = models.CharField(max_length=30)
+    keyword = models.CharField(max_length=50)
+    category = models.CharField(max_length=50)
+    QAStatus = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    relatedChanges = models.CharField(max_length=200)
+    descriptionOfChange = models.CharField(max_length=200)
+    intendedPurposeOfChange = models.CharField(max_length=200)
+    commentsOfProductionManager = models.CharField(max_length=200,  blank=True, null=True)
+    commentsOfQCManager = models.CharField(max_length=200, blank=True, null=True)
+    commentsOfPlantDirector = models.CharField(max_length=200)
+    commentsOfQAManager = models.CharField(max_length=200)
+
+    def __str__(self):
+        return str(self.CCNo)

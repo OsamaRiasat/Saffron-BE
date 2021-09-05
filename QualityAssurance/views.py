@@ -2,6 +2,7 @@ from rest_framework import generics
 from django.shortcuts import render
 from rest_framework.views import APIView
 
+from Production.models import Stages
 from Production.serializers import BPRSerializer
 from .models import *
 from .serializers import *
@@ -215,3 +216,92 @@ class OpenBatchesView(APIView):
 class CloseBPRView(generics.UpdateAPIView):
     queryset = BPRLog.objects.all()
     serializer_class = CloseBPRSerializer
+
+
+#   -------------- Add Product --------------------
+
+class AddProductView(generics.CreateAPIView):
+    queryset = Products.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductCodeView(APIView):
+    def get(self, request):
+        pcode = Products.objects.all()
+        serializer = PCodeSerializer(pcode,many=True)
+        return Response(serializer.data)
+
+class ProductDetailView(generics.RetrieveUpdateAPIView):
+    queryset = Products.objects.all()
+    serializer_class = ProductSerializer
+
+#-------------- Add RM --------------------
+
+class RawMaterialView(generics.CreateAPIView):
+    queryset = RawMaterials.objects.all()
+    serializer_class = RawMaterialSerializer
+
+#-------------- Add PM --------------------
+
+class PackingMaterialView(generics.CreateAPIView):
+    queryset = PackingMaterials.objects.all()
+    serializer_class = PackingMaterialSerializer
+
+#-------------- Batch Deviation ----------------
+
+class HighestBDNoView(APIView):
+    def get(self, request):
+        bdno = 0
+        bdno = BatchDeviation.objects.aggregate(Max('deviationNo'))
+        bdno = bdno['deviationNo__max']
+        if bdno is None:
+            bdno = 0
+        dic = {'deviationNo': bdno}
+        return Response(dic)
+
+class BatchDetailView(APIView):
+    def get(self,request,batchNo):
+        batch = BPRLog.objects.get(batchNo=batchNo)
+        dic={}
+        dic['batchSize'] = batch.batchSize
+        dic['MFGDate'] = batch.MFGDate
+        dic['EXPDate'] = batch.EXPDate
+        stages=Stages.objects.values_list('stage')
+        li = []
+        for i in stages:
+            dict = {}
+            dict['stage'] = i[0]
+            li.append(dict)
+        dic['stages']=li
+        return Response(dic)
+
+class BatchDeviationView(generics.CreateAPIView):
+    queryset = BatchDeviation.objects.all()
+    serializer_class = BatchDeviationSerializer
+
+#------------ Print Batch Deviation -----------------#
+
+class AllBDNoView(APIView):
+    def get(self,request):
+        bdno = BatchDeviation.objects.all()
+        serializer = BatchDeviationNoSerializer(bdno,many=True)
+        return Response(serializer.data)
+
+class BatchDeviationDetailView(generics.RetrieveAPIView):
+    queryset = BatchDeviation.objects.all()
+    serializer_class = BatchDeviationSerializer
+
+#--------------- Change Control -------------------#
+class HighestCCNoView(APIView):
+    def get(self, request):
+        CCNo = 0
+
+        CCNo = ChangeControl.objects.aggregate(Max('CCNo'))
+        CCNo = CCNo['CCNo__max']
+        if CCNo is None:
+            CCNo = 0
+        dic = {'CCNo': CCNo}
+        return Response(dic)
+
+class ChangeControlView(generics.CreateAPIView):
+    queryset = ChangeControl.objects.all()
+    serializer_class = ChangeControlSerializer
