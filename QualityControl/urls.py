@@ -84,7 +84,7 @@ urlpatterns = [
     path('AllAnalyst/', AllAnalystView.as_view()),
 
     # -----------------------------------------------------------------------------------------
-    # -----------------------------     RAW MATERIALS     -----------------------------------
+    # -----------------------------     PACKING MATERIALS     -----------------------------------
 
     #           -------------   SPECIFICATIONS  -----------
 
@@ -151,7 +151,7 @@ urlpatterns = [
     path('PMCurrentAnalystSample/', PMCurrentAnalystSampleView.as_view()),
 
     # -----------------------------------------------------------------------------------------
-    # -----------------------------     RAW MATERIALS     -----------------------------------
+    # -----------------------------     PRODUCTS     -----------------------------------
 
     # Product View Specs
     path('ProductCodeListOfSpecifications/', ProductCodeListOfSpecificationsView.as_view()),

@@ -146,6 +146,7 @@ class FPNameView(APIView):
 
 class ProductFormulationView(APIView):
     def get(self, request, Pcode):
+
         formulation = Formulation.objects.filter(ProductCode=Pcode)
         dict = []
         for i in formulation:

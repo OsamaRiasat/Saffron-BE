@@ -1,5 +1,7 @@
 from django.db import models
-from Products.models import DosageForms, Products
+
+from Inventory.models import PackingMaterials
+from Products.models import DosageForms, Products, PackSizes
 from Planning.models import Plan
 
 
@@ -19,7 +21,6 @@ class BatchIssuanceRequest(models.Model):
     noOfBatches = models.IntegerField()
 
     REQUIRED = ['planNO', 'ProductCode', 'noOfBatches']
-
 
 
 class BPRLog(models.Model):
@@ -76,3 +77,24 @@ class PackingLog(models.Model):
 
     def __str__(self):
         return self.batchNo.batchNo
+
+
+#   -------------------- PM Formulation     -----------------------
+
+
+class PMFormulation(models.Model):
+    ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
+    PackSize = models.ForeignKey(PackSizes, on_delete=models.CASCADE)
+    PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
+    batchSize = models.IntegerField()
+    quantity = models.DecimalField(decimal_places=3, max_digits=10)
+
+    date = models.DateField()
+    docNo = models.CharField(max_length=10)
+
+    version = models.DecimalField(max_digits=4, decimal_places=1, default=1.0)
+
+    REQUIRED = ['ProductCode', 'PackSize', 'PMCode', 'batchSize', 'quantity', 'date', 'docNo']
+
+    def __str__(self):
+        return str(self.ProductCode.Product + " " + self.PackSize.PackSize)

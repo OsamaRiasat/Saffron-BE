@@ -48,10 +48,19 @@ class FormulationSerializer(serializers.ModelSerializer):
         #     'DDate': {'read_only': True},
         # }
 
+    def validate(self, attrs):
+        items = attrs.get('fItems')
+        code = items[0]['ProductCode']
+        check = Formulation.objects.filter(ProductCode=code)
+        if check:
+            check.delete()
+        return attrs
+
     def create(self, validated_data):
         items = validated_data.pop('fItems')
         # demand = Formulation.objects.create(**validated_data)
         # demand.save()
+
         obj = ""
         for i in items:
             item = Formulation.objects.create(ProductCode=i['ProductCode'],
@@ -83,5 +92,3 @@ class RMDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = RawMaterials
         fields = ['RMCode', 'Material', 'Units', 'Type', ]
-
-
