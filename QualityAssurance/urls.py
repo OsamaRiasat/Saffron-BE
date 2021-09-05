@@ -46,6 +46,7 @@ urlpatterns = [
 
     # ----------------   Add Product   -----------------
 
+    path('ListOfDosageForms/', ListOfDosageForms.as_view()),
     path('AddProduct/', AddProductView.as_view()),
 
     # ----------------   View Product   -----------------

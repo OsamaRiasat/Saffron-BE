@@ -172,8 +172,9 @@ urlpatterns = [
     path('Productspecifications/', ProductSpecificationsView.as_view()),  # Post Specifications
     path('AcquireProductCode/', AcquireProductCodeListView.as_view()),
     path('ProductAcquirermaterial/', AcquireProductListView.as_view()),
+    path('ProductStageListOfSpecifications/<str:ProductCode>/', ProductStageListOfSpecificationsView.as_view()),
     # path('ProductStageListOfSpecifications/<str:ProductCode>',ProductStageListOfSpecificationsView.as_view()),
-    path('ProductAcquirespecifications/<str:PMCode>/', ProductAcquireSpecificationsView.as_view()),
+    path('ProductAcquirespecifications/<str:ProductCode>/<str:stage>/', ProductAcquireSpecificationsView.as_view()),
 
     # Product Edit Specs
     # path('AcquireProductCode/', AcquireRMCodeListView.as_view()),

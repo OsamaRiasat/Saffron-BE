@@ -643,7 +643,6 @@ class PMCodeView(APIView):
 
 class PMCodeByNameView(APIView):
     def get(self, request, name):
-
         pmcode = PackingMaterials.objects.get(Material=name)
         serializer = PMCodeSerializer(pmcode)
         return Response(serializer.data)
@@ -1268,7 +1267,6 @@ class TEMPProductSpecificationsView(generics.CreateAPIView):
     serializer_class = TempProductSpecificationsSerializer
 
     #         --------------    SAMPLE ASSIGNMENT   -----------
-
 
 # PM Sample Assignment
 
