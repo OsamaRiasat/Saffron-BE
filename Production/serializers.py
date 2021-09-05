@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import *
 from Planning.models import PlanItems
 from rest_framework import serializers
-
+from Inventory.models import PackingMaterials
 
 # ------------------Batch Issuance Request--------------------#
 class PlanNoSerializer(serializers.ModelSerializer):
@@ -168,3 +168,70 @@ class UpdatePlanItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlanItems
         fields = ['planNo', 'ProductCode', 'PackSize', 'status']
+
+# --------------- New Formulation For PM -----------------------#
+
+class PMFormulationItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PMFormulation
+
+        fields = ['ProductCode', 'PackSize', 'PMCode', 'batchSize', 'quantity', 'date', 'docNo', ]
+
+
+class PMFormulationSerializer(serializers.ModelSerializer):
+    fItems = PMFormulationItemsSerializer(many=True, write_only=True)
+
+    class Meta:
+        model = PMFormulation
+        fields = ['fItems', ]
+        # extra_kwargs = {
+        #     'DNo': {'read_only': True},
+        #     'DDate': {'read_only': True},
+        # }
+
+    def validate(self, attrs):
+        items = attrs.get('fItems')
+        code = items[0]['ProductCode']
+        check = PMFormulation.objects.filter(ProductCode=code)
+        if check:
+            check.delete()
+        return attrs
+
+    def create(self, validated_data):
+        items = validated_data.pop('fItems')
+        # demand = Formulation.objects.create(**validated_data)
+        # demand.save()
+
+        obj = ""
+        for i in items:
+            item = PMFormulation.objects.create(ProductCode=i['ProductCode'],
+                                              RMCode=i['RMCode'],
+                                              batchSize=i['batchSize'],
+                                              quantity=i['quantity'],
+                                              date=i['date'],
+                                              PackSize=i['PackSize'],
+                                              docNo=i['docNo'])
+            item.save()
+            obj = i
+        return obj
+
+class PMCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackingMaterials
+        fields = ['PMCode',]
+
+class PMNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackingMaterials
+        fields = ['Material',]
+
+
+class PMDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackingMaterials
+        fields = ['PMCode', 'Material', 'Units', 'Type','PackSize',]
+
+class PackSizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackSizes
+        fields = ['PackSize',]

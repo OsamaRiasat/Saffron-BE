@@ -9,7 +9,11 @@ from .serializers import *
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from .utils import CreateBatchNo, getStandardBatchSize
-
+from Products.serializers import (
+    PCodeSerializer,
+    PNameSerializer,
+)
+from Products.utils import getCode, getName
 
 # Create your views here.
 
@@ -356,3 +360,112 @@ class ViewFormulationForAssessmentView(APIView):
             dic['Quantity'] = round(float(i.quantity) * float(total), 3)
             dict.append(dic)
         return Response(dict)
+
+
+# ----------------------New Formulation For PM----------------------#
+
+class PCodeView(APIView):
+    def get(self, request):
+        li = PMFormulation.objects.values_list('ProductCode')
+        pcode = Products.objects.exclude(ProductCode__in=li)
+        serializer = PCodeSerializer(pcode, many=True)
+        return Response(serializer.data)
+
+
+class PNameView(APIView):
+    def get(self, request):
+        li = PMFormulation.objects.values_list('ProductCode')
+        pcode = Products.objects.exclude(ProductCode__in=li)
+        serializer = PNameSerializer(pcode, many=True)
+        return Response(serializer.data)
+
+
+class PCodeByPnameView(APIView):
+    def get(self, request, Product):
+        code = getCode(Product)
+        return Response(code)
+
+
+class PnameByPCodeView(APIView):
+    def get(self, request, Pcode):
+        name = getName(Pcode)
+        return Response(name)
+
+
+class PMCodeView(APIView):
+    def get(self, request):
+        rmcode = PackingMaterials.objects.all()
+        serializer = PMCodeSerializer(rmcode, many=True)
+        return Response(serializer.data)
+
+
+class PMNameView(APIView):
+    def get(self, request):
+        rmcode = PackingMaterials.objects.all()
+        serializer = PMNameSerializer(rmcode, many=True)
+        return Response(serializer.data)
+
+
+class PMCodeByNameView(APIView):
+    def get(self, request, PMName):
+        rmcode = PackingMaterials.objects.get(Material=PMName)
+        serializer = PMCodeSerializer(rmcode)
+        return Response(serializer.data)
+
+
+class PMNameByPMCodeView(APIView):
+    def get(self, request, PMCode):
+        rmcode = PackingMaterials.objects.get(PMCode=PMCode)
+        serializer = PMNameSerializer(rmcode)
+        return Response(serializer.data)
+
+class PMFormulationsView(generics.CreateAPIView):
+    serializer_class = PMFormulationSerializer
+    queryset = PMFormulation.objects.all()
+
+
+class PMDataView(APIView):
+    def get(self, request, PMCode):
+        pm = PackingMaterials.objects.get(PMCode=PMCode)
+        serializer = PMDataSerializer(pm)
+        return Response(serializer.data)
+
+class PackSizesView(APIView):
+    def get(self, request,PCode):
+        size = PackSizes.objects.filter(ProductCode=PCode)
+        serializer = PackSizeSerializer(size, many=True)
+        return Response(serializer.data)
+
+#-------------------- EDIT PM Formulation ----------------------#
+
+class ProductPMFormulationView(APIView):
+    def get(self, request, Pcode):
+
+        formulation = PMFormulation.objects.filter(ProductCode=Pcode)
+        dict = []
+        for i in formulation:
+            dic = {}
+            dic['ProductCode'] = i.ProductCode.ProductCode
+            dic['Product'] = i.ProductCode.Product
+            dic['PackSize'] = i.PackSize.PackSize
+            dic['RMCode'] = i.RMCode.RMCode
+            dic['Material'] = i.PMCode.Material
+            dic['batchSize'] = i.batchSize
+            dic['quantity'] = i.quantity
+            dict.append(dic)
+        return Response(dict)
+
+class FPCodeView(APIView):
+    def get(self, request):
+        li = PMFormulation.objects.values_list('ProductCode')
+        pcode = Products.objects.filter(ProductCode__in=li)
+        serializer = PCodeSerializer(pcode, many=True)
+        return Response(serializer.data)
+
+
+class FPNameView(APIView):
+    def get(self, request):
+        li = PMFormulation.objects.values_list('ProductCode')
+        pcode = Products.objects.filter(ProductCode__in=li)
+        serializer = PNameSerializer(pcode, many=True)
+        return Response(serializer.data)
