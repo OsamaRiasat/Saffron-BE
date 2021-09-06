@@ -1444,8 +1444,8 @@ class ProductAnalysisView(APIView):
         dict['Units'] = samples.sampleUnity
         dict['quantityReceived'] = samples.sampleQuantity  # No
         dict['batchNo'] = pm_receiving.batchNo
-        dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['MFG_Date'] = pm_receiving.MFGDate.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = pm_receiving.EXPDate.strftime("%d.%m.%Y")
         dict['quantityApproved'] = analysis.quantityApproved
         dict['quantityRejected'] = analysis.quantityRejected
         dict['rawDataReference'] = analysis.rawDataReference

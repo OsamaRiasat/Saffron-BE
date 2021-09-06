@@ -696,7 +696,7 @@ class PostProductAnalysisSerializer(serializers.ModelSerializer):
         analysis.save()
         for i in item:
             analysis_items = ProductAnalysisItems.objects.create(
-                PMAnalysisID=analysis,
+                ProductAnalysisID=analysis,
                 parameter=i['parameter'],
                 specification=i['specification'],
                 result=i['result']
