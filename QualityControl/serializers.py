@@ -680,7 +680,7 @@ class PostProductAnalysisSerializer(serializers.ModelSerializer):
         PMSample.status = "TESTED"
         PMSample.save()
         productcode = ProductSamples.objects.get(QCNo=qc.QCNo).batchNo.ProductCode.ProductCode
-        specID = ProductSpecifications.objects.get(ProductCode=productcode, stage=qc.QCNo.sampleStage).specID
+        specID = ProductSpecifications.objects.get(ProductCode=productcode, stage=qc.sampleStage).specID
         analysis = ProductAnalysis.objects.create(
             QCNo=validated_data['QCNo'],
             specID=specID,
