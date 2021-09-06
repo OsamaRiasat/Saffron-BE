@@ -16,7 +16,7 @@ urlpatterns = [
 
     # populate DB
 
-        path('PopulateCategory/', PopulateCategoryView.as_view()),
+    path('PopulateCategory/', PopulateCategoryView.as_view()),
 
     # -----------------     NCR     ---------------
 
@@ -51,16 +51,28 @@ urlpatterns = [
 
     # ----------------   View Product   -----------------
 
-    path('AllProductCode/', ProductCodeView.as_view()),
-    path('ProductDetail/<str:pk>/', ProductDetailView.as_view()),
+    # path('AllProductCode/', ProductCodeView.as_view()),
+    path('ProductDetail/', ProductDetailView.as_view()),
+    # http://127.0.0.1:8000/QualityAssurance/ProductDetail/?ProductCode__Product=&ProductCode=&ProductCode__RegistrationNo=&ProductCode__ShelfLife=
 
     # -------------- Add Raw Material ----------------#
     path('AddRawMaterial/', RawMaterialView.as_view()),
 
-    # -------------- Add Packing Material ----------------#
-    path('AddPackingMaterial/', PackingMaterialView.as_view()),
+    #   ---------------     View RM    ----------------------
 
-    # -------------- Batch Deviation ----------------#
+    path('RawMaterialDetail/', RawMaterialDetailView.as_view()),
+
+    # -------------- Add Packing Material ----------------
+
+    path('AddPackingMaterial/', PackingMaterialView.as_view()),
+    # QualityAssurance/PackingMaterialDetail/?PMCode=&Material=&Units=&Type=
+
+    #   ---------------     View PM    ----------------------
+
+    path('PackingMaterialDetail/', PackingMaterialDetailView.as_view()),
+
+    # -------------- Batch Deviation ----------------
+
     path('HighestBDNo/', HighestBDNoView.as_view()),
     # path('ProductCode/', PCodesForLineClearanceView.as_view()),
     # path('BatchNo/<str:Pcode>/', BatchNoView.as_view()),

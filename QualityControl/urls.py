@@ -156,18 +156,17 @@ urlpatterns = [
     # Product View Specs
     path('ProductCodeListOfSpecifications/', ProductCodeListOfSpecificationsView.as_view()),
     path('ProductListOfSpecifications/', ProductListOfSpecificationsView.as_view()),
-    path('ProductStageListOfSpecifications/<str:ProductCode>/',ProductStageListOfSpecificationsView.as_view()),
+    path('ProductStageListOfSpecifications/<str:ProductCode>/', ProductStageListOfSpecificationsView.as_view()),
     path('ProductViewSpecifications/<str:ProductCode>/<str:stage>/', ProductViewSpecificationsView.as_view()),
     path('ProductNameByProductCodeForViewSpecs/<str:ProductCode>/', ProductNameByProductCodeForViewSpecsView.as_view()),
     path('ProductCodeByProductNameForViewSpecs/<str:Product>/', ProductCodeByNameForViewSpecsView.as_view()),
-
 
     # Product New Specs
     path('ProductCodeList/', ProductCodeView.as_view()),
     path('ProductCodeByProductName/<str:name>/', ProductCodeByNameView.as_view()),
     path('ProductList/', ProductView.as_view()),
     path('ProductNameByProductCode/<str:ProductCode>/', ProductNameByProductCodeView.as_view()),
-    path('newStagelist/<str:ProductCode>',StageByPCodeView.as_view()),
+    path('newStagelist/<str:ProductCode>', StageByPCodeView.as_view()),
     # path('RMReference/', RMReferenceView.as_view()),
     path('ProductParameters/', ProductParametersView.as_view()),
     path('Productspecifications/', ProductSpecificationsView.as_view()),  # Post Specifications
@@ -183,10 +182,42 @@ urlpatterns = [
     # path('ProductStageListOfSpecifications/<str:ProductCode>',ProductStageListOfSpecificationsView.as_view()),
     # path('ProductNameByProductCodeForViewSpecs/<str:RMCode>/', RMNameByRMCodeForViewSpecsView.as_view()),
     # path('ProductCodeByProductNameForViewSpecs/<str:RMName>/', RMCodeByNameForViewSpecsView.as_view()),
-    path('allStagelist/<str:ProductCode>',AllStageByPCodeView.as_view()),
+    path('allStagelist/<str:ProductCode>', AllStageByPCodeView.as_view()),
     path('ProductEditSpecifications/<str:ProductCode>/<str:stage>/', ProductEditSpecsView.as_view()),
     path('TempProductSpecifications/', TEMPProductSpecificationsView.as_view()),
 
+    #         --------------    SAMPLE ASSIGNMENT   -----------
 
+    # Product Sample Assignment
+    path('ProductSamples/', ProductSamplesView.as_view()),
+    # path('Analysts/', AnalystView.as_view()),
+    path('ProductAnalystSample/<int:id>/', ProductAnalystSampleView.as_view()),
+    path('ProductAssignAnalyst/<str:pk>/', ProductAssignAnalystView.as_view()),
 
+    #         --------------    DATA ENTRY     -----------
+
+    # Product Data Entry
+    path('ProductQCNo/', ProductQCNoView.as_view()),
+    path('ProductQCNoSample/<str:QCNo>/', ProductQCNoSampleView.as_view()),
+    path('PostProductAnalysis/', PostProductAnalysisView.as_view()),
+
+    #         --------------    COA APPROVAL    -----------
+
+    # Product COA Approval
+    path('ProductAnalysisQCNo/', ProductAnalysisQCNoView.as_view()),
+    path('ProductAnalysis/<str:QCNo>/', ProductAnalysisView.as_view()),
+    path('PostProductCOAApproval/<str:QCNo>/', PostProductCOAApprovalView.as_view()),
+    # path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
+
+    #         --------------    REPORTING   -----------
+
+    # RM Reporting
+    # path('RMMaterialsListReporting/', RMMaterialsListReportingView.as_view()),
+    # path('RMMaterialsListReporting/', RMMaterialsListReportingView.as_view()),
+    path('ProductDataAnalysis', ProductDataAnalysisView.as_view()),
+    # /QualityControl/RMDataAnalysis?RMAnalysisID__QCNo__IGPNo__RMCode__Material=&RMAnalysisID__QCNo__IGPNo__batchNo=&RMAnalysisID__QCNo__QCNo=&parameter=
+
+    #       ----------------    Analyst Login   ------------
+
+    path('ProductCurrentAnalystSample/', ProductCurrentAnalystSampleView.as_view()),
 ]

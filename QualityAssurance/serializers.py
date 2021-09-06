@@ -156,6 +156,21 @@ class PCodeSerializer(serializers.ModelSerializer):
         model = Products
         fields = ['ProductCode', ]
 
+#   ---------------     View Product    ----------------------
+
+class ProductAndPackSizeSerializer(serializers.ModelSerializer):
+    product = serializers.CharField(source='ProductCode.Product')
+    registrationNo = serializers.CharField(source='ProductCode.RegistrationNo')
+    dosageForm = serializers.CharField(source='ProductCode.dosageForm.dosageForm')
+    GenericName = serializers.CharField(source='ProductCode.GenericName')
+    Composition = serializers.CharField(source='ProductCode.Composition')
+    ShelfLife = serializers.CharField(source='ProductCode.ShelfLife')
+    RenewalDate = serializers.DateField(source='ProductCode.RenewalDate',format="%d-%m-%Y")
+    class Meta:
+        model = PackSizes
+        fields = ['ProductCode', 'registrationNo', 'PackSize', 'product', 'dosageForm', 'GenericName', 'Composition',
+                  'ShelfLife', 'MRP', 'ShelfLife', 'RenewalDate']
+
 
 # -------------- Add Raw Material -----------------
 

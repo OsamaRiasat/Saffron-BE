@@ -1,6 +1,4 @@
-import re
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -1151,7 +1149,7 @@ class StageByPCodeView(APIView):
     def get(self, request, ProductCode):
         product = Products.objects.get(ProductCode=ProductCode)
         li = ProductSpecifications.objects.filter(ProductCode=ProductCode).values_list('stage')
-        stages = Stages.objects.exclude(stage__in=li,dosageForm=product.dosageForm.dosageForm)
+        stages = Stages.objects.exclude(stage__in=li, dosageForm=product.dosageForm.dosageForm)
         lis = []
         for i in stages:
             dic = {}
@@ -1254,6 +1252,7 @@ class AllStageByPCodeView(APIView):
             lis.append(dic)
         return Response(lis)
 
+
 class ProductEditSpecsView(APIView):
     def get(self, request, ProductCode, stage):
         # rm=RawMaterials.objects.get(RMCode=RMCode)
@@ -1302,7 +1301,7 @@ class ProductAnalystSampleView(APIView):
             dic = {}
             name = i.batchNo.ProductCode.Product
             dic['QCNo'] = i.QCNo
-            dic['Material'] = name
+            dic['Product'] = name
             dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y %H:%M")
             dic['status'] = i.status
             dic['stage'] = i.sampleStage
@@ -1325,9 +1324,10 @@ class ProductSamplesView(APIView):
             pm_receiving = BPRLog.objects.get(batchNo=i.batchNo.batchNo)
             pm = Products.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode)
             dic['Date'] = i.samplingDateTime.strftime("%d.%m.%Y %H:%M")
-            dic['Material'] = pm.Material
-            dic['Unit'] = pm.Units
+            dic['Product'] = pm.Product
+            dic['Unit'] = i.sampleUnity
             dic['Quantity'] = pm_receiving.batchSize
+            dic['stage'] = i.sampleStage
             try:
                 dic['Analyst'] = i.analyst.username
                 dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
@@ -1364,9 +1364,10 @@ class ProductQCNoSampleView(APIView):
         sample = ProductSamples.objects.get(QCNo=QCNo)
 
         pm_receiving = BPRLog.objects.get(batchNo=sample.batchNo.batchNo)
-        units=""
+        units = ""
         try:
-            lastStage = BatchStages.objects.filter(batchNo=sample.batchNo.batchNo, currentStage=sample.sampleStage).first()
+            lastStage = BatchStages.objects.filter(batchNo=sample.batchNo.batchNo,
+                                                   currentStage=sample.sampleStage).first()
             for i in lastStage:
                 units = i.units
         except:
@@ -1374,21 +1375,22 @@ class ProductQCNoSampleView(APIView):
         dict = {}
         dict['samplingDateTime'] = sample.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = sample.batchNo.batchNo
+        dict['batchNo'] = sample.batchNo.batchNo
         dict['assignedDateTime'] = sample.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = sample.analyst.username
 
-        dict['RMCode'] = pm_receiving.ProductCode.ProductCode
-        dict['Material'] = pm_receiving.ProductCode.ProductCode
-        dict['Units'] = units
+        dict['ProductCode'] = pm_receiving.ProductCode.ProductCode
+        dict['Product'] = pm_receiving.ProductCode.ProductCode
+        dict['Units'] = sample.sampleUnity
         dict['quantityReceived'] = pm_receiving.batchSize
         dict['batchNo'] = pm_receiving.batchNo
-        dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['MFG_Date'] = pm_receiving.MFGDate.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = pm_receiving.EXPDate.strftime("%d.%m.%Y")
 
         data = {}
         try:
-            spec = ProductSpecifications.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode, stage=sample.sampleStage)
+            spec = ProductSpecifications.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode,
+                                                     stage=sample.sampleStage)
         except:
             return Response({"message": "No Specifications for this Material"})
         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
@@ -1436,11 +1438,11 @@ class ProductAnalysisView(APIView):
         dict = {}
         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = pm_receiving.batchNo
-        dict['RMCode'] = pm_receiving.ProductCode.ProductCode
-        dict['Material'] = pm_receiving.ProductCode.Product
-        dict['Units'] = units
-        dict['quantityReceived'] = samples.batchNo.batchSize    # No
+        dict['batchNo'] = pm_receiving.batchNo
+        dict['ProductCode'] = pm_receiving.ProductCode.ProductCode
+        dict['Product'] = pm_receiving.ProductCode.Product
+        dict['Units'] = samples.sampleUnity
+        dict['quantityReceived'] = samples.sampleQuantity  # No
         dict['batchNo'] = pm_receiving.batchNo
         dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
         dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
@@ -1452,7 +1454,7 @@ class ProductAnalysisView(APIView):
         dict['retestDate'] = analysis.retestDate.strftime("%d.%m.%Y %H:%M")
         dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = samples.analyst.username
-        items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
+        items = ProductAnalysisItems.objects.filter(ProductAnalysisID=analysis.ProductAnalysisID)
         l = []
         for obj in items:
             spec_item = {}
@@ -1464,7 +1466,7 @@ class ProductAnalysisView(APIView):
         return Response(dict)
 
 
-class PostPMCOAApprovalView(APIView):
+class PostProductCOAApprovalView(APIView):
     serializer_class = RemarksSerializer
 
     def post(self, request, QCNo):
@@ -1472,13 +1474,13 @@ class PostPMCOAApprovalView(APIView):
         remarks = data.get('remarks', None)
         isRetest = data.get('isRetest', None)
         retestReason = data.get('retestReason', None)
-        analysis = PMAnalysis.objects.get(QCNo=QCNo)
+        analysis = ProductAnalysis.objects.get(QCNo=QCNo)
         retestDate = analysis.retestDate
         result = data.get('result', None)
 
         if result == "Reject":
-            analysis = PMAnalysis.objects.get(QCNo=QCNo)
-            log_analysis = PMAnalysisLog.objects.create(
+            analysis = ProductAnalysis.objects.get(QCNo=QCNo)
+            log_analysis = ProductAnalysisLog.objects.create(
                 workingStd=analysis.workingStd,
                 rawDataReference=analysis.rawDataReference,
                 QCNo=analysis.QCNo,
@@ -1491,26 +1493,26 @@ class PostPMCOAApprovalView(APIView):
                 result="REJECTED"
             )
             log_analysis.save()
-            analysis_items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
+            analysis_items = ProductAnalysisItems.objects.filter(ProductAnalysisID=analysis.ProductAnalysisID)
             for i in analysis_items:
-                item = PMAnalysisItemsLog.objects.create(
-                    PMAnalysisID=log_analysis,
+                item = ProductAnalysisItemsLog.objects.create(
+                    ProductAnalysisID=log_analysis,
                     parameter=i.parameter,
                     specification=i.specification,
                     result=i.result
                 )
                 item.save()
             analysis.delete()
-            sample = PMSamples.objects.get(QCNo=QCNo)
+            sample = ProductSamples.objects.get(QCNo=QCNo)
             sample.analyst = None
             sample.assignedDateTime = None
             sample.status = "PENDING"
             sample.save()
             return Response({"message": "Rejected"})
         else:
-            sample = PMSamples.objects.get(QCNo=QCNo)
-            analysis = PMAnalysis.objects.get(QCNo=QCNo)
-            log_analysis = PMAnalysisLog.objects.create(
+            sample = ProductSamples.objects.get(QCNo=QCNo)
+            analysis = ProductAnalysis.objects.get(QCNo=QCNo)
+            log_analysis = ProductAnalysisLog.objects.create(
                 workingStd=analysis.workingStd,
                 rawDataReference=analysis.rawDataReference,
                 QCNo=sample,
@@ -1522,23 +1524,23 @@ class PostPMCOAApprovalView(APIView):
                 specID=analysis.specID
             )
             log_analysis.save()
-            analysis_items = PMAnalysisItems.objects.filter(PMAnalysisID=analysis.PMAnalysisID)
+            analysis_items = ProductAnalysisItems.objects.filter(ProductAnalysisID=analysis.ProductAnalysisID)
             for i in analysis_items:
-                item = PMAnalysisItemsLog.objects.create(
-                    PMAnalysisID=log_analysis,
+                item = ProductAnalysisItemsLog.objects.create(
+                    ProductAnalysisID=log_analysis,
                     parameter=i.parameter,
                     specification=i.specification,
                     result=i.result
                 )
                 item.save()
-            sample = PMSamples.objects.get(QCNo=QCNo)
-            pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
-            pm.quantityApproved = analysis.quantityApproved
-            pm.quantityRejected = analysis.quantityRejected
-            pm.QCNo = QCNo
-            pm.status = "APPROVED"
-            pm.retest_Date = retestDate
-            pm.save()
+            sample = ProductSamples.objects.get(QCNo=QCNo)
+            # pm = BPRLog.objects.get(batchNo=sample.batchNo.batchNo)
+            # pm.quantityApproved = analysis.quantityApproved
+            # pm.quantityRejected = analysis.quantityRejected
+            # pm.QCNo = QCNo
+            # pm.status = "APPROVED"
+            # pm.retest_Date = retestDate
+            # pm.save()
             sample.status = "APPROVED"
             sample.result = "Released"
             sample.save()
@@ -1558,7 +1560,7 @@ class PostPMCOAApprovalView(APIView):
 
 
 # Raw Materials
-#
+
 # class RMMaterialsListReportingView(generics.ListAPIView):
 #     queryset = RMAnalysisItems.objects.all()
 #     serializer_class = RMMaterialsListReportingSerializer
@@ -1569,31 +1571,33 @@ class PostPMCOAApprovalView(APIView):
 #     serializer_class = RMBatchNoListReportingSerializer
 
 
-class PMDataAnalysisView(generics.ListAPIView):
-    queryset = PMAnalysisItems.objects.all()
-    serializer_class = PMAnalysisItemsReportingSerializer
+class ProductDataAnalysisView(generics.ListAPIView):
+    queryset = ProductAnalysisItems.objects.all()
+    serializer_class = ProductAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['PMAnalysisID__QCNo__IGPNo__PMCode__Material',
-                        'PMAnalysisID__QCNo__IGPNo__batchNo',
-                        'PMAnalysisID__QCNo__QCNo',
+    filterset_fields = ['ProductAnalysisID__QCNo__batchNo__ProductCode__Product',
+                        'ProductAnalysisID__QCNo__batchNo__batchNo',
+                        'ProductAnalysisID__QCNo__QCNo',
                         'parameter',
-                        'PMAnalysisID__QCNo__IGPNo__S_ID__S_Name']
+                        'ProductAnalysisID__QCNo__sampleStage'
+                        ]
     # -------------- ANALYST LOGIN -------------
 
 
 #   Pending RM Samples
 
-class PMCurrentAnalystSampleView(APIView):
+class ProductCurrentAnalystSampleView(APIView):
     def get(self, request):
         user = request.user
         if user.role == 'QC_Analyst':
-            samples = PMSamples.objects.filter(analyst=user.id, status="ASSIGNED")
+            samples = ProductSamples.objects.filter(analyst=user.id, status="ASSIGNED")
             dict = []
             for i in samples:
                 dic = {}
-                name = i.IGPNo.PMCode.Material
+                name = i.batchNo.ProductCode.Product
                 dic['QCNo'] = i.QCNo
-                dic['Material'] = name
+                dic['Product'] = name
+                dic['stage'] = i.sampleStage
                 dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y")
                 dict.append(dic)
             return Response(dict)

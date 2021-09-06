@@ -31,7 +31,7 @@ class PackSizes(models.Model):
     ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.PackSize
+        return str(self.ProductCode.ProductCode +" "+self.PackSize)
 
 
 class PackSizesListForFrontEnd(models.Model):

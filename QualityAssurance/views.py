@@ -1,10 +1,11 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from django.shortcuts import render
 from rest_framework.views import APIView
 
 from Production.models import Stages
 from Production.serializers import BPRSerializer
-from Products.models import DosageForms
+from Products.models import DosageForms, PackSizes
 from .models import *
 from .serializers import *
 from Inventory.models import RMReceiving, PMReceiving
@@ -224,12 +225,13 @@ class CloseBPRView(generics.UpdateAPIView):
 class ListOfDosageForms(APIView):
     def get(self, request):
         data = DosageForms.objects.all()
-        l=[]
+        l = []
         for i in data:
-            dic={}
-            dic["dosageForm"]= i.dosageForm
+            dic = {}
+            dic["dosageForm"] = i.dosageForm
             l.append(dic)
-        return Response({"List":l})
+        return Response({"List": l})
+
 
 class AddProductView(generics.CreateAPIView):
     queryset = Products.objects.all()
@@ -245,26 +247,46 @@ class ProductCodeView(APIView):
         return Response(serializer.data)
 
 
-class ProductDetailView(generics.RetrieveUpdateAPIView):
-    queryset = Products.objects.all()
-    serializer_class = ProductSerializer
+class ProductDetailView(generics.ListAPIView):
+    queryset = PackSizes.objects.all()
+    serializer_class = ProductAndPackSizeSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['ProductCode__Product', 'ProductCode', 'ProductCode__RegistrationNo', 'ProductCode__ShelfLife']
 
+    # -------------- Add RM --------------------
 
-# -------------- Add RM --------------------
 
 class RawMaterialView(generics.CreateAPIView):
     queryset = RawMaterials.objects.all()
     serializer_class = RawMaterialSerializer
 
+    # -------------- View RM --------------------
 
-# -------------- Add PM --------------------
+
+class RawMaterialDetailView(generics.ListAPIView):
+    queryset = RawMaterials.objects.all()
+    serializer_class = RawMaterialSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = '__all__'
+
+    # -------------- Add PM --------------------
+
 
 class PackingMaterialView(generics.CreateAPIView):
     queryset = PackingMaterials.objects.all()
     serializer_class = PackingMaterialSerializer
 
+    # -------------- View RM --------------------
 
-# -------------- Batch Deviation ----------------
+
+class PackingMaterialDetailView(generics.ListAPIView):
+    queryset = PackingMaterials.objects.all()
+    serializer_class = PackingMaterialSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = '__all__'
+
+    # -------------- Batch Deviation ----------------
+
 
 class HighestBDNoView(APIView):
     def get(self, request):
