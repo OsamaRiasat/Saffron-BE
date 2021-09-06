@@ -676,7 +676,7 @@ class PostProductAnalysisSerializer(serializers.ModelSerializer):
         item = validated_data.pop('product_analysis_items')
         qc = validated_data.get('QCNo')
         print(qc.QCNo)
-        PMSample = PMSamples.objects.get(QCNo=qc.QCNo)
+        PMSample = ProductSamples.objects.get(QCNo=qc.QCNo)
         PMSample.status = "TESTED"
         PMSample.save()
         productcode = ProductSamples.objects.get(QCNo=qc.QCNo).batchNo.ProductCode.ProductCode

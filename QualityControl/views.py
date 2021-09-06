@@ -1380,7 +1380,7 @@ class ProductQCNoSampleView(APIView):
         dict['analyst'] = sample.analyst.username
 
         dict['ProductCode'] = pm_receiving.ProductCode.ProductCode
-        dict['Product'] = pm_receiving.ProductCode.ProductCode
+        dict['Product'] = pm_receiving.ProductCode
         dict['Units'] = sample.sampleUnity
         dict['quantityReceived'] = pm_receiving.batchSize
         dict['batchNo'] = pm_receiving.batchNo
