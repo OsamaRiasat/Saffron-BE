@@ -231,7 +231,7 @@ class PMNameSerializer(serializers.ModelSerializer):
 class PMDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackingMaterials
-        fields = ['PMCode', 'Material', 'Units', 'Type','PackSize',]
+        fields = ['PMCode', 'Material', 'Units', 'Type']
 
 class PackSizeSerializer(serializers.ModelSerializer):
     class Meta:

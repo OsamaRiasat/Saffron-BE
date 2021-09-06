@@ -746,7 +746,7 @@ class ProductAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     product = serializers.CharField(source='ProductMAnalysisID.QCNo.batchNo.ProductCode.Product')
     batchNo = serializers.CharField(source='ProductAnalysisID.QCNo.batchNo.batchNo')
     QCNo = serializers.CharField(source='ProductAnalysisID.QCNo.QCNo')
-    analysisDateTime = serializers.CharField(source='PMAnalysisID.analysisDateTime')
+    analysisDateTime = serializers.CharField(source='ProductAnalysisID.analysisDateTime')
     stage = serializers.CharField(source='ProductAnalysisID.QCNo.sampleStage')
 
     class Meta:
