@@ -59,5 +59,31 @@ urlpatterns = [
     path('PackSizesList/<str:PCode>/',PackSizesListView.as_view()),
     path('ViewFormulationForAssessment/<str:Pcode>/<int:batch_size>/<str:noOfBatches>/', ViewFormulationForAssessmentView.as_view()),
 
+    # --------------------New Formulation -----------------------
+
+    path('PCodeList/', PCodeView.as_view()),
+    path('PNameList/', PNameView.as_view()),
+    path('PCodeByPname/<path:Product>/', PCodeByPnameView.as_view()),
+    path('PnameByPCode/<str:Pcode>/', PnameByPCodeView.as_view()),
+    path('PackSizeList/<str:PCode>/', PackSizesView.as_view()),
+    path('PMCodeList/', PMCodeView.as_view()),
+    path('PMNameList/', PMNameView.as_view()),
+    path('PMCodeByName/<str:PMName>/', PMCodeByNameView.as_view()),
+    path('PMNameByPMCode/<str:PMCode>/', PMNameByPMCodeView.as_view()),
+    path('PMData/<str:PMCode>/', PMDataView.as_view()),
+    path('AddPMFormulation/', PMFormulationsView.as_view()),
+
+    # --------------------Edit Formulation -----------------------
+
+    path('FPCodeList/', FPCodeView.as_view()),
+    path('FPNameList/', FPNameView.as_view()),
+    # path('PCodeByPname/<str:Product>/', PCodeByPnameView.as_view()),
+    # path('PnameByPCode/<str:Pcode>/', PnameByPCodeView.as_view()),
+    path('ProductPMFormulation/<str:Pcode>/<str:PackSize>/', ProductPMFormulationView.as_view()),
+    # path('PMCodeList/', PMCodeView.as_view()),
+    # path('PMNameList/', PMNameView.as_view()),
+    # path('PMCodeByName/<str:PMName>/', PMCodeByNameView.as_view()),
+    # path('PMNameByPMCode/<str:PMCode>/', PMNameByPMCodeView.as_view()),
+    # path('PMData/<str:PMCode>/', PMDataView.as_view()),
 
 ]

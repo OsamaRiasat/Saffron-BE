@@ -609,8 +609,8 @@ class TempProductSpecificationsSerializer(serializers.ModelSerializer):
         specs = TempProductSpecifications.objects.create(**validated_data)
         specs.save()
         for i in item:
-            par = PMParameters.objects.get(parameter=i['parameter'])
-            itemspecs = TempPMSpecificationsItems.objects.create(
+            par = ProductParameters.objects.get(parameter=i['parameter'])
+            itemspecs = TempProductSpecificationsItems.objects.create(
                 specID=specs,
                 parameter=par,
                 specification=i['specification']
@@ -676,11 +676,11 @@ class PostProductAnalysisSerializer(serializers.ModelSerializer):
         item = validated_data.pop('product_analysis_items')
         qc = validated_data.get('QCNo')
         print(qc.QCNo)
-        PMSample = PMSamples.objects.get(QCNo=qc.QCNo)
+        PMSample = ProductSamples.objects.get(QCNo=qc.QCNo)
         PMSample.status = "TESTED"
         PMSample.save()
         productcode = ProductSamples.objects.get(QCNo=qc.QCNo).batchNo.ProductCode.ProductCode
-        specID = ProductSpecifications.objects.get(ProductCode=productcode, stage=qc.QCNo.sampleStage).specID
+        specID = ProductSpecifications.objects.get(ProductCode=productcode, stage=qc.sampleStage).specID
         analysis = ProductAnalysis.objects.create(
             QCNo=validated_data['QCNo'],
             specID=specID,
@@ -696,7 +696,7 @@ class PostProductAnalysisSerializer(serializers.ModelSerializer):
         analysis.save()
         for i in item:
             analysis_items = ProductAnalysisItems.objects.create(
-                PMAnalysisID=analysis,
+                ProductAnalysisID=analysis,
                 parameter=i['parameter'],
                 specification=i['specification'],
                 result=i['result']
@@ -746,7 +746,7 @@ class ProductAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     product = serializers.CharField(source='ProductMAnalysisID.QCNo.batchNo.ProductCode.Product')
     batchNo = serializers.CharField(source='ProductAnalysisID.QCNo.batchNo.batchNo')
     QCNo = serializers.CharField(source='ProductAnalysisID.QCNo.QCNo')
-    analysisDateTime = serializers.CharField(source='PMAnalysisID.analysisDateTime')
+    analysisDateTime = serializers.CharField(source='ProductAnalysisID.analysisDateTime')
     stage = serializers.CharField(source='ProductAnalysisID.QCNo.sampleStage')
 
     class Meta:

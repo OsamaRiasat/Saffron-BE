@@ -84,7 +84,7 @@ class PackingLog(models.Model):
 
 class PMFormulation(models.Model):
     ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
-    PackSize = models.ForeignKey(PackSizes, on_delete=models.CASCADE)
+    PackSize = PackSize = models.CharField(max_length=20)
     PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
     batchSize = models.IntegerField()
     quantity = models.DecimalField(decimal_places=3, max_digits=10)
@@ -97,4 +97,4 @@ class PMFormulation(models.Model):
     REQUIRED = ['ProductCode', 'PackSize', 'PMCode', 'batchSize', 'quantity', 'date', 'docNo']
 
     def __str__(self):
-        return str(self.ProductCode.Product + " " + self.PackSize.PackSize)
+        return str(self.ProductCode.Product + " " + self.PackSize)

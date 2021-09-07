@@ -407,9 +407,10 @@ class ProductSamples(models.Model):
     QCNo = models.CharField(max_length=20, primary_key=True)
     batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE)
     sampleStage = models.CharField(max_length=50)
-    deliveredBy = models.CharField(max_length=40)
-    receivedBy = models.CharField(max_length=40)
+    sampledBy = models.CharField(max_length=40)
     samplingDateTime = models.DateTimeField(auto_now=True)
+    sampleQuantity = models.DecimalField(max_digits=10, decimal_places=2)
+    sampleUnity = models.CharField(max_length=20)
 
     # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
@@ -419,7 +420,7 @@ class ProductSamples(models.Model):
     status = models.CharField(max_length=20, default="PENDING")
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
-    REQUIRED = ['QCNo', 'batchNo', 'sampleStage', 'deliveredBy', 'receivedBy']
+    REQUIRED = ['QCNo', 'batchNo', 'sampleStage', 'sampledBy', 'sampleQuantity','sampleUnity']
 
 
 class ProductAnalysis(models.Model):
@@ -479,7 +480,7 @@ class ProductAnalysisItemsLog(models.Model):
     specification = models.TextField(max_length=200)
     result = models.CharField(max_length=20)
 
-    REQUIRED = ['ProductAnalysisID', 'parameter', 'specification', 'result']
+    REQUIRED = ['ProductAnalysisID', 'parameter',    'specification', 'result']
 
     def __str__(self):
         return self.ProductAnalysisID.QCNo.QCNo
