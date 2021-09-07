@@ -4,11 +4,11 @@ from .views import *
 from rest_framework import serializers
 from Inventory.models import RMReceiving, PMReceiving, PackingMaterials, RawMaterials
 from QualityControl.models import RMSamples, PMSamples
-from .utils import getQCNO, PMgetQCNO
+from .utils import getQCNO, PMgetQCNO, FPgetQCNO
 from Account.models import User
 from .models import *
 from datetime import date
-
+from QualityControl.models import ProductSamples
 
 #  -------------------- RM SAMPLES --------------------
 
@@ -206,4 +206,33 @@ class BatchDeviationNoSerializer(serializers.ModelSerializer):
 class ChangeControlSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChangeControl
+        fields = '__all__'
+
+# ------------------- Product Sample ---------------------#
+
+class ProductSampleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSamples
+        fields = ['batchNo', 'sampleStage', 'sampledBy', 'sampleQuantity','sampleUnity']
+
+    def create(self, validated_data):
+        
+        qcno = FPgetQCNO()
+        
+        prod = ProductSamples.objects.create(
+            QCNo=qcno,
+            batchNo=validated_data['batchNo'],
+            sampleStage=validated_data['sampleStage'],
+            sampledBy=validated_data['sampledBy'],
+            sampleQuantity = validated_data['sampleQuantity'],
+            sampleUnity = validated_data['sampleUnity']
+        )
+        prod.save()
+        return prod
+
+#--------------------- Batch Review ----------------------#
+
+class BatchReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BatchReview
         fields = '__all__'

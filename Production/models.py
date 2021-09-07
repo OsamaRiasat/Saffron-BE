@@ -33,7 +33,7 @@ class BPRLog(models.Model):
 
     openingDate = models.DateField(null=True, blank=True)
     closingDate = models.DateField(null=True, blank=True)
-    batchStatus = models.CharField(max_length=10, default="OPEN")
+    batchStatus = models.CharField(max_length=100, default="OPEN")
     currentStage = models.CharField(max_length=20, default="ISSUED")
     packed = models.IntegerField(default=0)
     inProcess = models.IntegerField(blank=True, null=True)

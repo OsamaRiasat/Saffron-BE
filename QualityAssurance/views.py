@@ -3,7 +3,7 @@ from rest_framework import generics
 from django.shortcuts import render
 from rest_framework.views import APIView
 
-from Production.models import Stages
+from Production.models import BatchStages, Stages
 from Production.serializers import BPRSerializer
 from Products.models import DosageForms, PackSizes
 from .models import *
@@ -15,7 +15,7 @@ from .utils import *
 import pandas as pd
 from Account.models import User
 from datetime import date
-
+from rest_framework import status
 
 # Create your views here.
 
@@ -351,3 +351,110 @@ class HighestCCNoView(APIView):
 class ChangeControlView(generics.CreateAPIView):
     queryset = ChangeControl.objects.all()
     serializer_class = ChangeControlSerializer
+
+#-------------------------- Product Sample ---------------------------#
+
+class PSPCodeView(APIView):
+    def get(self, request):
+        pcode = BPRLog.objects.filter(batchStatus='OPEN',currentStage='PACKED')
+        serializer = PCodeSerializer(pcode, many=True)
+        return Response(serializer.data)
+
+class PSBatchNoView(APIView):
+    def get(self, request, Pcode):
+        bno = BPRLog.objects.filter(ProductCode=Pcode, batchStatus='OPEN', currentStage='PACKED')
+        serializer = BatchNoSerializer(bno, many=True)
+        return Response(serializer.data)
+
+class PSBatchDetailView(APIView):
+    def get(self, request, batchNo):
+        batch_detail = BPRLog.objects.get(batchNo=batchNo)
+        dic = {}
+        dic['MFGDate'] = batch_detail.MFGDate
+        dic['EXPDate'] = batch_detail.EXPDate
+        dic['currentStage'] = batch_detail.currentStage
+        dic['batchSize'] = batch_detail.batchSize
+        dic['QCNo'] = FPgetQCNO()
+        return Response(dic)
+
+class ProductSampleView(generics.CreateAPIView):
+    queryset = ProductSamples.objects.all()
+    serializer_class = ProductSampleSerializer
+
+#---------------- Batch Review -------------------#
+
+class BRPCodeView(APIView):
+    def get(self, request):
+        pcode = BPRLog.objects.filter(batchStatus='UNDER_REVIEWED')
+        serializer = PCodeSerializer(pcode, many=True)
+        return Response(serializer.data)
+
+class BRBatchNoView(APIView):
+    def get(self, request, Pcode):
+        bno = BPRLog.objects.filter(ProductCode=Pcode, batchStatus='UNDER_REVIEWED')
+        serializer = BatchNoSerializer(bno, many=True)
+        return Response(serializer.data)
+
+class BRBatchDetailView(APIView):
+    def get(self, request, batchNo):
+        batch_detail = BPRLog.objects.get(batchNo=batchNo)
+        dic = {}
+        dic['MFGDate'] = batch_detail.MFGDate
+        dic['EXPDate'] = batch_detail.EXPDate
+        dic['batchStatus'] = batch_detail.batchStatus
+        dic['batchSize'] = batch_detail.batchSize
+        dic['yieldPercentage'] = batch_detail.yieldPercentage
+        dic['inProcess'] = batch_detail.inProcess
+        dic['packed'] = batch_detail.packed
+        return Response(dic)
+
+class BRDetailView(APIView):
+    serializer_class = BatchReviewSerializer
+    def post(self, request):
+        data = request.data
+        batchNo = data['batchNo']
+        remarks = data['remarks']
+        permittedDispatch = data['permittedDispatch']
+        dispatchPermission = data['dispatchPermission']
+        checkNCRData = NCR.objects.filter(batchNo=batchNo)
+        checkBDData = BatchDeviation.objects.filter(batchNo=batchNo)
+        for checkNCR in checkNCRData:
+            if checkNCR.status == 'OPEN':
+                return Response({'message':'NCR is not closed'},status=status.HTTP_400_BAD_REQUEST)
+        for checkBD in checkBDData:
+            if checkBD.status == 'OPEN':
+                return Response({'message':'Batch Daviation is not closed'},status=status.HTTP_400_BAD_REQUEST)
+        dict = {}
+        detail = BPRLog.objects.get(batchNo=batchNo)
+        dict['Product'] = detail.ProductCode.Product
+        dict['batchNo'] = batchNo
+        dict['batchSize'] = detail.batchSize
+        dict['MFGDate'] = detail.MFGDate
+        dict['EXPDate'] = detail.EXPDate
+        dict['batchStatus'] = permittedDispatch
+        dict['dispatchPermission'] = dispatchPermission
+        dict['remarks'] = remarks
+        NCRNoList = []
+        ncr = NCR.objects.filter(batchNo=batchNo).values_list('NCRNo')
+        for i in ncr:
+            dic={}
+            dic['NCRNo'] = i[0]
+            NCRNoList.append(dic)
+        dict['NCRNoList'] = NCRNoList
+        BDNoList = []
+        bd = BatchDeviation.objects.filter(batchNo=batchNo).values_list('deviationNo')
+        for i in bd:
+            dic={}
+            dic['deviationNo'] = i[0]
+            BDNoList.append(dic)
+        dict['BDNoList'] = BDNoList
+        detail.batchStatus = permittedDispatch
+        detail.save()
+        bprlog=BPRLog.objects.get(batchNo=batchNo)
+        br=BatchReview.objects.create(
+            batchNo = bprlog,
+            remarks = remarks,
+            permittedDispatch = permittedDispatch,
+            dispatchPermission = dispatchPermission,
+        )
+        return Response(dict)

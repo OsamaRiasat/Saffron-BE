@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 
 # Create your models here.
 from Production.models import BPRLog
@@ -55,6 +56,7 @@ class BatchDeviation(models.Model):
     keyword = models.CharField(max_length=30)
     descriptionOfDeviation = models.CharField(max_length=200, null=True, blank=True)
     actionTaken = models.CharField(max_length=100, null=True, blank=True)
+    status = models.CharField(max_length=20, default="CLOSED")
 
     def __str__(self):
         return str(self.deviationNo)
@@ -82,3 +84,14 @@ class ChangeControl(models.Model):
 
     def __str__(self):
         return str(self.CCNo)
+
+class BatchReview(models.Model):
+    date = models.DateField(auto_now=True)
+    BRNo = models.AutoField(primary_key=True)
+    batchNo = models.ForeignKey(BPRLog, on_delete=CASCADE, related_name='BR')
+    dispatchPermission = models.CharField(max_length=30)
+    permittedDispatch = models.CharField(max_length=30)
+    remarks = models.CharField(max_length=200, blank=True, null=True)
+
+    def _str_(self):
+        return str(self.BRNo)
