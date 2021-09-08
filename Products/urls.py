@@ -4,24 +4,20 @@ from .views import *
 
 router = DefaultRouter()
 
-
-
 # router.register('Products', ProductViews, basename='Products')
 # router.register('DosageForms', DosageFormsViews, basename='DosageForms')
 # router.register('PackSizes', PackSizesViews, basename='PackSizes')
-
 
 
 urlpatterns = [
     path('viewset/', include(router.urls)),
     path('viewset/<str:pk>/', include(router.urls)),
 
-
     # RM Formulation
     path('RMFormulation/', FormulationsView.as_view()),
-    #Populate Product Table
-    path('PopulateProductTable/',PopulateProductView.as_view()),
-    path('PopulateFormulationTable/',PopulateRMFormulationView.as_view()),
+    # Populate Product Table
+    path('PopulateProductTable/', PopulateProductView.as_view()),
+    path('PopulateFormulationTable/', PopulateRMFormulationView.as_view()),
 
     # --------------------New Formulation -----------------------#
     path('PCodeList/', PCodeView.as_view()),
@@ -45,4 +41,11 @@ urlpatterns = [
     # path('RMCodeByName/<str:RMName>/', RMCodeByNameView.as_view()),
     # path('RMNameByRMCode/<str:RMCode>/', RMNameByRMCodeView.as_view()),
     # path('RMData/<str:RMCode>/', RMDataView.as_view()),
+
+    # ---------------- Add PackSize -----------------------
+
+    path('ProductCodeListForPackSize/', ProductCodeListForPackSizeView.as_view()),
+    path('ProductData/<str:pk>/', ProductDataView.as_view()),
+    path('AddPackSize/', AddPackSizeView.as_view()),
+
 ]

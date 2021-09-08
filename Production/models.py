@@ -24,7 +24,7 @@ class BatchIssuanceRequest(models.Model):
 
 
 class BPRLog(models.Model):
-    batchNo = models.CharField(max_length=10, primary_key=True)
+    batchNo = models.CharField(max_length=30, primary_key=True)
     planNo = models.ForeignKey(Plan, on_delete=models.CASCADE, related_name="planN")
     ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="proCode")
     batchSize = models.IntegerField()
@@ -33,8 +33,8 @@ class BPRLog(models.Model):
 
     openingDate = models.DateField(null=True, blank=True)
     closingDate = models.DateField(null=True, blank=True)
-    batchStatus = models.CharField(max_length=10, default="OPEN")
-    currentStage = models.CharField(max_length=20, default="ISSUED")
+    batchStatus = models.CharField(max_length=50, default="OPEN")
+    currentStage = models.CharField(max_length=50, default="ISSUED")
     packed = models.IntegerField(default=0)
     inProcess = models.IntegerField(blank=True, null=True)
     yieldPercentage = models.FloatField(blank=True, null=True)

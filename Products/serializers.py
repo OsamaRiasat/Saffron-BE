@@ -92,3 +92,18 @@ class RMDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = RawMaterials
         fields = ['RMCode', 'Material', 'Units', 'Type', ]
+
+
+# ---------------- Add PackSize -----------------------
+
+class ProductDataSerializer(serializers.ModelSerializer):
+    DosageForm = serializers.CharField(source='dosageForm.dosageForm')
+    class Meta:
+        model = Products
+        fields = ['Product', 'DosageForm', 'RegistrationNo']
+
+
+class AddPackSizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackSizes
+        fields = '__all__'

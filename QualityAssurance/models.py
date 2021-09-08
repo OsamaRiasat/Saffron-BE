@@ -50,11 +50,12 @@ class NCR(models.Model):
 class BatchDeviation(models.Model):
     date = models.DateField(auto_now=True)
     deviationNo = models.AutoField(primary_key=True)
-    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="BNo")
+    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="BDNo")
     stage = models.CharField(max_length=50)
     keyword = models.CharField(max_length=30)
     descriptionOfDeviation = models.CharField(max_length=200, null=True, blank=True)
     actionTaken = models.CharField(max_length=100, null=True, blank=True)
+    status = models.CharField(max_length=20, default="CLOSED")
 
     def __str__(self):
         return str(self.deviationNo)
@@ -64,7 +65,7 @@ class ChangeControl(models.Model):
     date = models.DateField(auto_now=True)
     CCNo = models.AutoField(primary_key=True)
     status = models.CharField(max_length=20, default="OPEN")
-    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="B")
+    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="BR")
     initiator = models.CharField(max_length=30)
     department = models.CharField(max_length=30)
     natureOfChange = models.CharField(max_length=30)
@@ -75,10 +76,30 @@ class ChangeControl(models.Model):
     relatedChanges = models.CharField(max_length=200)
     descriptionOfChange = models.CharField(max_length=200)
     intendedPurposeOfChange = models.CharField(max_length=200)
-    commentsOfProductionManager = models.CharField(max_length=200,  blank=True, null=True)
+    commentsOfProductionManager = models.CharField(max_length=200, blank=True, null=True)
     commentsOfQCManager = models.CharField(max_length=200, blank=True, null=True)
     commentsOfPlantDirector = models.CharField(max_length=200)
     commentsOfQAManager = models.CharField(max_length=200)
 
     def __str__(self):
         return str(self.CCNo)
+
+    #   --------------------  Batch review  -------------------
+
+
+class BatchReview(models.Model):
+    date = models.DateField(auto_now=True)
+    BRNo = models.AutoField(primary_key=True)
+    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE, related_name="BRNo")
+    dispatchPermission = models.CharField(max_length=30)
+    permittedDispatch = models.CharField(max_length=30)
+    remarks = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.BRNo
+
+
+# class FGBinCards(models.Model):
+#     DateTime = models.DateTimeField(auto_now_add=True)
+#     ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="FG")
+#     packSize = models.CharField(max_length=20)

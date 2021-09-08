@@ -89,4 +89,17 @@ urlpatterns = [
     # path('BatchNo/<str:Pcode>/', BatchNoView.as_view()),s
     path('ChangeControl/', ChangeControlView.as_view()),
 
+    # -------------------- Product Sample -----------------------
+    path('PSPCode/', PSPCodeView.as_view()),
+    path('PSBatchNo/<str:Pcode>/', PSBatchNoView.as_view()),
+    path('PSBatchDetail/<str:batchNo>/', PSBatchDetailView.as_view()),
+    # path('AllUsers/', AllUsersView.as_view()),
+    path('ProductSample/', ProductSampleView.as_view()),
+
+    # -------------- Batch Review ----------------
+    path('BRPCode/', BRPCodeView.as_view()),
+    path('BRBatchNo/<str:Pcode>/', BRBatchNoView.as_view()),
+    path('BRBatchDetail/<str:batchNo>/', BRBatchDetailView.as_view()),
+    path('BRDetail/', BRDetailView.as_view()),
+
 ]

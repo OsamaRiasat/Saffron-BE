@@ -126,7 +126,7 @@ class RMDataView(APIView):
         return Response(serializer.data)
 
 
-# ---------------- Edit Formulation -----------------------#
+# ---------------- Edit Formulation -----------------------
 
 class FPCodeView(APIView):
     def get(self, request):
@@ -146,7 +146,6 @@ class FPNameView(APIView):
 
 class ProductFormulationView(APIView):
     def get(self, request, Pcode):
-
         formulation = Formulation.objects.filter(ProductCode=Pcode)
         dict = []
         for i in formulation:
@@ -159,3 +158,20 @@ class ProductFormulationView(APIView):
             dic['quantity'] = i.quantity
             dict.append(dic)
         return Response(dict)
+
+
+# ---------------- Add PackSize -----------------------
+
+class ProductCodeListForPackSizeView(generics.ListAPIView):
+    queryset = Products.objects.all()
+    serializer_class = PCodeSerializer
+
+
+class ProductDataView(generics.RetrieveAPIView):
+    queryset = Products.objects.all()
+    serializer_class = ProductDataSerializer
+
+
+class AddPackSizeView(generics.CreateAPIView):
+    queryset = PackSizes.objects.all()
+    serializer_class = AddPackSizeSerializer
