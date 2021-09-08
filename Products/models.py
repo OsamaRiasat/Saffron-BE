@@ -30,6 +30,9 @@ class PackSizes(models.Model):
     MRP = models.FloatField()
     ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('PackSize', 'ProductCode',)
+
     def __str__(self):
         return str(self.ProductCode.ProductCode +" "+self.PackSize)
 
@@ -64,6 +67,7 @@ class Formulation(models.Model):
     version = models.DecimalField(max_digits=4, decimal_places=1, default=1.0)
 
     REQUIRED = ['ProductCode', 'RMCode', 'batchSize', 'quantity', 'date', 'docNo']
+
 
     def __str__(self):
         return self.ProductCode.Product

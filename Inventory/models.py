@@ -9,6 +9,7 @@ from MaterialSuppliers.models import Suppliers
 # Raw Material
 
 
+
 class RawMaterialTypes(models.Model):
     Type = models.CharField(max_length=20, primary_key=True)
 
@@ -57,6 +58,7 @@ class PMBinCards(models.Model):
     QCNo = models.CharField(max_length=20)
     GRBalance = models.DecimalField(max_digits=10, decimal_places=2)  # received by default
     PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
+
 
     # ------------------ DEMANDS -------------------
 
