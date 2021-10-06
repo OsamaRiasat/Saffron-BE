@@ -4,7 +4,7 @@ from .views import *
 from rest_framework import serializers
 from Inventory.models import RMReceiving, PMReceiving, PackingMaterials, RawMaterials
 from QualityControl.models import RMSamples, PMSamples, ProductSamples
-from .utils import getQCNO, PMgetQCNO
+from .utils import getQCNO, PMgetQCNO, FPgetQCNO
 from Account.models import User
 from .models import *
 from datetime import date
@@ -59,7 +59,7 @@ class PMSampleSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         grno = validated_data['GRNo']
-        qcno = getQCNO()
+        qcno = PMgetQCNO()
         receiving = PMReceiving.objects.filter(GRNo=grno).first()
         rm = PMSamples.objects.create(
             QCNo=qcno,
