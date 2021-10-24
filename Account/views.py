@@ -60,7 +60,9 @@ class LogoutAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
+        print(request.user.username)
         request.user.auth_token.delete()
+
         # logout(request)
         return Response({'message': "User logged out"})
 

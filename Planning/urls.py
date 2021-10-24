@@ -5,14 +5,15 @@ from .views import *
 
 router = DefaultRouter()
 # A-Product Selection Form
-router.register('ProductNames', ProductNamesViews, basename='ProductNames')
-router.register('ProductCodes', ProductCodesViews, basename='ProductNames')
+# router.register('ProductNames', ProductNamesViews, basename='ProductNames')
+# router.register('ProductCodes', ProductCodesViews, basename='ProductNames')
 
 urlpatterns = [
-    path('viewset/', include(router.urls)),
-    path('viewset/<str:pk>/', include(router.urls)),
+   
 
 # A-Product Selection
+    path('viewset/ProductCodes/', ProductCodesViews.as_view()),
+    path('viewset/ProductNames/', ProductNamesViews.as_view()),
     path('highestPlanNo/', highestPlanNoView.as_view()),
     path('ProductDetailsByCode/<str:ProductCode>/', ProductDetailsByCodeView.as_view()),
     path('ProductDetailsByName/<str:Product>/', ProductDetailsByNameView.as_view()),
