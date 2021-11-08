@@ -88,7 +88,9 @@ urlpatterns = [
     # path('ProductCode/', PCodesForLineClearanceView.as_view()),
     # path('BatchNo/<str:Pcode>/', BatchNoView.as_view()),s
     path('ChangeControl/', ChangeControlView.as_view()),
-
+    path('ChangeControlNumbersList/', ChangeControlNumbersListView.as_view()),
+    path('ChangeControlGetData/<str:pk>', ChangeControlGetDataView.as_view()),
+    
     # -------------------- Product Sample -----------------------
     path('PSPCode/', PSPCodeView.as_view()),
     path('PSBatchNo/<str:Pcode>/', PSBatchNoView.as_view()),

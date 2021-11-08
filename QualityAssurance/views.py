@@ -353,6 +353,18 @@ class ChangeControlView(generics.CreateAPIView):
     serializer_class = ChangeControlSerializer
 
 
+class ChangeControlNumbersListView(APIView):
+    def get(self, request):
+        data = ChangeControl.objects.all()
+        l=[]
+        for i in data:
+            l.append(i.CCNo)
+        return Response(l)
+
+class ChangeControlGetDataView(generics.RetrieveAPIView):
+    queryset = ChangeControl.objects.all()
+    serializer_class = ChangeControlSerializer
+
 # -------------------------- Product Sample ---------------------------#
 
 class PSPCodeView(APIView):
