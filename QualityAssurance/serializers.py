@@ -156,6 +156,7 @@ class PCodeSerializer(serializers.ModelSerializer):
         model = Products
         fields = ['ProductCode', ]
 
+
 #   ---------------     View Product    ----------------------
 
 class ProductAndPackSizeSerializer(serializers.ModelSerializer):
@@ -165,7 +166,8 @@ class ProductAndPackSizeSerializer(serializers.ModelSerializer):
     GenericName = serializers.CharField(source='ProductCode.GenericName')
     Composition = serializers.CharField(source='ProductCode.Composition')
     ShelfLife = serializers.CharField(source='ProductCode.ShelfLife')
-    RenewalDate = serializers.DateField(source='ProductCode.RenewalDate',format="%d-%m-%Y")
+    RenewalDate = serializers.DateField(source='ProductCode.RenewalDate', format="%d-%m-%Y")
+
     class Meta:
         model = PackSizes
         fields = ['ProductCode', 'registrationNo', 'PackSize', 'product', 'dosageForm', 'GenericName', 'Composition',
@@ -207,6 +209,45 @@ class ChangeControlSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChangeControl
         fields = '__all__'
+
+
+class changeControlVerificationOfChangesSerialerzer(serializers.ModelSerializer):
+    class Meta:
+        model = ChangeControl
+        fields = ['implementedChanges', 'degreeOfImplementation', 'verifiedBy', 'changeDate']
+
+
+# ------------------- DRF  ---------------------#
+
+class DRFItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DRFItems
+
+        fields = ['RMCode', 'formulaQuantity', 'additionalQuantity', ]
+
+
+class DRFPostSerializer(serializers.ModelSerializer):
+    demandedItems = DRFItemsSerializer(many=True,write_only=True)
+
+    class Meta:
+        model = DRF
+        fields = ['ProductCode', 'BatchNo','demandedItems', ]
+        # extra_kwargs = {
+        #     'DNo': {'read_only': True},
+        #     'DDate': {'read_only': True},
+        # }
+
+    def create(self, validated_data):
+        dItems = validated_data.pop('demandedItems')
+        drfNo = DRF.objects.create(ProductCode=validated_data.get('ProductCode'),BatchNo=validated_data.get('BatchNo'))
+        drfNo.save()
+
+        for i in dItems:
+            demands = DRFItems.objects.create(DRFNo=drfNo, RMCode=i['RMCode'],
+                                              formulaQuantity=i['formulaQuantity'],
+                                              additionalQuantity=i['additionalQuantity'])
+            demands.save()
+        return drfNo
 
 
 # ------------------- Product Sample ---------------------#
