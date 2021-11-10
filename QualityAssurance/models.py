@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from Inventory.models import RawMaterials
 from Production.models import BPRLog
 from Products.models import Products
 
@@ -81,8 +82,38 @@ class ChangeControl(models.Model):
     commentsOfPlantDirector = models.CharField(max_length=200)
     commentsOfQAManager = models.CharField(max_length=200)
 
+    implementedChanges = models.CharField(max_length=500)
+    degreeOfImplementation = models.CharField(max_length=500)
+    verifiedBy = models.CharField(max_length=50)
+    changeDate = models.DateField()
+
     def __str__(self):
         return str(self.CCNo)
+
+    #   --------------------  Dispensation Request Form  -------------------
+
+
+class DRF(models.Model):
+    DRFNo = models.AutoField(primary_key=True)
+    Date = models.DateField(auto_now=True)
+    ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='drf')
+    BatchNo = models.CharField(max_length=20)
+
+    REQUIRED = ['DRFNo', 'ProductCode', 'BatchNo']
+
+    def __str__(self):
+        return self.BatchNo
+
+
+class DRFItems(models.Model):
+    DRFNo = models.ForeignKey(DRF,on_delete=models.CASCADE, related_name='drf')
+    RMCode = models.ForeignKey(RawMaterials, on_delete=models.CASCADE)
+    formulaQuantity = models.DecimalField(decimal_places=3, max_digits=10)
+    additionalQuantity = models.DecimalField(decimal_places=3, max_digits=10)
+    REQUIRED = ['RMCode', 'formulaQuantity', 'additionalQuantity']
+
+    def __str__(self):
+        return self.RMCode.RMCode
 
     #   --------------------  Batch review  -------------------
 
@@ -97,7 +128,6 @@ class BatchReview(models.Model):
 
     def __str__(self):
         return self.BRNo
-
 
 # class FGBinCards(models.Model):
 #     DateTime = models.DateTimeField(auto_now_add=True)

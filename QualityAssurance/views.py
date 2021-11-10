@@ -348,10 +348,48 @@ class HighestCCNoView(APIView):
         return Response(dic)
 
 
+# Print Change Control
+
 class ChangeControlView(generics.CreateAPIView):
     queryset = ChangeControl.objects.all()
     serializer_class = ChangeControlSerializer
 
+
+class ChangeControlNumbersListView(APIView):
+    def get(self, request):
+        data = ChangeControl.objects.all()
+        l = []
+        for i in data:
+            l.append(i.CCNo)
+        return Response(l)
+
+
+class ChangeControlGetDataView(generics.RetrieveAPIView):
+    queryset = ChangeControl.objects.all()
+    serializer_class = ChangeControlSerializer
+
+
+class changeControlVerificationOfChangesView(generics.UpdateAPIView):
+    queryset = ChangeControl.objects.all()
+    serializer_class = changeControlVerificationOfChangesSerialerzer
+
+
+# -------------------------- Dispensation Request DRF ---------------------------#
+
+class HighestDRFNoView(APIView):
+    def get(self, request):
+        DRFNo1 = 0
+
+        DRFNo1 = DRF.objects.aggregate(Max('DRFNo'))
+        DRFNo1 = DRFNo1['DRFNo__max']
+        if DRFNo1 is None:
+            DRFNo1 = 0
+        dic = {'DRFNo1': DRFNo1}
+        return Response(dic)
+
+class DRFPostView(generics.CreateAPIView):
+    serializer_class = DRFPostSerializer
+    queryset = DRF.objects.all()
 
 # -------------------------- Product Sample ---------------------------#
 

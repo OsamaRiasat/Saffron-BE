@@ -88,6 +88,17 @@ urlpatterns = [
     # path('ProductCode/', PCodesForLineClearanceView.as_view()),
     # path('BatchNo/<str:Pcode>/', BatchNoView.as_view()),s
     path('ChangeControl/', ChangeControlView.as_view()),
+    path('ChangeControlNumbersList/', ChangeControlNumbersListView.as_view()),
+    path('ChangeControlGetData/<str:pk>', ChangeControlGetDataView.as_view()),
+    path('changeControlVerificationOfChanges/<str:pk>', changeControlVerificationOfChangesView.as_view()),
+
+    # -------------------- Dispensation Request DRF -----------------------
+    # /inventory/viewset/RawMaterialNames/
+    # /inventory/viewset/RawMaterialCodes/
+    # /inventory/RawMaterialSearchByName/{Material}/
+    # /inventory/RawMaterialSearchByRMCode/{RMCode}/
+    path('HighestDRFNo/', HighestDRFNoView.as_view()),
+    path('DRFPostView/', DRFPostView.as_view()),
 
     # -------------------- Product Sample -----------------------
     path('PSPCode/', PSPCodeView.as_view()),

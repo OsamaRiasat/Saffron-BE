@@ -14,15 +14,35 @@ class highestPlanNoView(APIView):
         planNo = Plan.objects.all().aggregate(Max('planNo'))
         return Response(planNo)
 
-class ProductNamesViews(viewsets.ModelViewSet):
-    serializer_class = ProductNamesSerializer
-    queryset = Products.objects.all()
+# class ProductNamesViews(viewsets.ModelViewSet):
+#     serializer_class = ProductNamesSerializer
+#     queryset = Products.objects.all()
 
+class ProductNamesViews(APIView):
+    def get(self,request):
+        data = PackSizes.objects.all()
+        l = []
+        for obj in data:
+            dic = {}
+            dic["Product"]=obj.ProductCode.Product
+            l.append(dic)
+        return Response(l)
 
-class ProductCodesViews(viewsets.ModelViewSet):
-    serializer_class = ProductCodesSerializer
-    queryset = Products.objects.all()
+class ProductCodesViews(APIView):
+    def get(self,request):
+        data = PackSizes.objects.all()
+        l = []
+        for obj in data:
+            dic = {}
+            dic["ProductCode"]=obj.ProductCode.ProductCode
+            l.append(dic)
+        return Response(l)
 
+#
+# class ProductCodesViews(viewsets.ModelViewSet):
+#     serializer_class = ProductCodesSerializer
+#     queryset = Products.objects.all()
+#
 
 class ProductDetailsByCodeView(APIView):
 
