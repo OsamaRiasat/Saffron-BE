@@ -107,6 +107,7 @@ urlpatterns = [
     # path('AllUsers/', AllUsersView.as_view()),
     path('ProductSample/', ProductSampleView.as_view()),
 
+
     # -------------- Batch Review ----------------
     path('BRPCode/', BRPCodeView.as_view()),
     path('BRBatchNo/<str:Pcode>/', BRBatchNoView.as_view()),
