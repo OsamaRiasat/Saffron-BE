@@ -206,9 +206,14 @@ class BatchDeviationNoSerializer(serializers.ModelSerializer):
 
 # ---------------- Change Control ---------------
 class ChangeControlSerializer(serializers.ModelSerializer):
+    product = serializers.CharField(source='batchNo.ProductCode.Product')
+
     class Meta:
         model = ChangeControl
-        fields = '__all__'
+        fields = ['date', 'CCNo', 'status', 'initiator', 'department', 'natureOfChange', 'keyword', 'category',
+                  'QAStatus', 'name',
+                  'descriptionOfChange', 'intendedPurposeOfChange', 'commentsOfProductionManager',
+                  'commentsOfQCManager', 'commentsOfPlantDirector', 'commentsOfQAManager','product']
 
 
 class changeControlVerificationOfChangesSerialerzer(serializers.ModelSerializer):
@@ -227,11 +232,11 @@ class DRFItemsSerializer(serializers.ModelSerializer):
 
 
 class DRFPostSerializer(serializers.ModelSerializer):
-    demandedItems = DRFItemsSerializer(many=True,write_only=True)
+    demandedItems = DRFItemsSerializer(many=True, write_only=True)
 
     class Meta:
         model = DRF
-        fields = ['ProductCode', 'BatchNo','demandedItems', ]
+        fields = ['ProductCode', 'BatchNo', 'demandedItems', ]
         # extra_kwargs = {
         #     'DNo': {'read_only': True},
         #     'DDate': {'read_only': True},
@@ -239,7 +244,7 @@ class DRFPostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         dItems = validated_data.pop('demandedItems')
-        drfNo = DRF.objects.create(ProductCode=validated_data.get('ProductCode'),BatchNo=validated_data.get('BatchNo'))
+        drfNo = DRF.objects.create(ProductCode=validated_data.get('ProductCode'), BatchNo=validated_data.get('BatchNo'))
         drfNo.save()
 
         for i in dItems:
