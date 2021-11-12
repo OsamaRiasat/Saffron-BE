@@ -168,6 +168,20 @@ class RMPurchaseOrderListOfMaterialsForFormView(APIView):
             l.append(dic)
         return Response(l)
 
+class RMPurchaseOrderListOfMaterialCodesForFormView(APIView):
+    def get(self, request, SID, DNo):
+        # print("RMCode",RMCode)
+        # print("RMCode", DNo)
+        l1 = supplierApprovedItemsCodesList(SID)
+        l2 = demandedItemsCodesList(DNo)
+        intersection = set.intersection(set(l1), set(l2))
+        l = []
+        for RMCode in intersection:
+            dic = {}
+            dic["RMCode"] = RMCode.Material
+            l.append(dic)
+        return Response(l)
+
 
 class RMPurchaseOrdersWithOpenStatusView(APIView):
     def get(self, request):
