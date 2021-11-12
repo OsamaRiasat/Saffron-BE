@@ -90,7 +90,8 @@ urlpatterns = [
     path('ChangeControl/', ChangeControlView.as_view()),
     path('ChangeControlNumbersList/', ChangeControlNumbersListView.as_view()),
     path('ChangeControlGetData/<str:pk>', ChangeControlGetDataView.as_view()),
-    path('changeControlVerificationOfChanges/<str:pk>', changeControlVerificationOfChangesView.as_view()),
+    path('ChangeControlGetData/<str:pk>', ChangeControlGetDataView.as_view()),
+    path('QAs', QAsView.as_view()),
 
     # -------------------- Dispensation Request DRF -----------------------
     # /inventory/viewset/RawMaterialNames/
