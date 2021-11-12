@@ -219,7 +219,7 @@ class ChangeControlSerializer(serializers.ModelSerializer):
 class changeControlVerificationOfChangesSerialerzer(serializers.ModelSerializer):
     class Meta:
         model = ChangeControl
-        fields = ['implementedChanges', 'degreeOfImplementation', 'verifiedBy', 'changeDate']
+        fields = ['implementedChanges', 'degreeOfImplementation', 'verifiedBy', 'changeDate','status']
 
 
 # ------------------- DRF  ---------------------#
