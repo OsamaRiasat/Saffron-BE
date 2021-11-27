@@ -91,6 +91,7 @@ urlpatterns = [
     path('ChangeControlNumbersList/', ChangeControlNumbersListView.as_view()),
     path('ChangeControlGetData/<str:pk>', ChangeControlGetDataView.as_view()),
     path('changeControlVerificationOfChanges/<str:pk>', changeControlVerificationOfChangesView.as_view()),
+    path('QAs', QAsView.as_view()),
 
     # -------------------- Dispensation Request DRF -----------------------
     # /inventory/viewset/RawMaterialNames/
@@ -106,6 +107,7 @@ urlpatterns = [
     path('PSBatchDetail/<str:batchNo>/', PSBatchDetailView.as_view()),
     # path('AllUsers/', AllUsersView.as_view()),
     path('ProductSample/', ProductSampleView.as_view()),
+
 
     # -------------- Batch Review ----------------
     path('BRPCode/', BRPCodeView.as_view()),

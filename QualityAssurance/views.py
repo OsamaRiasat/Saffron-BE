@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from Production.models import Stages
 from Production.serializers import BPRSerializer
 from Products.models import DosageForms, PackSizes
+from QualityControl.serializers import AnalystSerializer
 from .models import *
 from .serializers import *
 from Inventory.models import RMReceiving, PMReceiving
@@ -352,7 +353,7 @@ class HighestCCNoView(APIView):
 
 class ChangeControlView(generics.CreateAPIView):
     queryset = ChangeControl.objects.all()
-    serializer_class = ChangeControlSerializer
+    serializer_class = ChangeControlForPostSerializer
 
 
 class ChangeControlNumbersListView(APIView):
@@ -372,6 +373,13 @@ class ChangeControlGetDataView(generics.RetrieveAPIView):
 class changeControlVerificationOfChangesView(generics.UpdateAPIView):
     queryset = ChangeControl.objects.all()
     serializer_class = changeControlVerificationOfChangesSerialerzer
+
+class QAsView(APIView):
+    def get(self, request):
+        analysts = User.objects.filter(role="Quality Assurance", is_active=True)
+        print(analysts)
+        serializer = AnalystSerializer(analysts, many=True)
+        return Response(serializer.data)
 
 
 # -------------------------- Dispensation Request DRF ---------------------------#

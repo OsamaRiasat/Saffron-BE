@@ -63,6 +63,7 @@ class BatchDeviation(models.Model):
 
 
 class ChangeControl(models.Model):
+
     date = models.DateField(auto_now=True)
     CCNo = models.AutoField(primary_key=True)
     status = models.CharField(max_length=20, default="OPEN")

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
@@ -32,7 +32,7 @@ class SupplierApprovedMaterialsView(APIView):
         l = []
         for obj in data:
             dic = {}
-            if obj2.materialType=="RM":
+            if obj.materialType=="RM":
                 Materials = RawMaterials.objects.filter(pk=obj.MCode).only('Material')
                 dic["Material"] = Materials.get().Material
                 l.append(dic)
@@ -42,3 +42,8 @@ class SupplierApprovedMaterialsView(APIView):
                 l.append(dic)
 
         return Response(l)
+
+class suppliers(generics.ListAPIView):
+    queryset = Suppliers.objects.all()
+    serializer_class = SuppliersSerializer
+

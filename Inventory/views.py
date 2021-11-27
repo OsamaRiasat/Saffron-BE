@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 
-from MaterialSuppliers.utils import supplierApprovedItemsCodesList
-from .utils import demandedItemsCodesList, PMdemandedItemsCodesList
+from MaterialSuppliers.utils import supplierApprovedItemsCodesList, supplierApprovedItemsNamesList
+from .utils import demandedItemsCodesList, PMdemandedItemsCodesList, demandedItemsNamesList, PMdemandedItemsNamesList
 import pandas as pd
 
 
@@ -154,7 +154,7 @@ class RMPurchaseOrderHighestPONoView(APIView):
         return Response(PONo)
 
 
-class RMPurchaseOrderListOfMaterialsForFormView(APIView):
+class RMPurchaseOrderListOfMaterialCodesForFormView(APIView):
     def get(self, request, SID, DNo):
         # print("RMCode",RMCode)
         # print("RMCode", DNo)
@@ -165,6 +165,21 @@ class RMPurchaseOrderListOfMaterialsForFormView(APIView):
         for RMCode in intersection:
             dic = {}
             dic["RMCode"] = RMCode
+            l.append(dic)
+        return Response(l)
+
+
+class RMPurchaseOrderListOfMaterialsForFormView(APIView):
+    def get(self, request, SID, DNo):
+        # print("RMCode",RMCode)
+        # print("RMCode", DNo)
+        l1 = supplierApprovedItemsNamesList(SID)
+        l2 = demandedItemsNamesList(DNo)
+        intersection = set.intersection(set(l1), set(l2))
+        l = []
+        for RMName in intersection:
+            dic = {}
+            dic["RMName"] = RMName
             l.append(dic)
         return Response(l)
 
@@ -202,7 +217,9 @@ class PMPurchaseOrderHighestPONoView(APIView):
         return Response(PONo)
 
 
-class PMPurchaseOrderListOfMaterialsForFormView(APIView):
+
+
+class PMPurchaseOrderListOfMaterialCodesForFormView(APIView):
     def get(self, request, SID, DNo):
         # print("RMCode",RMCode)
         # print("RMCode", DNo)
@@ -213,6 +230,21 @@ class PMPurchaseOrderListOfMaterialsForFormView(APIView):
         for PMCode in intersection:
             dic = {}
             dic["PMCode"] = PMCode
+            l.append(dic)
+        return Response(l)
+
+
+class PMPurchaseOrderListOfMaterialsForFormView(APIView):
+    def get(self, request, SID, DNo):
+        # print("RMCode",RMCode)
+        # print("RMCode", DNo)
+        l1 = supplierApprovedItemsNamesList(SID)
+        l2 = PMdemandedItemsNamesList(DNo)
+        intersection = set.intersection(set(l1), set(l2))
+        l = []
+        for PMName in intersection:
+            dic = {}
+            dic["PMName"] = PMName
             l.append(dic)
         return Response(l)
 
