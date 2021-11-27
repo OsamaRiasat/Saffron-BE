@@ -1,5 +1,7 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
+
+from MaterialSuppliers.views import SupplierApprovedMaterialsView
 from .views import *
 
 
@@ -44,25 +46,31 @@ urlpatterns = [
     # RMDemands
     path('RMDemands/', RMDemandsView.as_view()),
     path('RMDemandHighestDNo/', RMDemandHighestDNoView.as_view()),
-    path('RMDemandsDNosWithPendingStatus/', RMDemandsDNosWithPendingStatus.as_view()),
+
 
     # PMDemands
     path('PMDemands/', PMDemandsView.as_view()),
     path('PMDemandHighestDNo/', PMDemandHighestDNoView.as_view()),
-    path('PMDemandsDNosWithPendingStatus/', PMDemandsDNosWithPendingStatus.as_view()),
+
 
     # RMPurchase Orders
     path('RMPurchaseOrderHighestPONo/', RMPurchaseOrderHighestPONoView.as_view()),
-    path('RMPurchaseOrderListOfMaterialsForForm/<str:SID>/<int:DNo>',
-         RMPurchaseOrderListOfMaterialsForFormView.as_view()),
+    path('RMDemandsDNosWithPendingStatus/', RMDemandsDNosWithPendingStatus.as_view()),
+    # path('suppliers', suppliers.as_view())
+    path('SupplierApprovedMaterials/<str:pk>', SupplierApprovedMaterialsView.as_view()),
+    path('RMPurchaseOrderListOfMaterialsForForm/<str:SID>/<int:DNo>',RMPurchaseOrderListOfMaterialsForFormView.as_view()),
+    path('RMPurchaseOrderListOfMaterialCodesForForm/<str:SID>/<int:DNo>',RMPurchaseOrderListOfMaterialCodesForFormView.as_view()),
+    # path('RawMaterialSearchByName/<str:Material>/', RawMaterialSearchByName.as_view()),
+    # path('RawMaterialSearchByRMCode/<str:RMCode>/', RawMaterialSearchByRMCode.as_view()),
     path('RMPurchaseOrder/', RMPurchaseOrdersViews.as_view()),
+
 
     # PMPurchase Orders
     path('PMPurchaseOrderHighestPONo/', PMPurchaseOrderHighestPONoView.as_view()),
     path('PMPurchaseOrderListOfMaterialsForForm/<str:SID>/<int:DNo>',
          PMPurchaseOrderListOfMaterialsForFormView.as_view()),
     path('PMPurchaseOrder/', PMPurchaseOrdersViews.as_view()),
-
+    path('PMDemandsDNosWithPendingStatus/', PMDemandsDNosWithPendingStatus.as_view()),
 
 
     # RM Receiving

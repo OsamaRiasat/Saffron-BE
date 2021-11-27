@@ -9,12 +9,27 @@ def demandedItemsCodesList(DNo):
             code = obj.RMCode.RMCode
             l.append(code)
     return l
+def demandedItemsNamesList(DNo):
+    data = RMDemandedItems.objects.filter(DNo=DNo)  # This will give objects of approved items having this SID
+    l=[]
+    for obj in data:
+            code = obj.RMCode.Material
+            l.append(code)
+    return l
 
 def PMdemandedItemsCodesList(DNo):
     data = PMDemandedItems.objects.filter(DNo=DNo)  # This will give objects of approved items having this SID
     l=[]
     for obj in data:
             code = obj.PMCode.PMCode
+            l.append(code)
+    return l
+
+def PMdemandedItemsNamesList(DNo):
+    data = PMDemandedItems.objects.filter(DNo=DNo)  # This will give objects of approved items having this SID
+    l=[]
+    for obj in data:
+            code = obj.PMCode.Material
             l.append(code)
     return l
 

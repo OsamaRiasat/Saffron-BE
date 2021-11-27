@@ -7,7 +7,7 @@ from .models import *
 class SuppliersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Suppliers
-        fields = '__all__'
+        fields = ['S_ID', 'S_Name']
 
 
 class SupplierApprovedItemsSerializer(serializers.ModelSerializer):

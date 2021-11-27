@@ -353,7 +353,7 @@ class HighestCCNoView(APIView):
 
 class ChangeControlView(generics.CreateAPIView):
     queryset = ChangeControl.objects.all()
-    serializer_class = ChangeControlSerializer
+    serializer_class = ChangeControlForPostSerializer
 
 
 class ChangeControlNumbersListView(APIView):

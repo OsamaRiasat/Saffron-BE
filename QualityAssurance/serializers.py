@@ -206,7 +206,7 @@ class BatchDeviationNoSerializer(serializers.ModelSerializer):
 
 # ---------------- Change Control ---------------
 class ChangeControlSerializer(serializers.ModelSerializer):
-    product = serializers.CharField(source='batchNo.ProductCode.Product')
+    product = serializers.CharField(source='batchNo.ProductCode.Product', write_only=True)
 
     class Meta:
         model = ChangeControl
@@ -215,6 +215,11 @@ class ChangeControlSerializer(serializers.ModelSerializer):
                   'descriptionOfChange', 'intendedPurposeOfChange', 'commentsOfProductionManager',
                   'commentsOfQCManager', 'commentsOfPlantDirector', 'commentsOfQAManager','product']
 
+class ChangeControlForPostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ChangeControl
+        fields = '__all__'
 
 class changeControlVerificationOfChangesSerialerzer(serializers.ModelSerializer):
     class Meta:
