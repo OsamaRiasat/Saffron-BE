@@ -83,10 +83,15 @@ class ChangeControl(models.Model):
     commentsOfPlantDirector = models.CharField(max_length=200)
     commentsOfQAManager = models.CharField(max_length=200)
 
-    implementedChanges = models.CharField(max_length=500)
-    degreeOfImplementation = models.CharField(max_length=500)
-    verifiedBy = models.CharField(max_length=50)
-    changeDate = models.DateField()
+    implementedChanges = models.CharField(max_length=500, null=True, blank=True)
+    degreeOfImplementation = models.CharField(max_length=500,  null=True, blank=True)
+    verifiedBy = models.CharField(max_length=50,  null=True, blank=True)
+    changeDate = models.DateField(null=True, blank=True)
+
+    REQUIRED = ['status', 'initiator', 'department', 'natureOfChange', 'keyword', 'category',
+              'QAStatus', 'name', 'relatedChanges', 'descriptionOfChange', 'intendedPurposeOfChange',
+              'commentsOfProductionManager',
+              'commentsOfQCManager', 'commentsOfPlantDirector', 'commentsOfQAManager', 'batchNo']
 
     def __str__(self):
         return str(self.CCNo)
