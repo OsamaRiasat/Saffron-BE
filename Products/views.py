@@ -9,11 +9,6 @@ from QualityControl.serializers import RMCodeSerializer, RMaterialSerializer
 import pandas as pd
 
 
-class FormulationsView(generics.CreateAPIView):
-    serializer_class = FormulationSerializer
-    queryset = Formulation.objects.all()
-
-
 # Populate DB
 class PopulateProductView(APIView):
     def get(self, request):
@@ -124,6 +119,11 @@ class RMDataView(APIView):
         rm = RawMaterials.objects.get(RMCode=RMCode)
         serializer = RMDataSerializer(rm)
         return Response(serializer.data)
+
+
+class FormulationsView(generics.CreateAPIView):
+    serializer_class = FormulationSerializer
+    queryset = Formulation.objects.all()
 
 
 # ---------------- Edit Formulation -----------------------

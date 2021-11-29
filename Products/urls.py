@@ -20,6 +20,7 @@ urlpatterns = [
     path('PopulateFormulationTable/', PopulateRMFormulationView.as_view()),
 
     # --------------------New Formulation -----------------------#
+
     path('PCodeList/', PCodeView.as_view()),
     path('PNameList/', PNameView.as_view()),
     path('PCodeByPname/<path:Product>/', PCodeByPnameView.as_view()),
