@@ -184,7 +184,6 @@ class DataFromBPRView(APIView):
 
 # -----------------    Daily Packing      --------------
 
-
 class WhenProductIsSelectedView(APIView):
     def get(self, request, PCode):
         product = PlanItems.objects.filter(ProductCode=PCode)

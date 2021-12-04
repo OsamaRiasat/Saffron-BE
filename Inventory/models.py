@@ -7,7 +7,8 @@ from MaterialSuppliers.models import Suppliers
 # Create your models here.
 
 # Raw Material
-
+from Production.models import BPRLog
+from Products.models import Products
 
 
 class RawMaterialTypes(models.Model):
@@ -58,7 +59,6 @@ class PMBinCards(models.Model):
     QCNo = models.CharField(max_length=20)
     GRBalance = models.DecimalField(max_digits=10, decimal_places=2)  # received by default
     PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
-
 
     # ------------------ DEMANDS -------------------
 
@@ -209,3 +209,19 @@ class PMReceiving(models.Model):
     retest_Date = models.DateField(blank=True, null=True)
 
     REQUIRED = ['PMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo', 'S_ID']
+
+    #   ----------  FG Stocks   ---------
+
+
+class FGStocks(models.Model):
+    DateTime = models.DateTimeField(auto_now_add=True)
+    particulars = models.CharField(max_length=100, blank=True, null=True)
+    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE)
+    received = models.DecimalField(max_digits=10, decimal_places=2)
+    PackSize = models.CharField(max_length=20)
+    issued = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    balance = models.DecimalField(max_digits=10, decimal_places=2)  # recieved
+
+    ProductCode = models.ForeignKey(Products , on_delete=models.CASCADE)
+    QCNo = models.CharField(max_length=20)
+    GRBalance = models.DecimalField(max_digits=10, decimal_places=2)  # received by default

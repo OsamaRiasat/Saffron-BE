@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
+
+from Inventory.models import PackingMaterials
+from Production.models import PMFormulation
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .utils import *
-from QualityControl.serializers import RMCodeSerializer, RMaterialSerializer
+from QualityControl.serializers import RMCodeSerializer, RMaterialSerializer, PMCodeSerializer, PMaterialSerializer
 import pandas as pd
 
 
@@ -124,6 +127,93 @@ class RMDataView(APIView):
 class FormulationsView(generics.CreateAPIView):
     serializer_class = FormulationSerializer
     queryset = Formulation.objects.all()
+
+
+# ----------------------New PM Formulation----------------------#
+
+class PCode_For_PM_Formulation_View(APIView):
+    def get(self, request):
+        # We need Product Codes, those have Raw material Formulation as well as Pack Sizes
+        # We can get those by getting unique Product Codes From Formulation
+        l = []
+        d = Formulation.objects.only('ProductCode').distinct()
+        for i in d:
+            l.append(i.ProductCode.ProductCode)
+        l = list(dict.fromkeys(l))
+        return Response(l)
+
+class PName_For_PM_Formulation_View(APIView):
+    def get(self, request):
+        # We need Product Codes, those have Raw material Formulation as well as Pack Sizes
+        # We can get those by getting unique Product Codes From Formulation
+        l = []
+        d = Formulation.objects.only('ProductCode').distinct()
+        for i in d:
+            l.append(i.ProductCode.Product)
+        l = list(dict.fromkeys(l))
+        return Response(l)
+
+
+class batchsize_View(APIView):
+    def get(self, request, Pcode):
+        try:
+            data = Formulation.objects.filter(ProductCode=Pcode).first().batchSize
+            return Response({"BatchSize": data})
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+#
+# class PCodeByPnameView(APIView):
+#     def get(self, request, Product):
+#         code = getCode(Product)
+#         return Response(code)
+#
+#
+# class PnameByPCodeView(APIView):
+#     def get(self, request, Pcode):
+#         name = getName(Pcode)
+#         return Response(name)
+
+
+class PMCodeView(APIView):
+    def get(self, request):
+        pmcode = PackingMaterials.objects.all()
+        serializer = PMCodeSerializer(pmcode, many=True)
+        return Response(serializer.data)
+
+
+class PMNameView(APIView):
+    def get(self, request):
+        pmcode = PackingMaterials.objects.all()
+        serializer = RMaterialSerializer(pmcode, many=True)
+        return Response(serializer.data)
+
+
+class PMCodeByNameView(APIView):
+    def get(self, request, PMName):
+        pmcode = PackingMaterials.objects.get(Material=PMName)
+        serializer = PMCodeSerializer(pmcode)
+        return Response(serializer.data)
+
+
+class PMNameByPMCodeView(APIView):
+    def get(self, request, PMCode):
+        pmcode = PackingMaterials.objects.get(PMCode=PMCode)
+        serializer = PMaterialSerializer(pmcode)
+        return Response(serializer.data)
+
+
+class PMDataView(APIView):
+    def get(self, request, PMCode):
+        rm = PackingMaterials.objects.get(PMCode=PMCode)
+        serializer = PMDataSerializer(rm)
+        return Response(serializer.data)
+
+
+class PM_FormulationsView(generics.CreateAPIView):
+    serializer_class = PMFormulationSerializer
+    queryset = PMFormulation.objects.all()
 
 
 # ---------------- Edit Formulation -----------------------
