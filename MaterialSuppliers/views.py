@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
@@ -8,21 +8,37 @@ from Inventory.models import RawMaterials,PackingMaterials
 from Inventory.serializers import RawMaterialNamesSerializer
 
 
-# Suppliers
+# Add Suppliers
 
-class SuppliersViews(viewsets.ModelViewSet):
-    serializer_class = SuppliersSerializer
+class AddSupplierView(generics.CreateAPIView):
+    queryset = Suppliers.objects.all()
+    serializer_class = SuppliersAllFieldsSerializer
+
+
+# Approve Material For A Supplier
+class ShowSuppliersView(generics.ListAPIView):
+    serializer_class = SuppliersAllFieldsSerializer
     queryset = Suppliers.objects.all()
 
-
-class SupplierIDsViews(viewsets.ModelViewSet):
-    serializer_class = SupplierIDSsSerializer
-    queryset = Suppliers.objects.all()
-
-
-class SupplierApprovedItemsViews(viewsets.ModelViewSet):
+class AddMaterialToSuppliersView(APIView):
     serializer_class = SupplierApprovedItemsSerializer
-    queryset = SupplierApprovedItems.objects.all()
+
+    def post(self, request, format=None):
+        data = request.data
+        MCode = data.get('MCode')
+        type = data.get('materialType')
+        S_ID = data.get('S_ID')
+        obj = SupplierApprovedItems.objects.create(MCode=MCode,
+                                                   type=type,
+                                                   S_ID=S_ID)
+        obj.save()
+        return Response({'message': "Material Added"}, status=status.HTTP_200_OK)
+
+
+
+
+
+
 
 
 class SupplierApprovedMaterialsView(APIView):

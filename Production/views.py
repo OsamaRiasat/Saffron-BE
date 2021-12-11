@@ -8,7 +8,7 @@ from Planning.models import *
 from .serializers import *
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from .utils import CreateBatchNo, getStandardBatchSize
+from .utils import CreateBatchNo, getStandardBatchSize, getStandardBatchSizePM
 from Products.serializers import (
     PCodeSerializer,
     PNameSerializer,
@@ -118,10 +118,23 @@ class BPRLogView(generics.CreateAPIView):
 
 class PCodeBPRView(APIView):
     def get(self, request):
+        # ProductCode
         pcode = BPRLog.objects.filter(batchStatus='OPEN').values_list('ProductCode').distinct()
         entries = BPRLog.objects.filter(ProductCode__in=pcode)
         serializer = PCodeBPRSerializer(entries, many=True)
-        return Response(serializer.data)
+
+        l = []
+        d = BPRLog.objects.only('ProductCode').filter(batchStatus='OPEN').distinct()
+        for i in d:
+            l.append(i.ProductCode.ProductCode)
+        l = list(dict.fromkeys(l))
+        l2 = []
+        for i in l:
+            dic = {}
+            dic["ProductCode"] = i
+            l2.append(dic)
+
+        return Response(l2)
 
 
 class BPRByPcodeView(APIView):
@@ -357,6 +370,70 @@ class ViewFormulationForAssessmentView(APIView):
             dic['RMCode'] = i.RMCode.RMCode
             dic['Material'] = i.RMCode.Material
             dic['Units'] = i.RMCode.Units
+            dic['Quantity'] = round(float(i.quantity) * float(total), 3)
+            dict.append(dic)
+        return Response(dict)
+
+
+#   ------------------------- Packing Material Assessment ---------------------
+
+class ListOfPCodeForPMAssessmentView(APIView):
+    def get(self, request):
+        data = PMFormulation.objects.only('ProductCode').all()
+        l = []
+        for i in data:
+            l.append(i.ProductCode.ProductCode)
+        l = list(dict.fromkeys(l))
+        return Response({"List": l})
+
+
+class ListOfPNameForPMAssessmentView(APIView):
+    def get(self, request):
+        data = PMFormulation.objects.only('ProductCode').all()
+        l = []
+
+        for i in data:
+            l.append(i.ProductCode.Product)
+        l = list(dict.fromkeys(l))
+        return Response({"List": l})
+
+
+# class PCodeByPNamePMAssessmentView(APIView):
+#     def get(self, request, PName):
+#         try:
+#             data = Products.objects.only('ProductCode').get(Product=PName)
+#         except:
+#             return Response({"message": "No Product Name Against this Code"})
+#
+#         return Response({"PCode": data.ProductCode})
+
+
+# class PackSizesListView(APIView):
+#     def get(self, request, PCode):
+#         data = PackSizes.objects.filter(ProductCode=PCode)
+#         l = []
+#         for i in data:
+#             l.append(i.PackSize)
+#
+#         sbs = getStandardBatchSize(PCode)
+#         productName = Products.objects.only('ProductCode').get(ProductCode=PCode)
+#         return Response({"list": l, "batchSize": sbs, "productName": productName.Product})
+#
+
+class ViewFormulationForPMAssessmentView(APIView):
+    def get(self, request, Pcode, batch_size, noOfBatches, packSize):
+        noOfBatches = float(noOfBatches)
+        batch_size = float(batch_size)
+        sbs = getStandardBatchSizePM(Pcode, packSize)
+        total = (batch_size / sbs) * noOfBatches
+        formulation = PMFormulation.objects.filter(ProductCode=Pcode, PackSize=packSize)
+        dict = []
+        for i in formulation:
+            dic = {}
+            dic['Type'] = i.PMCode.Type.Type
+            dic['PMCode'] = i.PMCode.PMCode
+            dic['Material'] = i.PMCode.Material
+            dic['Units'] = i.PMCode.Units
             dic['Quantity'] = round(float(i.quantity) * float(total), 3)
             dict.append(dic)
         return Response(dict)

@@ -251,7 +251,7 @@ class PMPurchaseOrderPONosSerializer(serializers.ModelSerializer):
         fields = ['PONo', ]
 
 
-class PMPurchaseOrderItemsRMCodesSerializer(serializers.ModelSerializer):
+class PMPurchaseOrderItemsPMCodesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PMPurchaseOrderItems
         fields = ['PMCode', ]

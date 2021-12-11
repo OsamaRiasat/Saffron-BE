@@ -67,11 +67,16 @@ urlpatterns = [
 
     # PMPurchase Orders
     path('PMPurchaseOrderHighestPONo/', PMPurchaseOrderHighestPONoView.as_view()),
+    path('PMDemandsDNosWithPendingStatus/', PMDemandsDNosWithPendingStatus.as_view()),
+    # path('suppliers', suppliers.as_view())
+    # path('SupplierApprovedMaterials/<str:pk>', SupplierApprovedMaterialsView.as_view()),
     path('PMPurchaseOrderListOfMaterialsForForm/<str:SID>/<int:DNo>',
          PMPurchaseOrderListOfMaterialsForFormView.as_view()),
+    path('PMPurchaseOrderListOfMaterialCodesForForm/<str:SID>/<int:DNo>',
+         PMPurchaseOrderListOfMaterialCodesForFormView.as_view()),
+    # path('PackingMaterialSearchByName/<str:Material>/', PackingMaterialSearchByName.as_view()),
+    # path('PackingMaterialSearchByPMCode/<str:PMCode>/', PackingMaterialSearchByRMCode.as_view()),
     path('PMPurchaseOrder/', PMPurchaseOrdersViews.as_view()),
-    path('PMDemandsDNosWithPendingStatus/', PMDemandsDNosWithPendingStatus.as_view()),
-
 
     # RM Receiving
 
