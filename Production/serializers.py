@@ -137,6 +137,8 @@ class PackingLogSerializer(serializers.ModelSerializer):
             else:
                 bno = PackingLog.objects.filter(batchNo=j['batchNo'])
                 total = 0
+
+                # total is the total packs that have been packed
                 if bno:
                     for i in bno:
                         if (i.totalPacks > total):

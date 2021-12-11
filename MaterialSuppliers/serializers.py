@@ -8,7 +8,10 @@ class SuppliersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Suppliers
         fields = ['S_ID', 'S_Name']
-
+class SuppliersAllFieldsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Suppliers
+        fields = '__all__'
 
 class SupplierApprovedItemsSerializer(serializers.ModelSerializer):
     class Meta:

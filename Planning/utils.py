@@ -11,6 +11,10 @@ def convertUnitsToPacks(units, PackSize,dosageForm):
         size = num1*num2
         # Size per Pack
         return units/size
+    elif dosageForm =="Vial":
+        size = int(PackSize)
+        # Size per Pack
+        return size
 
 def convertPacksToUnits(Packs, PackSize,dosageForm):
     if dosageForm=="Tablet" or dosageForm=="Capsule":
@@ -20,6 +24,10 @@ def convertPacksToUnits(Packs, PackSize,dosageForm):
         size = num1*num2
         # Total Number of Units
         return Packs*size
+    elif dosageForm =="Vial":
+        size = int(PackSize)
+        # Size per Pack
+        return size
 
 def MergeMaterials(planNo):
     data = ProductMaterials.objects.filter(planNo=planNo)

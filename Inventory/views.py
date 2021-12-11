@@ -200,6 +200,7 @@ class RMPurchaseOrderItemsCodesForReceivingView(APIView):
 
 # Packing Material Purchase Orders
 
+
 class PMPurchaseOrdersItemsView(viewsets.ModelViewSet):
     serializer_class = PMPurchaseOrderItemsSerializer
     queryset = PMPurchaseOrderItems.objects.all()
@@ -215,8 +216,6 @@ class PMPurchaseOrderHighestPONoView(APIView):
         PONo = PMPurchaseOrders.objects.all().aggregate(Max('PONo'))
         print(PONo)
         return Response(PONo)
-
-
 
 
 class PMPurchaseOrderListOfMaterialCodesForFormView(APIView):
@@ -259,9 +258,8 @@ class PMPurchaseOrdersWithOpenStatusView(APIView):
 class PMPurchaseOrderItemsCodesForReceivingView(APIView):
     def get(self, request, PONo):
         data = PMPurchaseOrderItems.objects.filter(PONo=PONo)
-        serialize = PMPurchaseOrderItemsRMCodesSerializer(data, many=True)
+        serialize = PMPurchaseOrderItemsPMCodesSerializer(data, many=True)
         return Response(serialize.data)
-
 
 # --------------- Raw Materials RECEIVING ------------------------
 

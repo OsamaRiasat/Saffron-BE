@@ -90,3 +90,6 @@ class PM_Formulation(models.Model):
 
     def __str__(self):
         return self.ProductCode.Product
+
+
+
