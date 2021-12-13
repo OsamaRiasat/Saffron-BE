@@ -35,8 +35,8 @@ urlpatterns = [
     path('BatchStages/', BatchStagesView.as_view()),
 
     # -----------------    Daily Packing      --------------
-    # path('PlanNo/', PlanNoView.as_view()),
-    # path('ProductByPlanNo/<int:planNo>/', ProductByPlanNoView.as_view()),
+    path('PlanNoForPacking/', planNoForPacking.as_view()),
+     path('productCodeByPlanNoForPacking/<int:PlanNo>/', productCodeByPlanNoForPacking.as_view()),
     path('WhenProductIsSelected/<str:PCode>/', WhenProductIsSelectedView.as_view()),
     path('PackingLog/', PackingLogView.as_view()),
 
