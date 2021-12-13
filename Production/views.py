@@ -196,6 +196,26 @@ class DataFromBPRView(APIView):
 
 
 # -----------------    Daily Packing      --------------
+class planNoForPacking(APIView):
+    def get(self, request):
+        data = BPRLog.objects.filter(batchStatus="OPEN", currentStage="Packing")
+        l = []
+        for obj in data:
+            dic = {}
+            dic["planNo"]= obj.planNo.planNo
+            l.append(dic)
+        return Response(l)
+
+
+class productCodeByPlanNoForPacking(APIView):
+    def get(self, request, PlanNo):
+        data = BPRLog.objects.filter(batchStatus="OPEN", currentStage="Packing", planNo=PlanNo)
+        l = []
+        for obj in data:
+            dic = {}
+            dic["ProductCode"]= obj.ProductCode.ProductCode
+            l.append(dic)
+        return Response(l)
 
 class WhenProductIsSelectedView(APIView):
     def get(self, request, PCode):
@@ -211,7 +231,7 @@ class WhenProductIsSelectedView(APIView):
             li.append(dic)
         dict['PackSizes'] = li
 
-        bno = BPRLog.objects.filter(ProductCode=PCode, currentStage='Packing')
+        bno = BPRLog.objects.filter(ProductCode=PCode, currentStage='Packing', batchStatus="OPEN")
         serializer = BatchNoBPRSerializer(bno, many=True)
         dict['batchNosList'] = serializer.data
         return Response(dict)
@@ -237,6 +257,7 @@ class PCodesForLineClearanceView(APIView):
             l.append(i.ProductCode.ProductCode)
         l = list(dict.fromkeys(l))
         return Response(l)
+
 
 
 class BatchNoBYPCodeView(APIView):
