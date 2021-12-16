@@ -32,13 +32,13 @@ urlpatterns = [
     path('RMData/<str:RMCode>/', RMDataView.as_view()),
     path('RMFormulation/', FormulationsView.as_view()),
 
-# --------------------New PM Formulation -----------------------#
+    # --------------------New PM Formulation (newer)-----------------------#
 
     path('PCode_For_PM_Formulation', PCode_For_PM_Formulation_View.as_view()),
     path('PName_For_PM_Formulation', PName_For_PM_Formulation_View.as_view()),
     # path('PCodeByPname/<path:Product>/', PCodeByPnameView.as_view()),
     # path('PnameByPCode/<str:Pcode>/', PnameByPCodeView.as_view()),
-    #/Production/PackSizeList/{PCode}/
+    # /Production/PackSizeList/{PCode}/
     path('batchsize/<str:Pcode>', batchsize_View.as_view()),
     path('PMCodeList', PMCodeView.as_view()),
     path('PMNameList', PMNameView.as_view()),
@@ -46,7 +46,6 @@ urlpatterns = [
     path('PMNameByPMCode/<str:PMCode>', PMNameByPMCodeView.as_view()),
     path('PMData/<str:PMCode>', PMDataView.as_view()),
     path('PM_Formulation/', PM_FormulationsView.as_view()),
-
 
     # --------------------Edit Formulation -----------------------#
     path('FPCodeList/', FPCodeView.as_view()),

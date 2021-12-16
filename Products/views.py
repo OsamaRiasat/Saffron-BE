@@ -129,28 +129,47 @@ class FormulationsView(generics.CreateAPIView):
     queryset = Formulation.objects.all()
 
 
-# ----------------------New PM Formulation----------------------#
+# ----------------------New PM Formulation Newer----------------------#
 
 class PCode_For_PM_Formulation_View(APIView):
     def get(self, request):
-        # We need Product Codes, those have Raw material Formulation as well as Pack Sizes
-        # We can get those by getting unique Product Codes From Formulation
+        pcode = Formulation.objects.only('ProductCode').all()
+        serializer = PCodeSerializer(pcode, many=True)
+        l1 = []
+        for i in serializer.data:
+            l1.append(i["ProductCode"])
+
+        packsizes = PackSizes.objects.only('ProductCode').all()
+        l2 = []
+        for i in packsizes:
+            l2.append(i.ProductCode.ProductCode)
+        intersection = set.intersection(set(l1), set(l2))
         l = []
-        d = Formulation.objects.only('ProductCode').distinct()
-        for i in d:
-            l.append(i.ProductCode.ProductCode)
-        l = list(dict.fromkeys(l))
+        for PCode in intersection:
+            dic = {}
+            dic["ProductCode"] = PCode
+            l.append(dic)
         return Response(l)
+
 
 class PName_For_PM_Formulation_View(APIView):
     def get(self, request):
-        # We need Product Codes, those have Raw material Formulation as well as Pack Sizes
-        # We can get those by getting unique Product Codes From Formulation
+        pcode = Formulation.objects.only('ProductCode').all()
+
+        l1 = []
+        for i in pcode:
+            l1.append(i.ProductCode.Product)
+
+        packsizes = PackSizes.objects.only('ProductCode').all()
+        l2 = []
+        for i in packsizes:
+            l2.append(i.ProductCode.Product)
+        intersection = set.intersection(set(l1), set(l2))
         l = []
-        d = Formulation.objects.only('ProductCode').distinct()
-        for i in d:
-            l.append(i.ProductCode.Product)
-        l = list(dict.fromkeys(l))
+        for PCode in intersection:
+            dic = {}
+            dic["Product"] = PCode
+            l.append(dic)
         return Response(l)
 
 

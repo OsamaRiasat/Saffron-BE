@@ -10,7 +10,6 @@ admin.site.register(Stages)
 admin.site.register(PackSizesListForFrontEnd)
 admin.site.register(Formulation)
 
-admin.site.register(PM_Formulation)
 
 
 
