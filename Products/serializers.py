@@ -151,7 +151,7 @@ class PMFormulationSerializer(serializers.ModelSerializer):
 
         obj = ""
         for i in items:
-            item = PM_Formulation.objects.create(ProductCode=i['ProductCode'],
+            item = PMFormulation.objects.create(ProductCode=i['ProductCode'],
                                                  PMCode=i['PMCode'],
                                                  batchSize=i['batchSize'],
                                                  PackSize=i['PackSize'],

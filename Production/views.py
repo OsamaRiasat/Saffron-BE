@@ -419,14 +419,14 @@ class ListOfPNameForPMAssessmentView(APIView):
         return Response({"List": l})
 
 
-# class PCodeByPNamePMAssessmentView(APIView):
-#     def get(self, request, PName):
-#         try:
-#             data = Products.objects.only('ProductCode').get(Product=PName)
-#         except:
-#             return Response({"message": "No Product Name Against this Code"})
-#
-#         return Response({"PCode": data.ProductCode})
+class PNameByPCodePMAssessmentView(APIView):
+    def get(self, request, PCode):
+        try:
+            data = Products.objects.only('Product').get(ProductCode=PCode)
+        except:
+            return Response({"message": "No Product Code Against this Name"})
+
+        return Response({"Product": data.Product})
 
 
 # class PackSizesListView(APIView):
@@ -460,16 +460,37 @@ class ViewFormulationForPMAssessmentView(APIView):
         return Response(dict)
 
 
-# ----------------------New Formulation For PM----------------------#
+# ----------------------New Formulation For PM older----------------------#
 
 class PCodeView(APIView):
+    # l1 = supplierApprovedItemsCodesList(SID)
+    # l2 = demandedItemsCodesList(DNo)
+    # intersection = set.intersection(set(l1), set(l2))
+    # l = []
+    # for RMCode in intersection:
+    #     dic = {}
+    #     dic["RMCode"] = RMCode
+    #     l.append(dic)
+    # return Response(l)
     def get(self, request):
-        # li = PMFormulation.objects.values_list('ProductCode')
-        # pcode = Products.objects.exclude(ProductCode__in=li)
-
         pcode = Products.objects.only('ProductCode').all()
         serializer = PCodeSerializer(pcode, many=True)
-        return Response(serializer.data)
+        l1 = []
+        for i in serializer.data:
+            l1.append(i["ProductCode"])
+
+        packsizes = PackSizes.objects.only('ProductCode').all()
+        l2 = []
+        for i in packsizes:
+            l2.append(i.ProductCode.ProductCode)
+        intersection = set.intersection(set(l1), set(l2))
+        l = []
+        for PCode in intersection:
+            dic = {}
+            dic["ProductCode"] = PCode
+            l.append(dic)
+        return Response(l)
+
 
 
 class PNameView(APIView):
