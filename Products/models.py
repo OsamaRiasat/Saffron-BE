@@ -87,9 +87,9 @@ class Formulation(models.Model):
 #
 #     REQUIRED = ['ProductCode', 'PackSize','PMCode', 'batchSize', 'quantity', 'date', 'docNo']
 
-
-    def __str__(self):
-        return self.ProductCode.Product
+    #
+    # def __str__(self):
+    #     return self.ProductCode.Product
 
 
 

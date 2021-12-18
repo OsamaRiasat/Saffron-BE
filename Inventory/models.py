@@ -210,4 +210,3 @@ class PMReceiving(models.Model):
 
     REQUIRED = ['PMCode', 'quantityReceived', 'containersReceived', 'batchNo', 'PONo', 'S_ID']
 
-

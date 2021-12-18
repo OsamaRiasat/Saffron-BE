@@ -102,11 +102,11 @@ urlpatterns = [
     path('DRFPostView/', DRFPostView.as_view()),
 
     # -------------------- Product Sample -----------------------
-    path('PSPCode/', PSPCodeView.as_view()),
-    path('PSBatchNo/<str:Pcode>/', PSBatchNoView.as_view()),
-    path('PSBatchDetail/<str:batchNo>/', PSBatchDetailView.as_view()),
-    # path('AllUsers/', AllUsersView.as_view()),
-    path('ProductSample/', ProductSampleView.as_view()),
+    path('PSPCode/', PSPCodeView.as_view()),   # Product Code List
+    path('PSBatchNo/<str:Pcode>/', PSBatchNoView.as_view()),    # When Product COde is selected
+    path('PSBatchDetail/<str:batchNo>/', PSBatchDetailView.as_view()),  # When batch No is selected
+    # path('AllUsers/', AllUsersView.as_view()), # Sampled by list
+    path('ProductSample/', ProductSampleView.as_view()), # Post api
 
 
     # -------------- Batch Review ----------------

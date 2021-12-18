@@ -48,7 +48,7 @@ class ProductDetailsByCodeView(APIView):
 
     def get(self, request, ProductCode):
         Product = Products.objects.get(ProductCode=ProductCode).Product
-
+        dosage = Products.objects.get(ProductCode=ProductCode).dosageForm.dosageForm
         PackSizesList = []
         Query = PackSizes.objects.filter(ProductCode=ProductCode)
         for obj in Query:
@@ -57,6 +57,7 @@ class ProductDetailsByCodeView(APIView):
         batchSize = Formulation.objects.filter(ProductCode=ProductCode).first().batchSize
         return Response({"PackSizesList": PackSizesList,
                          "Product": Product,
+                         "dosageType": dosage,
                          "units": batchSize,
                          "batches": 1})
 
