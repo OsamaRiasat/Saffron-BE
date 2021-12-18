@@ -27,4 +27,6 @@ urlpatterns = [
 # C-Production
     path('ProductionCalculation/<int:planNo>',ProductionCalculationView.as_view()),
 
+    path('DeletePlan/<int:pk>',DeletePlanView.as_view()),
+
 ]

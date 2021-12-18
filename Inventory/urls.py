@@ -46,6 +46,8 @@ urlpatterns = [
     # RMDemands
     path('RMDemands/', RMDemandsView.as_view()),
     path('RMDemandHighestDNo/', RMDemandHighestDNoView.as_view()),
+    path('PlanNosList', PlanNosListView.as_view()),
+    path('Demanded_Materials_Through_PlanNo<int:planNo>',Demanded_Materials_Through_PlanNo_View.as_view()),
 
 
     # PMDemands
