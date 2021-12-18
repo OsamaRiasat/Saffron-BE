@@ -1,6 +1,8 @@
 from django.db.models import Max
 from django.shortcuts import render
 from rest_framework import viewsets
+
+from Planning.models import Plan, ProductMaterials
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
@@ -109,6 +111,25 @@ class RMDemandsDNosWithPendingStatus(APIView):
         serialize = RMDemandsDNosSerializer(data, many=True)
         return Response(serialize.data)
 
+class PlanNosListView(generics.ListAPIView):
+    queryset = Plan.objects.all()
+    serializer_class = planNumbersSerializer
+
+class Demanded_Materials_Through_PlanNo_View(APIView):
+    def get(self, request, planNo):
+        data = ProductMaterials.objects.filter(planNo=planNo)
+        li = []
+        for obj in data:
+            if obj.demandedQuantity <= 0:
+                continue
+            dic = {}
+            dic["Category"] = obj.RMCode.Type.Type
+            dic["RMCode"] = obj.RMCode.RMCode
+            dic["Material"] = obj.RMCode.Material
+            dic["demandedQuantity"] = obj.demandedQuantity
+            dic["Unit"] = obj.RMCode.Units
+            li.append(dic)
+        return Response(li)
 
 # Packing Material Demands
 

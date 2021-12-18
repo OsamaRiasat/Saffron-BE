@@ -84,7 +84,7 @@ class PackingLog(models.Model):
 
 class PMFormulation(models.Model):
     ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
-    PackSize = PackSize = models.CharField(max_length=20)
+    PackSize = models.CharField(max_length=20)
     PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
     batchSize = models.IntegerField()
     quantity = models.DecimalField(decimal_places=3, max_digits=10)
@@ -98,3 +98,20 @@ class PMFormulation(models.Model):
 
     def __str__(self):
         return str(self.ProductCode.Product + " " + self.PackSize)
+
+
+# ------- Finish Goods -------
+
+class FGStock(models.Model):
+    DateTime = models.DateTimeField(auto_now_add=True)
+    particulars = models.CharField(max_length=20, blank=True, null=True)
+    batchNo = models.ForeignKey(BPRLog, on_delete=models.CASCADE)
+    PackSize = models.CharField(max_length=20)
+    received = models.DecimalField(max_digits=10, decimal_places=2)
+
+    issued = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    balance = models.DecimalField(max_digits=10, decimal_places=2)  # recieved
+    QCNo = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.batchNo.batchNo + " " + self.PackSize

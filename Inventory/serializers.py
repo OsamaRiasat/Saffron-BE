@@ -1,5 +1,7 @@
 from django.db.models import fields
 from rest_framework import serializers
+
+from Planning.models import Plan
 from .models import *
 
 
@@ -117,6 +119,10 @@ class RMDemandsDNosSerializer(serializers.ModelSerializer):
         model = RMDemands
         fields = ['DNo', ]
 
+class planNumbersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = ['planNo']
 
 # PMDemands
 

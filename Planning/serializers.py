@@ -52,3 +52,6 @@ class PostPlanSerializer(serializers.ModelSerializer):
         return plan
 
 
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
