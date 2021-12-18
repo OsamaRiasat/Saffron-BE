@@ -2,12 +2,13 @@ from rest_framework import serializers
 from .models import *
 
 
- # A-Product Selection
+# A-Product Selection
 
 class ProductNamesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
         fields = ['Product', ]
+
 
 class ProductCodesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +20,8 @@ class PlanItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlanItems
 
-        fields = [ 'ProductCode','PackSize', 'requiredPacks', 'inHandPacks', 'packsToBePlanned', 'noOfBatchesToBePlanned' ]
+        fields = ['ProductCode', 'PackSize', 'requiredPacks', 'inHandPacks', 'packsToBePlanned',
+                  'noOfBatchesToBePlanned']
 
 
 class PostPlanSerializer(serializers.ModelSerializer):
@@ -46,12 +48,43 @@ class PostPlanSerializer(serializers.ModelSerializer):
                                              requiredPacks=i['requiredPacks'],
                                              inHandPacks=i['inHandPacks'],
                                              packsToBePlanned=i['packsToBePlanned'],
-                                             noOfBatchesToBePlanned=i['noOfBatchesToBePlanned'] ,
+                                             noOfBatchesToBePlanned=i['noOfBatchesToBePlanned'],
                                              pendingPacks=i['packsToBePlanned'])
             items.save()
         return plan
 
 
+class UpdatePlanSerializer(serializers.ModelSerializer):
+    planItems = PlanItemsSerializer(many=True, write_only=True)
+
+    class Meta:
+        model = Plan
+        fields = ('planItems', 'planNo')
+
+    def update(self, instance, validated_data):
+
+        planNo = instance.planNo
+        plan = Plan.objects.get(planNo=planNo)
+        data = PlanItems.objects.filter(planNo=planNo)
+        for obj in data:
+            obj.delete()
+        pItems = validated_data.pop('planItems')
+        for i in pItems:
+            items = PlanItems.objects.create(planNo=plan,
+                                             ProductCode=i['ProductCode'],
+                                             PackSize=i['PackSize'],
+                                             requiredPacks=i['requiredPacks'],
+                                             inHandPacks=i['inHandPacks'],
+                                             packsToBePlanned=i['packsToBePlanned'],
+                                             noOfBatchesToBePlanned=i['noOfBatchesToBePlanned'],
+                                             pendingPacks=i['packsToBePlanned'])
+            items.save()
+
+        message = "Updated"
+        return message
+
+
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan
+        fields = '__all__'

@@ -19,7 +19,7 @@ urlpatterns = [
     path('ProductDetailsByName/<str:Product>/', ProductDetailsByNameView.as_view()),
     path('GoodsStockDetails/<str:ProductCode>/<str:PackSize>/<int:Packs>/<str:isFGS>/<str:isWIP>/',GoodsStockDetailsView.as_view()),
     path('PostPlan/',PostPlanView.as_view()),
-
+    path('Update_Plan_And_PlanItems/<int:pk>/', Update_Plan_And_PlanItems_View.as_view()),
 # B-Material Packing
     path('PlanMaterialCalculation/<int:planNo>/<str:isQuarantine>/<str:isPIP>/', PlanMaterialCalculationView.as_view()),
     path('BackToProductSelection/<int:planNo>/', BackToProductSelectionView.as_view()),
@@ -28,5 +28,6 @@ urlpatterns = [
     path('ProductionCalculation/<int:planNo>',ProductionCalculationView.as_view()),
 
     path('DeletePlan/<int:pk>',DeletePlanView.as_view()),
+    path('save_plan/<int:planNo>',save_plan_View.as_view()),
 
 ]
