@@ -16,10 +16,6 @@ class highestPlanNoView(APIView):
         return Response(planNo)
 
 
-# class ProductNamesViews(viewsets.ModelViewSet):
-#     serializer_class = ProductNamesSerializer
-#     queryset = Products.objects.all()
-
 class ProductNamesViews(APIView):
     def get(self, request):
         data = PackSizes.objects.all()
@@ -42,7 +38,7 @@ class ProductCodesViews(APIView):
         return Response(l)
 
 
-class ProductDetailsByCodeView(APIView):
+class ProductDetailsByCodeView(APIView):  # When the Product Code is Selected (also change for name)
 
     def get(self, request, ProductCode):
         Product = Products.objects.get(ProductCode=ProductCode).Product
@@ -112,6 +108,16 @@ class GoodsStockDetailsView(APIView):
                          "Inhand_Packs": Inhand_Packs,
                          "packsToBePlanned": packsToBePlanned,
                          "batchesToBePlanned": round(batchesToBePlanned, 3)})
+
+
+class PostPlanView(generics.CreateAPIView):
+    serializer_class = PostPlanSerializer
+    queryset = Plan.objects.all()
+
+
+class Update_Plan_And_PlanItems_View(generics.UpdateAPIView):
+    queryset = Plan.objects.all()
+    serializer_class = UpdatePlanSerializer
 
 
 # B-Material Calculation
@@ -190,17 +196,24 @@ class ProductionCalculationView(APIView):
         return Response({"list": resp})
 
 
-class PostPlanView(generics.CreateAPIView):
-    serializer_class = PostPlanSerializer
-    queryset = Plan.objects.all()
-
-
 class DeletePlanView(generics.DestroyAPIView):
     queryset = Plan.objects.all()
+    #
+    # def destroy(self, request, *args, **kwargs):
+    #     # Do logic here to get `course_participant` to delete, then
+    #     self.delete(request=request)
+    #
+    #     # Don't return super().destroy(request, *args, **kwargs)
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def destroy(self, request, *args, **kwargs):
-        # Do logic here to get `course_participant` to delete, then
-        self.delete()
 
-        # Don't return super().destroy(request, *args, **kwargs)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+class save_plan_View(APIView):
+    def get(self, request, planNo):
+        try:
+            obj = Plan.objects.get(planNo=planNo)
+            obj.isSaved = True
+            message = "Plan Saved"
+            return Response({"message": message}, status=status.HTTP_200_OK)
+        except:
+            message = "Plan Couldn't be saved"
+            return Response({"message": message}, status=status.HTTP_400_BAD_REQUEST)

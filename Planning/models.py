@@ -9,7 +9,7 @@ from Inventory.models import RawMaterials
 class Plan(models.Model):
     planNo = models.AutoField(primary_key=True)
     date = models.DateField(auto_now_add=True)
-
+    isSaved = models.BooleanField(default=False)
     REQUIRED = ['planNo']
 
 
