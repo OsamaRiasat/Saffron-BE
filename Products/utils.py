@@ -8,7 +8,12 @@ def getName(PCode):
     return dic
 
 def getCode(Pname):
-    pcode = Products.objects.get(Product=Pname).ProductCode
     dic = {}
-    dic['ProductCode'] = pcode
+    try:
+        pcode = Products.objects.get(Product=Pname).ProductCode
+        dic['ProductCode'] = pcode
+    except:
+        dic["error"] = "Not Exists"
+
+
     return dic
