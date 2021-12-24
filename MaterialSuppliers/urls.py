@@ -14,7 +14,11 @@ urlpatterns = [
     path('AddSupplier', AddSupplierView.as_view()),
 
     #   Approve Materials
+
+
     path('ShowSuppliers', ShowSuppliersView.as_view()),
+    path('RawMaterials', RawMaterialsNamesAndCodeView.as_view()),
+    path('PackingMaterials', PackingMaterialsNamesAndCodeView.as_view()),
     path('AddMaterialToSuppliersView', AddMaterialToSuppliersView.as_view()),
 
 ]

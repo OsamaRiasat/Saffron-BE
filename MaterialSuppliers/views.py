@@ -4,7 +4,7 @@ from .serializers import *
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from Inventory.models import RawMaterials,PackingMaterials
+from Inventory.models import RawMaterials, PackingMaterials
 from Inventory.serializers import RawMaterialNamesSerializer
 
 
@@ -19,6 +19,17 @@ class AddSupplierView(generics.CreateAPIView):
 class ShowSuppliersView(generics.ListAPIView):
     serializer_class = SuppliersAllFieldsSerializer
     queryset = Suppliers.objects.all()
+
+
+class RawMaterialsNamesAndCodeView(generics.ListAPIView):
+    serializer_class = RawMaterialSerializer
+    queryset = RawMaterials.objects.all()
+
+
+class PackingMaterialsNamesAndCodeView(generics.ListAPIView):
+    serializer_class = PackingMaterialSerializer
+    queryset = PackingMaterials.objects.all()
+
 
 class AddMaterialToSuppliersView(APIView):
     serializer_class = SupplierApprovedItemsSerializer
@@ -35,12 +46,6 @@ class AddMaterialToSuppliersView(APIView):
         return Response({'message': "Material Added"}, status=status.HTTP_200_OK)
 
 
-
-
-
-
-
-
 class SupplierApprovedMaterialsView(APIView):
     def get(self, request, pk, format=None):
         data = SupplierApprovedItems.objects.filter(S_ID=pk)  # This will give objects of approved items having this SID
@@ -48,7 +53,7 @@ class SupplierApprovedMaterialsView(APIView):
         l = []
         for obj in data:
             dic = {}
-            if obj.materialType=="RM":
+            if obj.materialType == "RM":
                 Materials = RawMaterials.objects.filter(pk=obj.MCode).only('Material')
                 dic["Material"] = Materials.get().Material
                 l.append(dic)
@@ -59,7 +64,7 @@ class SupplierApprovedMaterialsView(APIView):
 
         return Response(l)
 
+
 class suppliers(generics.ListAPIView):
     queryset = Suppliers.objects.all()
     serializer_class = SuppliersSerializer
-
