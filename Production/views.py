@@ -18,13 +18,26 @@ from Products.utils import getCode, getName
 
 # Create your views here.
 
-# ------------------Batch Issuence Request--------------------#
+# ------------------Batch Issuance Request--------------------#
 class PlanNoView(APIView):
     def get(self, request):
         plans = PlanItems.objects.filter(status='OPEN').values_list('planNo').distinct()
         entries = PlanItems.objects.filter(id__in=plans)
         serializer = PlanNoSerializer(entries, many=True)
-        return Response(serializer.data)
+        l=[]
+        print(serializer.data)
+        for i in serializer.data:
+            l.append(i['planNo'])
+
+        l = list(dict.fromkeys(l))
+        l2 = []
+        for i in l:
+            dic = {}
+            dic["planNo"] = i
+            l2.append(dic)
+
+        return Response(l2)
+
 
 
 class ProductByPlanNoView(APIView):  # retrieve only distinct
@@ -226,9 +239,17 @@ class WhenProductIsSelectedView(APIView):
         dict['DosageForm'] = dosage.dosageForm
         li = []
         for i in product:
+            # dic = {}
+            # dic['PackSize'] = i.PackSize
+            li.append(i.PackSize)
+
+        l = list(dict.fromkeys(li))
+        li= []
+        for i in l:
             dic = {}
-            dic['PackSize'] = i.PackSize
+            dic['PackSize'] = i
             li.append(dic)
+
         dict['PackSizes'] = li
 
         bno = BPRLog.objects.filter(ProductCode=PCode, currentStage='Packing', batchStatus="OPEN")

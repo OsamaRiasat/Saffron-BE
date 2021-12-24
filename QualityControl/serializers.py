@@ -248,7 +248,7 @@ class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     supplierName = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
 
     class Meta:
-        model = RMAnalysisItems
+        model = RMAnalysisItemsLog
         fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'supplierName']
 
 
@@ -498,7 +498,7 @@ class PMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     supplierName = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
 
     class Meta:
-        model = PMAnalysisItems
+        model = PMAnalysisItemsLog
         fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'supplierName']
 
 # -----------------------------------------------------------------------------------------
@@ -750,5 +750,5 @@ class ProductAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     stage = serializers.CharField(source='ProductAnalysisID.QCNo.sampleStage')
 
     class Meta:
-        model = ProductAnalysisItems
+        model = ProductAnalysisItemsLog
         fields = ['product', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'stage']

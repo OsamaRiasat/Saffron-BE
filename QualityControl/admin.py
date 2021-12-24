@@ -12,6 +12,8 @@ admin.site.register(TempRMSpecificationsItems)
 admin.site.register(RMSamples)
 admin.site.register(RMAnalysis)
 admin.site.register(RMAnalysisItems)
+admin.site.register(RMAnalysisLog)
+admin.site.register(RMAnalysisItemsLog)
 
 # Packing Materials
 admin.site.register(PMParameters)

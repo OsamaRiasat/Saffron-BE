@@ -1,5 +1,7 @@
 from django.db.models import Max
 from rest_framework import viewsets, generics, status
+
+from Production.models import PMFormulation
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
@@ -217,3 +219,51 @@ class save_plan_View(APIView):
         except:
             message = "Plan Couldn't be saved"
             return Response({"message": message}, status=status.HTTP_400_BAD_REQUEST)
+
+    #   ------------- Packing Material Planning     -----------
+
+
+# class PlanNosListView(generics.ListAPIView):
+#     queryset = Plan.objects.all()
+#     serializer_class = planNumbersSerializer
+
+class PlanPackingMaterialCalculationView(APIView):
+    def get(self, request, planNo, isQuarantine, isPIP):
+        data = PlanItems.objects.filter(planNo=planNo).exclude(noOfBatchesToBePlanned=0)
+        tempBinCards = {}
+        for obj in data:
+            formulation = PMFormulation.objects.filter(ProductCode=obj.ProductCode, PackSize=data.PackSize)
+            for i in formulation:
+                requiredQuantity = obj.noOfBatchesToBePlanned * i.quantity
+                inHandQty = 0
+                if i.PMCode in tempBinCards:
+                    inHandQty = tempBinCards[i.RMCode]
+                else:
+                    inHandQty = 200  # Value from BinCard
+                inHandQty2 = inHandQty
+                demandedQty = requiredQuantity - inHandQty
+                if demandedQty < 0:
+                    demandedQty = 0
+                inHandQty = inHandQty - demandedQty
+                if inHandQty < 0:
+                    inHandQty = 0
+                tempBinCards[i.PMCode] = inHandQty
+                plan = Plan.objects.get(planNo=planNo)
+                noOfBatchesToBePlanned = PlanItems.objects.get(planNo=planNo, ProductCode=obj.ProductCode,
+                                                               PackSize=obj.PackSize).noOfBatchesToBePlanned
+                workableBatches = (noOfBatchesToBePlanned / requiredQuantity) * inHandQty2
+                planItemMaterial = ProductPackingMaterials.objects.create(planNo=plan,
+                                                                   ProductCode=obj.ProductCode,
+                                                                   PackSize=obj.PackSize,
+                                                                   PMCode=i.PMCode,
+                                                                   requiredQuantity=requiredQuantity,
+                                                                   demandedQuantity=demandedQty,
+                                                                   inHandQuantity=inHandQty2,
+                                                                   workableBatches=round(workableBatches, 1))
+                planItemMaterial.save()
+
+        resp = MergeMaterials(planNo)
+        l = []
+        for item in resp:
+            l.append(resp[item])
+        return Response({"list": l})

@@ -1,6 +1,6 @@
 from django.db import models
 from Products.models import Products
-from Inventory.models import RawMaterials
+from Inventory.models import RawMaterials, PackingMaterials
 
 
 # Create your models here.
@@ -41,3 +41,13 @@ class ProductMaterials(models.Model):
 
     # def __str__(self):
     #     return self.planNo.planNo
+
+class ProductPackingMaterials(models.Model):
+    planNo = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    ProductCode = models.ForeignKey(Products, on_delete=models.CASCADE)
+    PackSize = models.CharField(max_length=20)
+    PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
+    requiredQuantity = models.DecimalField(max_digits=10, decimal_places=2)
+    inHandQuantity = models.DecimalField(max_digits=10, decimal_places=2)
+    demandedQuantity = models.DecimalField(max_digits=10, decimal_places=2)
+    workableBatches = models.DecimalField(max_digits=10, decimal_places=3)

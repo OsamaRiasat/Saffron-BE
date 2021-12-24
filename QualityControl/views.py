@@ -503,7 +503,7 @@ class PostRMCOAApprovalView(APIView):
 
 
 class RMDataAnalysisView(generics.ListAPIView):
-    queryset = RMAnalysisItems.objects.all()
+    queryset = RMAnalysisItemsLog.objects.all()
     serializer_class = RMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['RMAnalysisID__QCNo__IGPNo__RMCode__Material',
@@ -1008,7 +1008,7 @@ class PostPMCOAApprovalView(APIView):
 
 
 class PMDataAnalysisView(generics.ListAPIView):
-    queryset = PMAnalysisItems.objects.all()
+    queryset = PMAnalysisItemsLog.objects.all()
     serializer_class = PMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['PMAnalysisID__QCNo__IGPNo__PMCode__Material',
@@ -1572,7 +1572,7 @@ class PostProductCOAApprovalView(APIView):
 
 
 class ProductDataAnalysisView(generics.ListAPIView):
-    queryset = ProductAnalysisItems.objects.all()
+    queryset = ProductAnalysisItemsLog.objects.all()
     serializer_class = ProductAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['ProductAnalysisID__QCNo__batchNo__ProductCode__Product',
