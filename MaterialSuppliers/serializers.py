@@ -38,7 +38,7 @@ class RawMaterialSerializer(serializers.ModelSerializer):
 class PackingMaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackingMaterials
-        fields = ['RMCode', 'Material']
+        fields = ['PMCode', 'Material']
 
 
 class SupplierApprovedMCodeSerializer(serializers.ModelSerializer):
