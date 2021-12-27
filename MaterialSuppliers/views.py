@@ -26,10 +26,25 @@ class RawMaterialsNamesAndCodeView(generics.ListAPIView):
     queryset = RawMaterials.objects.all()
 
 
-class PackingMaterialsNamesAndCodeView(generics.ListAPIView):
-    serializer_class = PackingMaterialSerializer
-    queryset = PackingMaterials.objects.all()
+# class PackingMaterialsNamesAndCodeView(generics.ListAPIView):
+#     serializer_class = PackingMaterialSerializer
+#     queryset = PackingMaterials.objects.all()
 
+# {
+#     "PMCode": "3.01.002.00005",
+#     "Material": "Printed Aluminium Foil Winpram (PS)"
+#   },
+class PackingMaterialsNamesAndCodeView(APIView):
+    def get(self, request):
+        data = PackingMaterials.objects.all()
+        li = []
+        for d in data:
+            print(d)
+            dic = {}
+            dic["RMCode"] = d.PMCode
+            dic["Material"] = d.Material
+            li.append(dic)
+        return Response(li)
 
 class AddMaterialToSuppliersView(APIView):
     serializer_class = SupplierApprovedItemsSerializer
