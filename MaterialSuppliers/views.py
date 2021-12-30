@@ -54,9 +54,10 @@ class AddMaterialToSuppliersView(APIView):
         MCode = data.get('MCode')
         type = data.get('materialType')
         S_ID = data.get('S_ID')
+        data = Suppliers.objects.get(S_ID=S_ID)
         obj = SupplierApprovedItems.objects.create(MCode=MCode,
-                                                   type=type,
-                                                   S_ID=S_ID)
+                                                   materialType=type,
+                                                   S_ID=data)
         obj.save()
         return Response({'message': "Material Added"}, status=status.HTTP_200_OK)
 
