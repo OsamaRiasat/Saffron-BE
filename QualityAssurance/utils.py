@@ -8,9 +8,10 @@ def getQCNO():
     try:
         print("in try")
         qcno=RMReceiving.objects.aggregate(Max('QCNo'))
-        print(qcno['QCNo__max'])
+
         qcno=qcno['QCNo__max']
         no=int(qcno[5:])
+
         no=str(no+1)
         today = date.today()
         year=str(today.year)
