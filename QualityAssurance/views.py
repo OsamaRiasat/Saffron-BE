@@ -405,14 +405,20 @@ class PSPCodeView(APIView):
     def get(self, request):
         pcode = BPRLog.objects.filter(batchStatus='OPEN')
         l = []
+        l2 = []
         for i in pcode:
             l.append(i.ProductCode.ProductCode)
+            l2.append(i.ProductCode.Product)
         l = list(dict.fromkeys(l))
+        l2 = list(dict.fromkeys(l2))
         lis = []
+        coun = 0
         for i in l:
             dic = {}
             dic["ProductCode"] = i
+            dic["Product"] = l2[coun]
             lis.append(dic)
+            coun = coun +1
         return Response(lis)
 
 

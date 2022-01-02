@@ -1,4 +1,6 @@
 from django.urls import path
+
+from QualityControl.views import AllStageByPCodeView
 from .views import *
 from Production.views import PCodesForLineClearanceView
 
@@ -65,11 +67,12 @@ urlpatterns = [
     # -------------- Add Packing Material ----------------
 
     path('AddPackingMaterial/', PackingMaterialView.as_view()),
-    # QualityAssurance/PackingMaterialDetail/?PMCode=&Material=&Units=&Type=
+
 
     #   ---------------     View PM    ----------------------
 
     path('PackingMaterialDetail/', PackingMaterialDetailView.as_view()),
+    # QualityAssurance/PackingMaterialDetail/?PMCode=&Material=&Units=&Type=
 
     # -------------- Batch Deviation ----------------
 
@@ -105,6 +108,7 @@ urlpatterns = [
     path('PSPCode/', PSPCodeView.as_view()),   # Product Code List
     path('PSBatchNo/<str:Pcode>/', PSBatchNoView.as_view()),    # When Product COde is selected
     path('PSBatchDetail/<str:batchNo>/', PSBatchDetailView.as_view()),  # When batch No is selected
+    path('stagesList/<str:ProductCode>',AllStageByPCodeView.as_view()),
     # path('AllUsers/', AllUsersView.as_view()), # Sampled by list
     path('ProductSample/', ProductSampleView.as_view()), # Post api
 
