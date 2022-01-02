@@ -308,7 +308,7 @@ class UpdateRMRecievingSerializer(serializers.ModelSerializer):
         instance.EXP_Date = validated_data.get('EXP_Date', instance.EXP_Date)
         instance.GRNo = validated_data.get('GRNo', instance.GRNo)
         instance.remarks = validated_data.get('remarks', instance.remarks)
-        #instance.status = "QUARANTINED"
+        # instance.status = "QUARANTINED"
         instance.save()
         return instance
 
@@ -371,7 +371,7 @@ class UpdatePMRecievingSerializer(serializers.ModelSerializer):
         instance.EXP_Date = validated_data.get('EXP_Date', instance.EXP_Date)
         instance.GRNo = validated_data.get('GRNo', instance.GRNo)
         instance.remarks = validated_data.get('remarks', instance.remarks)
-        instance.status = "Under_Test"
+        # instance.status = "Under_Test"
         instance.save()
         return instance
 
