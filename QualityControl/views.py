@@ -1,4 +1,4 @@
-
+from django.http import JsonResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -221,7 +221,15 @@ class RMEditSpecsView(APIView):
             dic['specification'] = i.specification
             lis.append(dic)
         dict['items'] = lis
-        return Response(dict)
+        response = JsonResponse(
+            dic
+        )
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+        response["Access-Control-Max-Age"] = "1000"
+        response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+        return response
+        return Response(response)
 
 
 class TEMPRMSpecificationsView(generics.CreateAPIView):

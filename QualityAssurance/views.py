@@ -252,7 +252,7 @@ class ProductDetailView(generics.ListAPIView):
     queryset = PackSizes.objects.all()
     serializer_class = ProductAndPackSizeSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['ProductCode__Product', 'ProductCode', 'ProductCode__RegistrationNo', 'ProductCode__ShelfLife']
+    filterset_fields = ['ProductCode__Product', 'ProductCode', 'ProductCode__RegistrationNo', 'ProductCode__ShelfLife', 'ProductCode__dosageForm__dosageForm']
 
     # -------------- Add RM --------------------
 

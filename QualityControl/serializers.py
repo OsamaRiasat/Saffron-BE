@@ -83,9 +83,10 @@ class AcquireSpecificationsItemsSerializer(serializers.ModelSerializer):
 
 
 class AcquireRMCodeListSerializer(serializers.ModelSerializer):
+    Material = serializers.CharField(source='RMCode.Material')
     class Meta:
         model = RMSpecifications
-        fields = ['RMCode', ]
+        fields = ['RMCode','Material']
 
 
 # Edit RM Specs
