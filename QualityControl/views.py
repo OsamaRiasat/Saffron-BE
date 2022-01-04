@@ -1,4 +1,4 @@
-
+from django.http import JsonResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -221,7 +221,15 @@ class RMEditSpecsView(APIView):
             dic['specification'] = i.specification
             lis.append(dic)
         dict['items'] = lis
-        return Response(dict)
+        response = JsonResponse(
+            dic
+        )
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+        response["Access-Control-Max-Age"] = "1000"
+        response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+        return response
+        return Response(response)
 
 
 class TEMPRMSpecificationsView(generics.CreateAPIView):
@@ -1392,7 +1400,7 @@ class ProductQCNoSampleView(APIView):
             spec = ProductSpecifications.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode,
                                                      stage=sample.sampleStage)
         except:
-            return Response({"message": "No Specifications for this Material"})
+            return Response({"message": "Add Specifications for "+sample.batchNo.ProductCode.Product+"for stage "+sample.batchNo.currentStage +" first."})
         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
         data["FirstData"] = str1
         data["SecondData"] = spec.reference.reference
