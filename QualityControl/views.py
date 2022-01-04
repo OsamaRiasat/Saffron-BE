@@ -1400,7 +1400,7 @@ class ProductQCNoSampleView(APIView):
             spec = ProductSpecifications.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode,
                                                      stage=sample.sampleStage)
         except:
-            return Response({"message": "No Specifications for this Material"})
+            return Response({"message": "Add Specifications for "+sample.batchNo.ProductCode.Product+"for stage "+sample.batchNo.currentStage +" first."})
         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
         data["FirstData"] = str1
         data["SecondData"] = spec.reference.reference

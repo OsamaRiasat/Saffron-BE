@@ -24,6 +24,8 @@ admin.site.register(TempPMSpecificationsItems)
 admin.site.register(PMSamples)
 admin.site.register(PMAnalysis)
 admin.site.register(PMAnalysisItems)
+admin.site.register(PMAnalysisLog)
+admin.site.register(PMAnalysisItemsLog)
 
 
 # Products
@@ -35,3 +37,5 @@ admin.site.register(TempProductSpecificationsItems)
 admin.site.register(ProductSamples)
 admin.site.register(ProductAnalysis)
 admin.site.register(ProductAnalysisItems)
+admin.site.register(ProductAnalysisLog)
+admin.site.register(ProductAnalysisItemsLog)

@@ -744,7 +744,7 @@ class ProductAnalysisQCNoSerializer(serializers.ModelSerializer):
 
 
 class ProductAnalysisItemsReportingSerializer(serializers.ModelSerializer):
-    product = serializers.CharField(source='ProductMAnalysisID.QCNo.batchNo.ProductCode.Product')
+    product = serializers.CharField(source='ProductAnalysisID.QCNo.batchNo.ProductCode.Product')
     batchNo = serializers.CharField(source='ProductAnalysisID.QCNo.batchNo.batchNo')
     QCNo = serializers.CharField(source='ProductAnalysisID.QCNo.QCNo')
     analysisDateTime = serializers.CharField(source='ProductAnalysisID.analysisDateTime')
