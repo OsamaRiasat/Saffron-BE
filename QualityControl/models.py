@@ -357,6 +357,9 @@ class ProductSpecifications(models.Model):
     reference = models.ForeignKey(RMReferences, on_delete=models.CASCADE)
     REQUIRED = ['ProductCode', 'stage', 'SOPNo', 'reference']
 
+    class Meta:
+        unique_together = ('ProductCode', 'stage',)
+
     def __str__(self):
         return str(self.ProductCode.ProductCode+" "+self.stage)
 

@@ -1396,11 +1396,15 @@ class ProductQCNoSampleView(APIView):
         dict['EXP_Date'] = pm_receiving.EXPDate.strftime("%d.%m.%Y")
 
         data = {}
+        print("Holl", sample.sampleStage)
+        spec = ProductSpecifications.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode,
+                                                 stage=sample.sampleStage)
+        print(spec)
         try:
             spec = ProductSpecifications.objects.get(ProductCode=pm_receiving.ProductCode.ProductCode,
                                                      stage=sample.sampleStage)
         except:
-            return Response({"message": "Add Specifications for "+sample.batchNo.ProductCode.Product+"for stage "+sample.batchNo.currentStage +" first."})
+            return Response({"message": "Add Specifications for "+sample.batchNo.ProductCode.Product+"for stage "+sample.sampleStage +" first."})
         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
         data["FirstData"] = str1
         data["SecondData"] = spec.reference.reference
