@@ -221,15 +221,8 @@ class RMEditSpecsView(APIView):
             dic['specification'] = i.specification
             lis.append(dic)
         dict['items'] = lis
-        response = JsonResponse(
-            dic
-        )
-        response["Access-Control-Allow-Origin"] = "*"
-        response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
-        response["Access-Control-Max-Age"] = "1000"
-        response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
-        return response
-        return Response(response)
+
+        return Response(dict)
 
 
 class TEMPRMSpecificationsView(generics.CreateAPIView):

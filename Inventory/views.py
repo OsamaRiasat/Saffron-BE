@@ -2,7 +2,9 @@ from django.db.models import Max
 from django.shortcuts import render
 from rest_framework import viewsets
 
-from Planning.models import Plan, ProductMaterials
+from Planning.models import Plan, ProductMaterials, ProductPackingMaterials
+from Production.models import BPRLog
+from Production.serializers import BPRSerializer
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
@@ -111,9 +113,11 @@ class RMDemandsDNosWithPendingStatus(APIView):
         serialize = RMDemandsDNosSerializer(data, many=True)
         return Response(serialize.data)
 
+
 class PlanNosListView(generics.ListAPIView):
     queryset = Plan.objects.all()
     serializer_class = planNumbersSerializer
+
 
 class Demanded_Materials_Through_PlanNo_View(APIView):
     def get(self, request, planNo):
@@ -131,7 +135,9 @@ class Demanded_Materials_Through_PlanNo_View(APIView):
             li.append(dic)
         return Response(li)
 
+
 # Packing Material Demands
+
 
 class PMDemandedItemsView(viewsets.ModelViewSet):
     serializer_class = PMDemandItemsSerializer
@@ -156,7 +162,33 @@ class PMDemandsDNosWithPendingStatus(APIView):
         return Response(serialize.data)
 
 
+class Demanded_Packing_Materials_Through_PlanNo_View(APIView):
+    def get(self, request, planNo):
+        data = ProductPackingMaterials.objects.filter(planNo=planNo)
+        li = []
+        for obj in data:
+            if obj.demandedQuantity <= 0:
+                continue
+            dic = {}
+            dic["Category"] = obj.PMCode.Type.Type
+            dic["RMCode"] = obj.PMCode.PMCode
+            dic["Material"] = obj.PMCode.Material
+            dic["demandedQuantity"] = obj.demandedQuantity
+            dic["Unit"] = obj.PMCode.Units
+            li.append(dic)
+        return Response(li)
+
+
+
 # Raw Material Purchase Orders
+
+class RMDemandedItemsView(APIView):
+    def get(self,request, pk):
+        data = RMDemandedItems.objects.filter(DNo=pk)
+        serializer = RMDemandItemsSerializer(data, many=True)
+        return Response(serializer.data)
+
+
 
 class RMPurchaseOrdersItemsView(viewsets.ModelViewSet):
     serializer_class = RMPurchaseOrderItemsSerializer
@@ -231,6 +263,11 @@ class PMPurchaseOrdersViews(generics.CreateAPIView):
     serializer_class = PMPurchaseOrdersSerializer
     queryset = PMPurchaseOrders.objects.all()
 
+class PMDemandedItemsView(APIView):
+    def get(self,request, pk):
+        data = PMDemandedItems.objects.filter(DNo=pk)
+        serializer = PMDemandItemsSerializer(data, many=True)
+        return Response(serializer.data)
 
 class PMPurchaseOrderHighestPONoView(APIView):
     def get(self, request):
@@ -281,6 +318,7 @@ class PMPurchaseOrderItemsCodesForReceivingView(APIView):
         data = PMPurchaseOrderItems.objects.filter(PONo=PONo)
         serialize = PMPurchaseOrderItemsPMCodesSerializer(data, many=True)
         return Response(serialize.data)
+
 
 # --------------- Raw Materials RECEIVING ------------------------
 
@@ -554,3 +592,84 @@ class PopulateRawMaterialView(APIView):
             )
             rw.save()
         return Response({"Populate": "Done"})
+
+    # ------------- RM Dispensing   ------------
+
+
+class PCodeBPRView(APIView):
+    def get(self, request):
+        # ProductCode
+        # pcode = BPRLog.objects.filter(batchStatus='OPEN').values_list('ProductCode').distinct()
+        # entries = BPRLog.objects.filter(ProductCode__in=pcode)
+        # serializer = PCodeBPRSerializer(entries, many=True)
+
+        l = []
+        d = BPRLog.objects.only('ProductCode').filter(batchStatus='OPEN', currentStage='Dispensing').distinct()
+        for i in d:
+            l.append(i.ProductCode.ProductCode)
+        l = list(dict.fromkeys(l))
+        l2 = []
+        for i in l:
+            dic = {}
+            dic["ProductCode"] = i
+            l2.append(dic)
+
+        return Response(l2)
+
+
+class BPRByPcodeView(APIView):
+    def get(self, request, PCode):
+        batchNo = BPRLog.objects.filter(ProductCode=PCode, currentStage="Dispensing")
+        serializer = BPRSerializer(batchNo, many=True)
+        return Response(serializer.data)
+
+#
+# class GeneralDataBPRLogView(APIView):
+#     serializer_class = PCodeBatchNoBPRSerializer
+#
+#     def post(self, request):
+#         data = request.data
+#         pcode = data.get('ProductCode', None)
+#         batchNo = data.get('batchNo', None)
+#         gdata = BPRLog.objects.get(ProductCode=pcode, batchNo=batchNo)
+#         dict = {}
+#         dict['currentStage'] = gdata.currentStage
+#         dict['ProductCode'] = pcode
+#         dict['batchNo'] = batchNo
+#         dict['batchSize'] = gdata.batchSize
+#         dict['MFGDate'] = gdata.MFGDate
+#         dict['EXPDate'] = gdata.EXPDate
+#         li = []
+#         stages = BatchStages.objects.filter(batchNo=batchNo)
+#         for i in stages:
+#             dic = {}
+#             dic['currentStage'] = i.currentStage
+#             dic['openingDate'] = i.openingDate
+#             dic['closingDate'] = i.closingDate
+#             dic['units'] = i.units
+#             dic['theoreticalYield'] = i.theoreticalYield
+#             dic['actualYield'] = i.actualYield
+#             dic['yieldPercentage'] = i.yieldPercentage
+#             dic['PartialStatus'] = i.PartialStatus
+#             li.append(dic)
+#         dict['ListToBeAddedInTable'] = li
+#
+#         data = Stages.objects.filter(dosageForm=gdata.ProductCode.dosageForm)
+#         l = []
+#         for i in data:
+#             l.append(i.stage)
+#         dict['ListOfStages'] = l
+#
+#         return Response(dict)
+#
+
+# class BatchStagesView(generics.CreateAPIView):
+#     queryset = BatchStages.objects.all()
+#     serializer_class = BatchStagesSerializer
+
+
+# class DataFromBPRView(APIView):
+#     def get(self, request, PCode):
+#         data = BPRLog.objects.filter(ProductCode=PCode, batchStatus='OPEN')
+#         serializer = DataFromBPRSerializer(data, many=True)
+#         return Response(serializer.data)
