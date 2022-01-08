@@ -245,12 +245,13 @@ class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     material = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.RMCode.Material')
     batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
     QCNo = serializers.CharField(source='RMAnalysisID.QCNo.QCNo')
-    analysisDateTime = serializers.CharField(source='RMAnalysisID.analysisDateTime')
+    analysisDateTime = serializers.DateTimeField(source='RMAnalysisID.analysisDateTime', format="%d.%m.%Y %H:%M")
     supplierName = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
+
 
     class Meta:
         model = RMAnalysisItemsLog
-        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'supplierName']
+        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter','specification','result' ,'supplierName']
 
 
 # -----------------------------------------------------------------------------------------
@@ -495,12 +496,12 @@ class PMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     material = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.PMCode.Material')
     batchNo = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.batchNo')
     QCNo = serializers.CharField(source='PMAnalysisID.QCNo.QCNo')
-    analysisDateTime = serializers.CharField(source='PMAnalysisID.analysisDateTime')
+    analysisDateTime = serializers.DateTimeField(source='PMAnalysisID.analysisDateTime', format="%d.%m.%Y %H:%M")
     supplierName = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
 
     class Meta:
         model = PMAnalysisItemsLog
-        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'supplierName']
+        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'specification', 'result', 'supplierName']
 
 # -----------------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------------
@@ -747,9 +748,9 @@ class ProductAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     product = serializers.CharField(source='ProductAnalysisID.QCNo.batchNo.ProductCode.Product')
     batchNo = serializers.CharField(source='ProductAnalysisID.QCNo.batchNo.batchNo')
     QCNo = serializers.CharField(source='ProductAnalysisID.QCNo.QCNo')
-    analysisDateTime = serializers.CharField(source='ProductAnalysisID.analysisDateTime')
+    analysisDateTime = serializers.DateTimeField(source='ProductAnalysisID.analysisDateTime', format="%d.%m.%Y %H:%M")
     stage = serializers.CharField(source='ProductAnalysisID.QCNo.sampleStage')
 
     class Meta:
         model = ProductAnalysisItemsLog
-        fields = ['product', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'stage']
+        fields = ['product', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter','specification', 'result', 'stage']
