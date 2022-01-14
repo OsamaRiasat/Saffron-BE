@@ -84,9 +84,10 @@ class AcquireSpecificationsItemsSerializer(serializers.ModelSerializer):
 
 class AcquireRMCodeListSerializer(serializers.ModelSerializer):
     Material = serializers.CharField(source='RMCode.Material')
+
     class Meta:
         model = RMSpecifications
-        fields = ['RMCode','Material']
+        fields = ['RMCode', 'Material']
 
 
 # Edit RM Specs
@@ -220,6 +221,20 @@ class RemarksSerializer(serializers.Serializer):
     retestReason = serializers.CharField(default="")
     result = serializers.CharField()
 
+    # ----------------  Pending Reports -----------------
+
+
+class RMAnalysisLogQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RMAnalysisLog
+        fields = ['QCNo', ]
+
+
+class RMAnalysisLogPrintSerializer(serializers.Serializer):
+    class Meta:
+        model = RMAnalysisLog
+        fields = ['isPrinted']
+
     # ---------------- DATA ANALYSIS --------------------
 
 
@@ -248,10 +263,10 @@ class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
     analysisDateTime = serializers.DateTimeField(source='RMAnalysisID.analysisDateTime', format="%d.%m.%Y %H:%M")
     supplierName = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
 
-
     class Meta:
         model = RMAnalysisItemsLog
-        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter','specification','result' ,'supplierName']
+        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'specification', 'result',
+                  'supplierName']
 
 
 # -----------------------------------------------------------------------------------------
@@ -463,6 +478,20 @@ class PMAnalysisQCNoSerializer(serializers.ModelSerializer):
         model = PMAnalysis
         fields = ['QCNo', ]
 
+    # ----------------  Pending Reports -----------------
+
+
+class PMAnalysisLogQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PMAnalysisLog
+        fields = ['QCNo', ]
+
+
+class PMAnalysisLogPrintSerializer(serializers.Serializer):
+    class Meta:
+        model = PMAnalysisLog
+        fields = ['isPrinted']
+
 
 #
 # class RemarksSerializer(serializers.Serializer):
@@ -501,7 +530,9 @@ class PMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PMAnalysisItemsLog
-        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'specification', 'result', 'supplierName']
+        fields = ['material', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'specification', 'result',
+                  'supplierName']
+
 
 # -----------------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------------
@@ -604,7 +635,7 @@ class TempProductSpecificationsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TempProductSpecifications
-        fields = ['ProductCode','stage', 'SOPNo', 'reference', 'version', 'items', ]
+        fields = ['ProductCode', 'stage', 'SOPNo', 'reference', 'version', 'items', ]
 
     def create(self, validated_data):
         item = validated_data.pop('items')
@@ -663,7 +694,7 @@ class ProductQCNoSerializer(serializers.ModelSerializer):
 class PostProductAnalysisItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductAnalysisItems
-        fields = ['parameter','specification', 'result' ]
+        fields = ['parameter', 'specification', 'result']
 
 
 class PostProductAnalysisSerializer(serializers.ModelSerializer):
@@ -723,6 +754,21 @@ class ProductAnalysisQCNoSerializer(serializers.ModelSerializer):
 #     retestReason = serializers.CharField(default="")
 #     result = serializers.CharField()
 
+
+    # ----------------  Pending Reports -----------------
+
+class ProductAnalysisLogQCNoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductAnalysisLog
+        fields = ['QCNo', ]
+
+class ProductAnalysisLogPrintSerializer(serializers.Serializer):
+    class Meta:
+        model = ProductAnalysisLog
+        fields = ['isPrinted']
+
+
+
 # ---------------- DATA ANALYSIS --------------------
 
 
@@ -753,4 +799,4 @@ class ProductAnalysisItemsReportingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductAnalysisItemsLog
-        fields = ['product', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter','specification', 'result', 'stage']
+        fields = ['product', 'batchNo', 'QCNo', 'analysisDateTime', 'parameter', 'specification', 'result', 'stage']

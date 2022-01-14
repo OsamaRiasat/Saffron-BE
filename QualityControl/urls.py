@@ -65,6 +65,19 @@ urlpatterns = [
     path('PostRMCOAApproval/<str:QCNo>/', PostRMCOAApprovalView.as_view()),
     # path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
 
+
+    #         --------------    PENDING REPORTS    -----------
+
+    path('Print_RMAnalysisQCNo/', Print_RMAnalysisQCNoView.as_view()),
+    path('Print_RMAnalysis/<str:QCNo>/', Print_RMAnalysisView.as_view()),
+    path('RMAnalysisLogPrint/<str:qc>/', RMAnalysisLogPrintView.as_view()),
+    # path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
+
+    #         --------------    Label Printing    -----------
+
+    path('Label_Print_RMAnalysisQCNo/', Label_Print_RMAnalysisQCNoView.as_view()),
+    # path('Print_ProductAnalysis/<str:QCNo>/', Print_ProductAnalysisView.as_view()),
+
     #         --------------    REPORTING   -----------
 
     # RM Reporting
@@ -138,6 +151,18 @@ urlpatterns = [
     path('PostPMCOAApproval/<str:QCNo>/', PostPMCOAApprovalView.as_view()),
     # path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
 
+    #         --------------    PENDING REPORTS    -----------
+
+    path('Print_PMAnalysisQCNo/', Print_PMAnalysisQCNoView.as_view()),
+    path('Print_PMAnalysis/<str:QCNo>/', Print_PMAnalysisView.as_view()),
+    path('PMAnalysisLogPrint/<str:qc>/', PMAnalysisLogPrintView.as_view()),
+
+    #         --------------    Label Printing    -----------
+
+    path('Label_Print_PMAnalysisQCNo/', Label_Print_PMAnalysisQCNoView.as_view()),
+    # path('Print_PMAnalysis/<str:QCNo>/', Print_PMAnalysisView.as_view()),
+
+
     #         --------------    REPORTING   -----------
 
     # RM Reporting
@@ -208,6 +233,17 @@ urlpatterns = [
     path('ProductAnalysis/<str:QCNo>/', ProductAnalysisView.as_view()),
     path('PostProductCOAApproval/<str:QCNo>/', PostProductCOAApprovalView.as_view()),
     # path('ReleaseRMAnalysis/<str:QCNo>/', ReleaseRMAnalysisView.as_view()),
+
+    #         --------------    PENDING REPORTS    -----------
+
+    path('Print_ProductAnalysisQCNo/', Print_ProductAnalysisQCNoView.as_view()),
+    path('Print_ProductAnalysis/<str:QCNo>/', Print_ProductAnalysisView.as_view()),
+    path('ProductAnalysisLogPrint/<str:qc>/', ProductAnalysisLogPrintView.as_view()),
+
+    #         --------------    Label Printing    -----------
+
+    path('Label_Print_ProductAnalysisQCNo/', Label_Print_ProductAnalysisQCNoView.as_view()),
+    # path('Print_ProductAnalysis/<str:QCNo>/', Print_ProductAnalysisView.as_view()),
 
     #         --------------    REPORTING   -----------
 
