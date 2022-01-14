@@ -152,6 +152,7 @@ class RMAnalysisLog(models.Model):
     remarks = models.CharField(max_length=40, blank=True, null=True)
     specID = models.IntegerField()
     result = models.CharField(max_length=20)
+    isPrinted = models.BooleanField(default=False)
 
     REQUIRED = ['QCNo', 'specID', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate',
                 'quantityApproved', 'quantityRejected', 'remarks', 'specID', 'result']
@@ -308,6 +309,7 @@ class PMAnalysisLog(models.Model):
     remarks = models.CharField(max_length=40, blank=True, null=True)
     specID = models.IntegerField()
     result = models.CharField(max_length=20)
+    isPrinted = models.BooleanField(default=False)
 
     REQUIRED = ['QCNo', 'specID', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate',
                 'quantityApproved', 'quantityRejected', 'remarks', 'specID', 'result']
@@ -468,6 +470,7 @@ class ProductAnalysisLog(models.Model):
     remarks = models.CharField(max_length=40, blank=True, null=True)
     specID = models.IntegerField()
     result = models.CharField(max_length=20)
+    isPrinted = models.BooleanField(default=False)
 
     REQUIRED = ['QCNo', 'specID', 'workingStd', 'rawDataReference', 'analysisDateTime', 'retestDate',
                 'quantityApproved', 'quantityRejected', 'remarks', 'specID', 'result']
