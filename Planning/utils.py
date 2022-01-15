@@ -1,5 +1,5 @@
 
-from .models import ProductMaterials,PlanItems
+from .models import ProductMaterials, PlanItems, ProductPackingMaterials
 from Products.models import Formulation
 from django.db.models import Min
 
@@ -46,6 +46,26 @@ def MergeMaterials(planNo):
             resp[obj.RMCode.RMCode]["Units"] = obj.RMCode.Units
 
     return resp
+
+def MergePackingMaterials(planNo):
+    data = ProductPackingMaterials.objects.filter(planNo=planNo)
+    resp = {}
+    for obj in data:
+        if obj.PMCode.PMCode in resp:
+            resp[obj.RMCode.RMCode]["ReqQty"]=resp[obj.PMCode.PMCode]["ReqQty"] + obj.requiredQuantity
+            resp[obj.PMCode.PMCode]["demandedQuantity"] = resp[obj.PMCode.PMCode]["demandedQuantity"] + obj.demandedQuantity
+        else:
+            resp[obj.PMCode.PMCode]={}
+            resp[obj.PMCode.PMCode]["ReqQty"]= obj.requiredQuantity
+            resp[obj.RMCode.RMCode]["Inhand"] = obj.inHandQuantity
+            resp[obj.PMCode.PMCode]["demandedQuantity"] = obj.demandedQuantity
+            resp[obj.PMCode.PMCode]["RMCode"] = obj.PMCode.PMCode
+            resp[obj.PMCode.PMCode]["Material"] = obj.PMCode.Material
+            resp[obj.PMCode.PMCode]["Units"] = obj.PMCode.Units
+
+    return resp
+
+
 
 def ProductionCalculationUtil(planNo):
     data = PlanItems.objects.filter(planNo=planNo)

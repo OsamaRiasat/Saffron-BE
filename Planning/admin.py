@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Plan)
 admin.site.register(PlanItems)
 admin.site.register(ProductMaterials)
+admin.site.register(ProductPackingMaterials)
