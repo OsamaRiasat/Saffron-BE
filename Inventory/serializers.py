@@ -165,6 +165,14 @@ class PMDemandsDNosSerializer(serializers.ModelSerializer):
 
 # RM Purchase Orders
 
+class DemandedItemsForViewSerializer(serializers.ModelSerializer):
+    Material = serializers.CharField(source='RMCode.Material')
+
+    class Meta:
+        model = RMDemandedItems
+
+        fields = ['RMCode', 'Material', 'Priority', 'DemandedQty', ]
+
 
 class RMPurchaseOrderItemsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -215,6 +223,13 @@ class RMPurchaseOrderItemsRMCodesSerializer(serializers.ModelSerializer):
 
 # PM Purchase Orders
 
+class PMDemandedItemsForViewSerializer(serializers.ModelSerializer):
+    Material = serializers.CharField(source='PMCode.Material')
+
+    class Meta:
+        model = PMDemandedItems
+
+        fields = ['PMCode', 'Material', 'Priority', 'DemandedQty', ]
 
 class PMPurchaseOrderItemsSerializer(serializers.ModelSerializer):
     class Meta:

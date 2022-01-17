@@ -1,5 +1,6 @@
 from django.db.models import Max
 from django.shortcuts import render
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 
 from Planning.models import Plan, ProductMaterials, ProductPackingMaterials
@@ -185,9 +186,8 @@ class Demanded_Packing_Materials_Through_PlanNo_View(APIView):
 class RMDemandedItemsView(APIView):
     def get(self,request, pk):
         data = RMDemandedItems.objects.filter(DNo=pk)
-        serializer = RMDemandItemsSerializer(data, many=True)
+        serializer = DemandedItemsForViewSerializer(data, many=True)
         return Response(serializer.data)
-
 
 
 class RMPurchaseOrdersItemsView(viewsets.ModelViewSet):
@@ -253,6 +253,11 @@ class RMPurchaseOrderItemsCodesForReceivingView(APIView):
 
 # Packing Material Purchase Orders
 
+class PMDemandedItemsView(APIView):
+    def get(self,request, pk):
+        data = PMDemandedItems.objects.filter(DNo=pk)
+        serializer = PMDemandedItemsForViewSerializer(data, many=True)
+        return Response(serializer.data)
 
 class PMPurchaseOrdersItemsView(viewsets.ModelViewSet):
     serializer_class = PMPurchaseOrderItemsSerializer
@@ -263,13 +268,14 @@ class PMPurchaseOrdersViews(generics.CreateAPIView):
     serializer_class = PMPurchaseOrdersSerializer
     queryset = PMPurchaseOrders.objects.all()
 
-class PMDemandedItemsView(APIView):
-    def get(self,request, pk):
-        data = PMDemandedItems.objects.filter(DNo=pk)
-        serializer = PMDemandItemsSerializer(data, many=True)
-        return Response(serializer.data)
+# class PMDemandedItemsView(APIView):
+#     def get(self,request, pk):
+#         data = PMDemandedItems.objects.filter(DNo=pk)
+#         serializer = PMDemandItemsSerializer(data, many=True)
+#         return Response(serializer.data)
 
 class PMPurchaseOrderHighestPONoView(APIView):
+    @extend_schema(description='text for description')
     def get(self, request):
         PONo = PMPurchaseOrders.objects.all().aggregate(Max('PONo'))
         print(PONo)
