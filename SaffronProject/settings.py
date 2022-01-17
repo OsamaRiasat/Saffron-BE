@@ -151,3 +151,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'ERP API',
+    'DESCRIPTION': 'Here are the documentation for ERP-Saffron',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
+}

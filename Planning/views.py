@@ -231,8 +231,23 @@ class PlanPackingMaterialCalculationView(APIView):
     def get(self, request, planNo, isQuarantine, isPIP):
         data = PlanItems.objects.filter(planNo=planNo).exclude(noOfBatchesToBePlanned=0)
         tempBinCards = {}
+        ifAlreadyCalculated = ProductPackingMaterials.objects.filter(planNo=planNo)
+        lis = []
+        for obj in ifAlreadyCalculated:
+            dic = {}
+            dic["ReqQty"]= obj.requiredQuantity
+            dic["Inhand"] = obj.inHandQuantity
+            dic["demandedQuantity"] = obj.demandedQuantity
+            dic["RMCode"] = obj.PMCode.PMCode
+            dic["Material"] = obj.PMCode.Material
+            dic["Units"] = obj.PMCode.Units
+            lis.append(dic)
+
+        if len(lis):
+            return Response({"list":lis})
+
         for obj in data:
-            formulation = PMFormulation.objects.filter(ProductCode=obj.ProductCode, PackSize=data.PackSize)
+            formulation = PMFormulation.objects.filter(ProductCode=obj.ProductCode, PackSize=obj.   PackSize)
             for i in formulation:
                 requiredQuantity = obj.noOfBatchesToBePlanned * i.quantity
                 inHandQty = 0
@@ -262,7 +277,7 @@ class PlanPackingMaterialCalculationView(APIView):
                                                                    workableBatches=round(workableBatches, 1))
                 planItemMaterial.save()
 
-        resp = MergeMaterials(planNo)
+        resp = MergePackingMaterials(planNo)
         l = []
         for item in resp:
             l.append(resp[item])

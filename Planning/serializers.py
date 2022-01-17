@@ -88,3 +88,10 @@ class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan
         fields = '__all__'
+
+#   -------------- PM Planning --------------
+
+class ProductPackingMaterialsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductPackingMaterials
+        fields = '__all__'

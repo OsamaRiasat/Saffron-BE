@@ -76,7 +76,7 @@ urlpatterns = [
     #         --------------    Label Printing    -----------
 
     path('Label_Print_RMAnalysisQCNo/', Label_Print_RMAnalysisQCNoView.as_view()),
-    # path('Print_ProductAnalysis/<str:QCNo>/', Print_ProductAnalysisView.as_view()),
+    # path('Print_ProductAnalysis/<str:QCNo>/', Print_RMAnalysisView.as_view()),
 
     #         --------------    REPORTING   -----------
 

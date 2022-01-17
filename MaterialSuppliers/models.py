@@ -7,7 +7,7 @@ from django.db import models
 # Suppliers
 
 class Suppliers(models.Model):
-    S_ID = models.AutoField(primary_key=True)
+    S_ID = models.AutoField(primary_key=True) #4
     S_Name = models.CharField(max_length=50)
     S_Email = models.EmailField()
     S_Address = models.CharField(max_length=50)
@@ -20,7 +20,7 @@ class Suppliers(models.Model):
     contactPersonPhone = models.CharField(max_length=20)
 
 
-
+# zahid@saffronpharama.com
 
 class SupplierApprovedItems(models.Model):
     S_ID = models.ForeignKey(Suppliers, on_delete=models.CASCADE)
