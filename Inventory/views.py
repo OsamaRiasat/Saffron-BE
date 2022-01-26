@@ -180,11 +180,10 @@ class Demanded_Packing_Materials_Through_PlanNo_View(APIView):
         return Response(li)
 
 
-
 # Raw Material Purchase Orders
 
 class RMDemandedItemsView(APIView):
-    def get(self,request, pk):
+    def get(self, request, pk):
         data = RMDemandedItems.objects.filter(DNo=pk)
         serializer = DemandedItemsForViewSerializer(data, many=True)
         return Response(serializer.data)
@@ -254,10 +253,11 @@ class RMPurchaseOrderItemsCodesForReceivingView(APIView):
 # Packing Material Purchase Orders
 
 class PMDemandedItemsView(APIView):
-    def get(self,request, pk):
+    def get(self, request, pk):
         data = PMDemandedItems.objects.filter(DNo=pk)
         serializer = PMDemandedItemsForViewSerializer(data, many=True)
         return Response(serializer.data)
+
 
 class PMPurchaseOrdersItemsView(viewsets.ModelViewSet):
     serializer_class = PMPurchaseOrderItemsSerializer
@@ -267,6 +267,7 @@ class PMPurchaseOrdersItemsView(viewsets.ModelViewSet):
 class PMPurchaseOrdersViews(generics.CreateAPIView):
     serializer_class = PMPurchaseOrdersSerializer
     queryset = PMPurchaseOrders.objects.all()
+
 
 # class PMDemandedItemsView(APIView):
 #     def get(self,request, pk):
@@ -393,9 +394,6 @@ class UpdateRMReceivingDetailsView(generics.UpdateAPIView):
 
 # POST GRN
 
-# class GRNoView(generics.ListAPIView):
-#     queryset=RMReceiving.objects.all()
-#     serializer_class=GRNoSerializer
 
 class GRNoView(APIView):
     def get(self, request):
@@ -424,6 +422,7 @@ class RMReceivingDetailsByGRNoView(APIView):
         dic["QC_No"] = data.QCNo
         dic["MFG"] = data.MFG_Date
         dic["Exp_Date"] = data.EXP_Date
+        dic["remarks"] = data.remarks
         return Response(dic)
 
 
@@ -525,6 +524,7 @@ class PMReceivingDetailsByGRNoView(APIView):
         dic["QC_No"] = data.QCNo
         dic["MFG"] = data.MFG_Date
         dic["Exp_Date"] = data.EXP_Date
+        dic["remarks"] = data.remarks
         return Response(dic)
 
 
@@ -629,6 +629,7 @@ class BPRByPcodeView(APIView):
         serializer = BPRSerializer(batchNo, many=True)
         return Response(serializer.data)
 
+
 #
 # class GeneralDataBPRLogView(APIView):
 #     serializer_class = PCodeBatchNoBPRSerializer
@@ -679,3 +680,65 @@ class BPRByPcodeView(APIView):
 #         data = BPRLog.objects.filter(ProductCode=PCode, batchStatus='OPEN')
 #         serializer = DataFromBPRSerializer(data, many=True)
 #         return Response(serializer.data)
+
+
+#   ------------  RM  Material Return Note   -------------
+
+
+class GRNoFor_RM_Return_Note_View(APIView):
+    def get(self, request):
+        data = RMReceiving.objects.only('GRNo').filter(status="REJECTED")
+        l = []
+        for obj in data:
+            dic = {}
+            dic["GRNo"] = obj.GRNo
+            l.append(dic)
+        return Response(l)
+
+
+class RM_Returned_View(APIView):
+    def get(self, request, GRN_No):
+        obj = RMReceiving.objects.filter(GRNo=GRN_No).first()
+        obj.status = "RETURNED"
+        obj.save()
+        return Response({"message": "Material Returned."})
+
+
+#   ------------  PM  Material Return Note   -------------
+
+
+class GRNoFor_PM_Return_Note_View(APIView):
+    def get(self, request):
+        data = PMReceiving.objects.only('GRNo').filter(status="REJECTED")
+        l = []
+        for obj in data:
+            dic = {}
+            dic["GRNo"] = obj.GRNo
+            l.append(dic)
+        return Response(l)
+
+
+class PM_Returned_View(APIView):
+    def get(self, request, GRN_No):
+        obj = PMReceiving.objects.filter(GRNo=GRN_No).first()
+        obj.status = "RETURNED"
+        obj.save()
+        return Response({"message": "Material Returned."})
+
+#   ------------  RM  Material Return Note   -------------
+
+class RM_Destructed_View(APIView):
+    def get(self, request, GRN_No):
+        obj = RMReceiving.objects.filter(GRNo=GRN_No).first()
+        obj.status = "DESTRUCTED"
+        obj.save()
+        return Response({"message": "Material Returned."})
+
+#   ------------  PM  Destruction Note   -------------
+
+class PM_Returned_View(APIView):
+    def get(self, request, GRN_No):
+        obj = PMReceiving.objects.filter(GRNo=GRN_No).first()
+        obj.status = "DESTRUCTED"
+        obj.save()
+        return Response({"message": "Material Returned."})

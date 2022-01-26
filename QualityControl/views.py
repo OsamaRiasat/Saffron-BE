@@ -440,11 +440,19 @@ class PostRMCOAApprovalView(APIView):
                 )
                 item.save()
             analysis.delete()
+
             sample = RMSamples.objects.get(QCNo=QCNo)
             sample.analyst = None
             sample.assignedDateTime = None
             sample.status = "PENDING"
             sample.save()
+            rm = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+            rm.quantityApproved = analysis.quantityApproved
+            rm.quantityRejected = analysis.quantityRejected
+            rm.QCNo = QCNo
+            rm.status = "REJECTED"
+            rm.retest_Date = retestDate
+            rm.save()
             return Response({"message": "Rejected"})
         else:
             sample = RMSamples.objects.get(QCNo=QCNo)
@@ -1028,6 +1036,13 @@ class PostPMCOAApprovalView(APIView):
                 item.save()
             analysis.delete()
             sample = PMSamples.objects.get(QCNo=QCNo)
+            pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+            pm.quantityApproved = analysis.quantityApproved
+            pm.quantityRejected = analysis.quantityRejected
+            pm.QCNo = QCNo
+            pm.status = "REJECTED"
+            pm.retest_Date = retestDate
+            pm.save()
             sample.analyst = None
             sample.assignedDateTime = None
             sample.status = "PENDING"

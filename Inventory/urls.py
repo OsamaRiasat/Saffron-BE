@@ -53,12 +53,13 @@ urlpatterns = [
     path('PMDemands/', PMDemandsView.as_view()),
     path('PMDemandHighestDNo/', PMDemandHighestDNoView.as_view()),
     # path('PlanNosList', PlanNosListView.as_view()),
-    path('Demanded_Packing_Materials_Through_PlanNo<int:planNo>', Demanded_Packing_Materials_Through_PlanNo_View.as_view()),
+    path('Demanded_Packing_Materials_Through_PlanNo<int:planNo>',
+         Demanded_Packing_Materials_Through_PlanNo_View.as_view()),
 
     # RMPurchase Orders
     path('RMPurchaseOrderHighestPONo/', RMPurchaseOrderHighestPONoView.as_view()),
     path('RMDemandsDNosWithPendingStatus/', RMDemandsDNosWithPendingStatus.as_view()),
-    path('RMDemandedItems/<str:pk>',RMDemandedItemsView.as_view()),
+    path('RMDemandedItems/<str:pk>', RMDemandedItemsView.as_view()),
     # path('suppliers', suppliers.as_view())
     path('SupplierApprovedMaterials/<str:pk>', SupplierApprovedMaterialsView.as_view()),
     path('RMPurchaseOrderListOfMaterialsForForm/<str:SID>/<int:DNo>',
@@ -72,7 +73,7 @@ urlpatterns = [
     # PMPurchase Orders
     path('PMPurchaseOrderHighestPONo/', PMPurchaseOrderHighestPONoView.as_view()),
     path('PMDemandsDNosWithPendingStatus/', PMDemandsDNosWithPendingStatus.as_view()),
-    path('PMDemandedItems/<str:pk>',PMDemandedItemsView.as_view()),
+    path('PMDemandedItems/<str:pk>', PMDemandedItemsView.as_view()),
     # path('suppliers', suppliers.as_view())
     # path('SupplierApprovedMaterials/<str:pk>', SupplierApprovedMaterialsView.as_view()),
     path('PMPurchaseOrderListOfMaterialsForForm/<str:SID>/<int:DNo>',
@@ -92,7 +93,7 @@ urlpatterns = [
     path('RMHighestIGPNO', RMHighestIGPNO.as_view()),
     path('RMIGP', RMIGPView.as_view()),
 
-    # Generate GRN
+    # RM Generate GRN
     path('IGPNoList/', IGPNoView.as_view(), name='IGPNo'),
     path('HighestGRNo/', RMHighestGRNO.as_view()),
     path('RMRecievingDetail/<int:IGPNo>/', RMReceivingDetailsView.as_view()),
@@ -111,12 +112,12 @@ urlpatterns = [
     path('PMHighestIGPNO', PMHighestIGPNO.as_view()),
     path('PMIGP', PMIGPView.as_view()),
 
-    # Generate GRN
+    # PM Generate GRN
     path('PMIGPNoList/', PMIGPNoView.as_view(), name='PMIGPNo'),
     path('PMHighestGRNo/', PMHighestGRNO.as_view()),
     path('PMRecievingDetail/<int:IGPNo>/', PMReceivingDetailsView.as_view()),
     path('UpdatePMRecieving/<int:pk>/', UpdatePMReceivingDetailsView.as_view()),
-    # POST GRN
+    # PM POST GRN
     path('PMRecievingDetailByGRNo/<int:GRNo>/', PMReceivingDetailsByGRNoView.as_view()),
     path('PMGRNoList/', PMGRNoView.as_view(), name='GRNo'),
     path('PMBinCard/', PMBinCardView.as_view()),
@@ -130,5 +131,33 @@ urlpatterns = [
     path('GeneralDataBPRLog/', GeneralDataBPRLogView.as_view()),
     path('DataFromBPR/<str:PCode>/', DataFromBPRView.as_view()),
     path('BatchStages/', BatchStagesView.as_view()),
+
+    # ----------------- RM Return Note -------------------
+
+    # RM
+
+    path('GRNoFor_RM_Return_Note', GRNoFor_RM_Return_Note_View.as_view()),
+    # ned_View.as_view()), path('RMRecievingDetailByGRNo/<int:GRNo>/', RMReceivingDetailsByGRNoView.as_view()),
+    path('RM_Returned/<str:GRN_No>', RM_Returned_View.as_view()),
+
+    # PM
+
+    path('GRNoFor_PM_Return_Note', GRNoFor_PM_Return_Note_View.as_view()),
+    # path('RMRecievingDetailByGRNo/<int:GRNo>/', RMReceivingDetailsByGRNoView.as_view()),
+    path('PM_Returned/<str:GRN_No>', PM_Returned_View.as_view()),
+
+
+
+    # RM Destruction Note
+
+    #path('GRNoFor_RM_Return_Note', GRNoFor_RM_Return_Note_View.as_view()),
+    # ned_View.as_view()), path('RMRecievingDetailByGRNo/<int:GRNo>/', RMReceivingDetailsByGRNoView.as_view()),
+    path('RM_Destructed/<str:GRN_No>', RM_Destructed_View.as_view()),
+
+    # PM Material Destruction Note
+
+    # path('GRNoFor_PM_Return_Note', GRNoFor_PM_Return_Note_View.as_view()),
+    # path('RMRecievingDetailByGRNo/<int:GRNo>/', RMReceivingDetailsByGRNoView.as_view()),
+    path('PM_Destructed/<str:GRN_No>', PM_Returned_View.as_view()),
 
 ]
