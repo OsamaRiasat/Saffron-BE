@@ -20,22 +20,44 @@ class highestPlanNoView(APIView):
 
 class ProductNamesViews(APIView):
     def get(self, request):
-        data = PackSizes.objects.all()
+        pcode = Formulation.objects.all()
+
+        l1 = []
+        for i in pcode:
+            l1.append(i.ProductCode.Product)
+
+        print(l1)
+        packsizes = PackSizes.objects.all()
+        l2 = []
+        for i in packsizes:
+            l2.append(i.ProductCode.Product)
+
+        intersection = set.intersection(set(l1), set(l2))
         l = []
-        for obj in data:
+        for PCode in intersection:
             dic = {}
-            dic["Product"] = obj.ProductCode.Product
+            dic["Product"] = PCode
             l.append(dic)
         return Response(l)
 
 
 class ProductCodesViews(APIView):
     def get(self, request):
-        data = PackSizes.objects.all()
+        pcode = Formulation.objects.all()
+
+        l1 = []
+        for i in pcode:
+            l1.append(i.ProductCode.ProductCode)
+
+        packsizes = PackSizes.objects.only('ProductCode').all()
+        l2 = []
+        for i in packsizes:
+            l2.append(i.ProductCode.ProductCode)
+        intersection = set.intersection(set(l1), set(l2))
         l = []
-        for obj in data:
+        for PCode in intersection:
             dic = {}
-            dic["ProductCode"] = obj.ProductCode.ProductCode
+            dic["ProductCode"] = PCode
             l.append(dic)
         return Response(l)
 
@@ -47,6 +69,7 @@ class ProductDetailsByCodeView(APIView):  # When the Product Code is Selected (a
         dosage = Products.objects.get(ProductCode=ProductCode).dosageForm.dosageForm
         PackSizesList = []
         Query = PackSizes.objects.filter(ProductCode=ProductCode)
+        print(Query)
         for obj in Query:
             PackSizesList.append(obj.PackSize)
 
