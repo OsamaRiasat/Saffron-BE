@@ -425,6 +425,42 @@ class RMReceivingDetailsByGRNoView(APIView):
         dic["remarks"] = data.remarks
         return Response(dic)
 
+# RM Print GRN
+
+
+class GRNoForPrintGRNView(APIView):
+    def get(self, request):
+        data = RMReceiving.objects.only('GRNo').filter(status="QUARANTINED", GRNo__gt=0)
+        l = []
+        for obj in data:
+            dic = {}
+            dic["GRNo"] = obj.GRNo
+            l.append(dic)
+        return Response(l)
+
+
+class RMReceivingDetailsByGRNoForPrintGRNView(APIView):
+    def get(self, request, GRNo):
+        data = RMReceiving.objects.get(GRNo=GRNo)
+        material = RawMaterials.objects.get(RMCode=data.RMCode.RMCode)
+
+        dic = {}
+        dic["IGPNo"] = data.IGPNo
+        dic["Approval_Date"] = data.approval_Date
+        dic["Material"] = material.Material
+        dic["Code"] = material.RMCode
+        dic["supplierName"] = data.S_ID.S_Name
+        dic["Batch_No"] = data.batchNo
+        dic["Recieved_Quantity"] = data.quantityReceived
+        dic["containersReceived"] = data.containersReceived
+        dic["units"] = material.Units
+        dic["Recieving_Date"] = data.IGPDate
+        dic["MFG"] = data.MFG_Date
+        dic["Exp_Date"] = data.EXP_Date
+        dic["remarks"] = data.remarks
+        return Response(dic)
+
+
 
 # --------------- Packing Materials RECEIVING ------------------------
 
@@ -526,6 +562,42 @@ class PMReceivingDetailsByGRNoView(APIView):
         dic["Exp_Date"] = data.EXP_Date
         dic["remarks"] = data.remarks
         return Response(dic)
+
+# PM Print GRN
+
+
+class PMGRNoForPrintGRNView(APIView):
+    def get(self, request):
+        data = PMReceiving.objects.only('GRNo').filter(status="QUARANTINED", GRNo__gt=0)
+        l = []
+        for obj in data:
+            dic = {}
+            dic["GRNo"] = obj.GRNo
+            l.append(dic)
+        return Response(l)
+
+
+class PMReceivingDetailsByGRNoForPrintGRNView(APIView):
+    def get(self, request, GRNo):
+        data = PMReceiving.objects.get(GRNo=GRNo)
+        material = PackingMaterials.objects.get(PMCode=data.PMCode.PMCode)
+
+        dic = {}
+        dic["IGPNo"] = data.IGPNo
+        dic["Approval_Date"] = data.approval_Date
+        dic["Material"] = material.Material
+        dic["Code"] = material.PMCode
+        dic["supplierName"] = data.S_ID.S_Name
+        dic["Batch_No"] = data.batchNo
+        dic["Recieved_Quantity"] = data.quantityReceived
+        dic["containersReceived"] = data.containersReceived
+        dic["units"] = material.Units
+        dic["Recieving_Date"] = data.IGPDate
+        dic["MFG"] = data.MFG_Date
+        dic["Exp_Date"] = data.EXP_Date
+        dic["remarks"] = data.remarks
+        return Response(dic)
+
 
 
 # ---------------------- Bin Cards -------------------------

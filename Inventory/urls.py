@@ -98,6 +98,15 @@ urlpatterns = [
     path('HighestGRNo/', RMHighestGRNO.as_view()),
     path('RMRecievingDetail/<int:IGPNo>/', RMReceivingDetailsView.as_view()),
     path('UpdateRMRecieving/<int:pk>/', UpdateRMReceivingDetailsView.as_view()),
+
+    # Print RM GRN
+    path('RMRecievingDetailByGRNoForPrint/<int:GRNo>/', RMReceivingDetailsByGRNoForPrintGRNView.as_view()),
+    path('GRNoListForPrint/', GRNoForPrintGRNView.as_view(), name='GRNo'),
+
+    # Print PM GRN
+    path('PMRecievingDetailByGRNoForPrint/<int:GRNo>/', PMReceivingDetailsByGRNoForPrintGRNView.as_view()),
+    path('PMGRNoListForPrint/', PMGRNoForPrintGRNView.as_view(), name='GRNo'),
+
     # POST GRN
     path('RMRecievingDetailByGRNo/<int:GRNo>/', RMReceivingDetailsByGRNoView.as_view()),
     path('GRNoList/', GRNoView.as_view(), name='GRNo'),
