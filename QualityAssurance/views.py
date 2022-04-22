@@ -252,7 +252,8 @@ class ProductDetailView(generics.ListAPIView):
     queryset = PackSizes.objects.all()
     serializer_class = ProductAndPackSizeSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['ProductCode__Product', 'ProductCode', 'ProductCode__RegistrationNo', 'ProductCode__ShelfLife', 'ProductCode__dosageForm__dosageForm']
+    filterset_fields = ['ProductCode__Product', 'ProductCode', 'ProductCode__RegistrationNo', 'ProductCode__ShelfLife',
+                        'ProductCode__dosageForm__dosageForm']
 
     # -------------- Add RM --------------------
 
@@ -260,6 +261,33 @@ class ProductDetailView(generics.ListAPIView):
 class RawMaterialView(generics.CreateAPIView):
     queryset = RawMaterials.objects.all()
     serializer_class = RawMaterialSerializer
+
+    class Raw_Material_Auto_Code_Generator_View(APIView):
+        def get(self, request, Type):
+            # RM10001 aggregate(Max('QCNo'))
+            data = RawMaterials.objects.filter(Type__Type=Type).aggregate(Max('Date'))
+            data = RawMaterials.objects.filter(Type__Type=Type, Date__exact=data['Date__max']).first()
+
+            str1 = "RM1" + (str(int(data.RMCode[3:7]) + 1).zfill(4)) if Type == "Active" else "RM0" + (
+                str(int(data.RMCode[3:7]) + 1).zfill(4))
+
+            # x = str1.zfill(10)
+            return Response(str1)
+
+
+class Raw_Material_Auto_Code_Generator_View(APIView):
+    def get(self, request, Type):
+        # RM10001 aggregate(Max('QCNo'))
+        data = RawMaterials.objects.filter(Type__Type=Type).aggregate(Max('Date'))
+        data = RawMaterials.objects.filter(Type__Type=Type, Date__exact=data['Date__max']).first()
+        if data is None:
+            str1 = "RM10001" if Type == "Active" else "RM00001"
+        else:
+            str1 = "RM1" + (str(int(data.RMCode[3:7]) + 1).zfill(4)) if Type == "Active" else "RM0" + (
+                str(int(data.RMCode[3:7]) + 1).zfill(4))
+
+        # x = str1.zfill(10)
+        return Response(str1)
 
     # -------------- View RM --------------------
 
@@ -276,6 +304,34 @@ class RawMaterialDetailView(generics.ListAPIView):
 class PackingMaterialView(generics.CreateAPIView):
     queryset = PackingMaterials.objects.all()
     serializer_class = PackingMaterialSerializer
+
+
+class Packing_Material_Auto_Code_Generator_View(APIView):
+    def get(self, request, Type):
+        # PM10001 ( Primary),  PM20001 ( Secondary), PM30001 ( Tertiary ),  PM10001 ( Accessory )
+        data = PackingMaterials.objects.filter(Type__Type=Type).aggregate(Max('Date'))
+        data = PackingMaterials.objects.filter(Type__Type=Type, Date__exact=data['Date__max']).first()
+        # str1  = data.PMCode
+        if data is None:
+            if Type == "Primary":
+                str1 = "PM10001"
+            elif Type == "Secondary":
+                str1 = "PM20001"
+            elif Type == "Tertiary":
+                str1 = "PM30001"
+            else:
+                str1 = "PM40001"
+        else:
+            if Type == "Primary":
+                str1 = "PM1" + (str(int(data.PMCode[3:7]) + 1).zfill(4))
+            elif Type == "Secondary":
+                str1 = "PM2" + (str(int(data.PMCode[3:7]) + 1).zfill(4))
+            elif Type == "Tertiary":
+                str1 = "PM3" + (str(int(data.PMCode[3:7]) + 1).zfill(4))
+            else:
+                str1 = "PM4" + (str(int(data.PMCode[3:7]) + 1).zfill(4))
+
+        return Response(str1)
 
     # -------------- View RM --------------------
 
@@ -298,6 +354,13 @@ class HighestBDNoView(APIView):
             bdno = 0
         dic = {'deviationNo': bdno}
         return Response(dic)
+
+
+class ProductNameByProductCodeView(APIView):
+    def get(self, request, ProductCode):
+        pcode = Products.objects.get(ProductCode=ProductCode)
+
+        return Response(pcode.Product)
 
 
 class BatchDetailView(APIView):
@@ -374,6 +437,7 @@ class changeControlVerificationOfChangesView(generics.UpdateAPIView):
     queryset = ChangeControl.objects.all()
     serializer_class = changeControlVerificationOfChangesSerialerzer
 
+
 class QAsView(APIView):
     def get(self, request):
         analysts = User.objects.filter(role="Quality Assurance", is_active=True)
@@ -395,9 +459,11 @@ class HighestDRFNoView(APIView):
         dic = {'DRFNo1': DRFNo1}
         return Response(dic)
 
+
 class DRFPostView(generics.CreateAPIView):
     serializer_class = DRFPostSerializer
     queryset = DRF.objects.all()
+
 
 # -------------------------- Product Sample ---------------------------#
 
@@ -418,7 +484,7 @@ class PSPCodeView(APIView):
             dic["ProductCode"] = i
             dic["Product"] = l2[coun]
             lis.append(dic)
-            coun = coun +1
+            coun = coun + 1
         return Response(lis)
 
 

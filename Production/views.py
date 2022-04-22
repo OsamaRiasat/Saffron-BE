@@ -21,11 +21,10 @@ from Products.utils import getCode, getName
 # ------------------Batch Issuance Request--------------------#
 class PlanNoView(APIView):
     def get(self, request):
-        plans = PlanItems.objects.filter(status='OPEN').values_list('planNo').distinct()
-        entries = PlanItems.objects.filter(id__in=plans)
-        serializer = PlanNoSerializer(entries, many=True)
+        plans = PlanItems.objects.filter(status='OPEN', planNo__isSaved=True)
+        serializer = PlanNoSerializer(plans, many=True)
         l=[]
-        print(serializer.data)
+
         for i in serializer.data:
             l.append(i['planNo'])
 
@@ -61,13 +60,24 @@ class BatchIssuenceRequestView(generics.CreateAPIView):
     queryset = BatchIssuanceRequest.objects.all()
     serializer_class = BatchIssuenceRequestSerializer
 
-
+# -------- Issue Batch Number
 class PlanNoBIRView(APIView):
     def get(self, request):
         plans = BatchIssuanceRequest.objects.filter(noOfBatches__gt=0).values_list('planNo').distinct()
         entries = BatchIssuanceRequest.objects.filter(planNo__in=plans)
         serializer = PlanNoBIRSerializer(entries, many=True)
-        return Response(serializer.data)
+        l=[]
+        for i in serializer.data:
+            l.append(i['planNo'])
+
+        l = list(dict.fromkeys(l))
+        l2 = []
+        for i in l:
+            dic = {}
+            dic["planNo"] = i
+            l2.append(dic)
+
+        return Response(l2)
 
 
 class PCodeBIRView(APIView):
@@ -75,7 +85,20 @@ class PCodeBIRView(APIView):
         plans = BatchIssuanceRequest.objects.filter(planNo=planNo).values_list('ProductCode').distinct()
         entries = BatchIssuanceRequest.objects.filter(ProductCode__in=plans)
         serializer = PCodeBIRSerializer(entries, many=True)
-        return Response(serializer.data)
+
+        l = []
+        for i in serializer.data:
+            l.append(i['ProductCode'])
+
+        l = list(dict.fromkeys(l))
+        l2 = []
+        for i in l:
+            dic = {}
+            dic["ProductCode"] = i
+            l2.append(dic)
+
+        return Response(l2)
+
 
 
 class IssueBatchNoView(APIView):

@@ -26,7 +26,7 @@ class ProductNamesViews(APIView):
         for i in pcode:
             l1.append(i.ProductCode.Product)
 
-        print(l1)
+
         packsizes = PackSizes.objects.all()
         l2 = []
         for i in packsizes:
@@ -237,10 +237,12 @@ class save_plan_View(APIView):
         try:
             obj = Plan.objects.get(planNo=planNo)
             obj.isSaved = True
+            obj.save()
             message = "Plan Saved"
             return Response({"message": message}, status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
             message = "Plan Couldn't be saved"
+            print(e)
             return Response({"message": message}, status=status.HTTP_400_BAD_REQUEST)
 
     #   ------------- Packing Material Planning     -----------
