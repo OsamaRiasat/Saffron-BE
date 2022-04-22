@@ -58,6 +58,7 @@ urlpatterns = [
     # http://127.0.0.1:8000/QualityAssurance/ProductDetail/?ProductCode__Product=&ProductCode=&ProductCode__RegistrationNo=&ProductCode__ShelfLife=
 
     # -------------- Add Raw Material ----------------#
+    path('Raw_Material_Auto_Code_Generator<str:Type>', Raw_Material_Auto_Code_Generator_View.as_view()),
     path('AddRawMaterial/', RawMaterialView.as_view()),
 
     #   ---------------     View RM    ----------------------
@@ -66,6 +67,7 @@ urlpatterns = [
 
     # -------------- Add Packing Material ----------------
 
+    path('Packing_Material_Auto_Code_Generator<str:Type>', Packing_Material_Auto_Code_Generator_View.as_view()),
     path('AddPackingMaterial/', PackingMaterialView.as_view()),
 
 
@@ -78,6 +80,7 @@ urlpatterns = [
 
     path('HighestBDNo/', HighestBDNoView.as_view()),
     # path('ProductCode/', PCodesForLineClearanceView.as_view()),
+    path('ProductNameByProductCode/<str:ProductCode>/', ProductNameByProductCodeView.as_view()),
     # path('BatchNo/<str:Pcode>/', BatchNoView.as_view()),
     path('BatchDetail/<str:batchNo>/', BatchDetailView.as_view()),
     path('BatchDeviation/', BatchDeviationView.as_view()),

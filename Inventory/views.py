@@ -53,6 +53,7 @@ class RawMaterialSearchByName(APIView):
         return Response(serializer.data)
 
 
+
 # Packing Materials
 
 
@@ -425,6 +426,7 @@ class RMReceivingDetailsByGRNoView(APIView):
         dic["remarks"] = data.remarks
         return Response(dic)
 
+
 # RM Print GRN
 
 
@@ -459,7 +461,6 @@ class RMReceivingDetailsByGRNoForPrintGRNView(APIView):
         dic["Exp_Date"] = data.EXP_Date
         dic["remarks"] = data.remarks
         return Response(dic)
-
 
 
 # --------------- Packing Materials RECEIVING ------------------------
@@ -563,6 +564,7 @@ class PMReceivingDetailsByGRNoView(APIView):
         dic["remarks"] = data.remarks
         return Response(dic)
 
+
 # PM Print GRN
 
 
@@ -597,7 +599,6 @@ class PMReceivingDetailsByGRNoForPrintGRNView(APIView):
         dic["Exp_Date"] = data.EXP_Date
         dic["remarks"] = data.remarks
         return Response(dic)
-
 
 
 # ---------------------- Bin Cards -------------------------
@@ -797,6 +798,7 @@ class PM_Returned_View(APIView):
         obj.save()
         return Response({"message": "Material Returned."})
 
+
 #   ------------  RM  Material Return Note   -------------
 
 class RM_Destructed_View(APIView):
@@ -805,6 +807,7 @@ class RM_Destructed_View(APIView):
         obj.status = "DESTRUCTED"
         obj.save()
         return Response({"message": "Material Returned."})
+
 
 #   ------------  PM  Destruction Note   -------------
 

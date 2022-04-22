@@ -19,6 +19,7 @@ class RawMaterials(models.Model):
     Material = models.CharField(max_length=50)
     Units = models.CharField(max_length=10)
     Type = models.ForeignKey(RawMaterialTypes, on_delete=models.CASCADE)
+    Date = models.DateTimeField(auto_now=True)
 
 
 class RMBinCards(models.Model):
@@ -44,6 +45,7 @@ class PackingMaterials(models.Model):
     Material = models.CharField(max_length=50)
     Units = models.CharField(max_length=10)
     Type = models.ForeignKey(PackingMaterialTypes, on_delete=models.CASCADE)
+    Date = models.DateTimeField(auto_now=True)
 
 
 class PMBinCards(models.Model):
