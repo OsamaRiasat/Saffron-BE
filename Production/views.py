@@ -23,7 +23,7 @@ class PlanNoView(APIView):
     def get(self, request):
         plans = PlanItems.objects.filter(status='OPEN', planNo__isSaved=True)
         serializer = PlanNoSerializer(plans, many=True)
-        l=[]
+        l = []
 
         for i in serializer.data:
             l.append(i['planNo'])
@@ -38,16 +38,25 @@ class PlanNoView(APIView):
         return Response(l2)
 
 
-
 class ProductByPlanNoView(APIView):  # retrieve only distinct
     def get(self, request, planNo):
         product = PlanItems.objects.filter(planNo=planNo).values_list('ProductCode').distinct()
-        dict = []
+        li = []
         for i in product:
             dic = {}
             dic['ProductCode'] = i[0]
-            dict.append(dic)
-        return Response(dict)
+            li.append(dic)
+        return Response(li)
+
+
+class Required_batches_by_product_and_planNo_view(APIView):
+    def get(self, request, planNo, productCode):
+        data = PlanItems.objects.filter(planNo=planNo, ProductCode=productCode)
+        required_batches = 0
+        for obj in data:
+            required_batches += obj.noOfBatchesToBePlanned
+
+        return Response(required_batches)
 
 
 class SBSView(APIView):
@@ -60,13 +69,14 @@ class BatchIssuenceRequestView(generics.CreateAPIView):
     queryset = BatchIssuanceRequest.objects.all()
     serializer_class = BatchIssuenceRequestSerializer
 
+
 # -------- Issue Batch Number
 class PlanNoBIRView(APIView):
     def get(self, request):
         plans = BatchIssuanceRequest.objects.filter(noOfBatches__gt=0).values_list('planNo').distinct()
         entries = BatchIssuanceRequest.objects.filter(planNo__in=plans)
         serializer = PlanNoBIRSerializer(entries, many=True)
-        l=[]
+        l = []
         for i in serializer.data:
             l.append(i['planNo'])
 
@@ -98,7 +108,6 @@ class PCodeBIRView(APIView):
             l2.append(dic)
 
         return Response(l2)
-
 
 
 class IssueBatchNoView(APIView):
@@ -238,7 +247,7 @@ class planNoForPacking(APIView):
         l = []
         for obj in data:
             dic = {}
-            dic["planNo"]= obj.planNo.planNo
+            dic["planNo"] = obj.planNo.planNo
             l.append(dic)
         return Response(l)
 
@@ -249,9 +258,11 @@ class productCodeByPlanNoForPacking(APIView):
         l = []
         for obj in data:
             dic = {}
-            dic["ProductCode"]= obj.ProductCode.ProductCode
+            dic["ProductCode"] = obj.ProductCode.ProductCode
+            dic["Product"] = obj.ProductCode.Product
             l.append(dic)
         return Response(l)
+
 
 class WhenProductIsSelectedView(APIView):
     def get(self, request, PCode):
@@ -267,7 +278,7 @@ class WhenProductIsSelectedView(APIView):
             li.append(i.PackSize)
 
         l = list(dict.fromkeys(li))
-        li= []
+        li = []
         for i in l:
             dic = {}
             dic['PackSize'] = i
@@ -301,7 +312,6 @@ class PCodesForLineClearanceView(APIView):
             l.append(i.ProductCode.ProductCode)
         l = list(dict.fromkeys(l))
         return Response(l)
-
 
 
 class BatchNoBYPCodeView(APIView):
@@ -534,7 +544,6 @@ class PCodeView(APIView):
             dic["ProductCode"] = PCode
             l.append(dic)
         return Response(l)
-
 
 
 class PNameView(APIView):
