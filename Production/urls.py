@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('PlanNo/', PlanNoView.as_view()),
     path('ProductByPlanNo/<int:planNo>/', ProductByPlanNoView.as_view()),
+    path('Required_batches_by_product_and_planNo/<int:planNo>/<str:productCode>', Required_batches_by_product_and_planNo_view.as_view()),
     path('SBS/<str:PCode>/', SBSView.as_view()),
     path('BatchIssuenceRequest/', BatchIssuenceRequestView.as_view()),
 
