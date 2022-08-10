@@ -22,7 +22,7 @@ from datetime import date
 # Create your views here.
 
 
-#   ----------------------- RM SAMPLE ----------------------
+#   ----------------------- RM SAMPLE CC----------------------
 
 class GRNOListView(APIView):
     def get(self, request):
