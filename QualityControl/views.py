@@ -249,9 +249,9 @@ class AnalystSampleView(APIView):
         dict = []
         for i in samples:
             dic = {}
-            name = i.IGPNo.RMCode.Material
+            # name = i.IGPNo.RMCode.Material
             dic['QCNo'] = i.QCNo
-            dic['Material'] = name
+            dic['Material'] = i.RMCode.Material
             dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y %H:%M")
             dic['status'] = i.status
             dict.append(dic)
@@ -270,12 +270,12 @@ class RMSamplesView(APIView):
         for i in samples:
             dic = {}
             dic['QCNo'] = i.QCNo
-            rm_receiving = RMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
-            rm = RawMaterials.objects.get(RMCode=rm_receiving.RMCode.RMCode)
+            # rm_receiving = RMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
+            # rm = RawMaterials.objects.get(RMCode=rm_receiving.RMCode.RMCode)
             dic['Date'] = i.samplingDateTime.strftime("%d.%m.%Y %H:%M")
-            dic['Material'] = rm.Material
-            dic['Unit'] = rm.Units
-            dic['Quantity'] = rm_receiving.quantityReceived
+            dic['Material'] = i.RMCode.Material
+            dic['Unit'] = i.RMCode.Units
+            dic['Quantity'] = i.quantityReceived
             try:
                 dic['Analyst'] = i.analyst.username
                 dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
@@ -311,26 +311,27 @@ class RMQCNoSampleView(APIView):
     def get(self, request, QCNo):
         sample = RMSamples.objects.get(QCNo=QCNo)
 
-        rm_receiving = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+        # rm_receiving = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
 
         dict = {}
         dict['samplingDateTime'] = sample.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = sample.IGPNo.IGPNo
+        # dict['IGPNo'] = sample.IGPNo.IGPNo
+        dict['IGPNo'] = 0
         dict['assignedDateTime'] = sample.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = sample.analyst.username
 
-        dict['RMCode'] = rm_receiving.RMCode.RMCode
-        dict['Material'] = rm_receiving.RMCode.Material
-        dict['Units'] = rm_receiving.RMCode.Units
-        dict['quantityReceived'] = rm_receiving.quantityReceived
-        dict['batchNo'] = rm_receiving.batchNo
-        dict['MFG_Date'] = rm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = rm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['RMCode'] = sample.RMCode.RMCode
+        dict['Material'] = sample.RMCode.Material
+        dict['Units'] = sample.RMCode.Units
+        dict['quantityReceived'] = sample.quantityReceived
+        dict['batchNo'] = sample.batchNo
+        dict['MFG_Date'] = sample.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = sample.EXP_Date.strftime("%d.%m.%Y")
 
         data = {}
         try:
-            spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode.RMCode)
+            spec = RMSpecifications.objects.get(RMCode=sample.RMCode.RMCode)
         except:
             return Response({"message": "No Specifications for this Material"})
         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
@@ -366,18 +367,19 @@ class RMAnalysisView(APIView):
     def get(self, request, QCNo):
         analysis = RMAnalysis.objects.get(QCNo=QCNo)
         samples = RMSamples.objects.get(QCNo=QCNo)
-        rm_receiving = RMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
+        # rm_receiving = RMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
         dict = {}
         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = rm_receiving.IGPNo
-        dict['RMCode'] = rm_receiving.RMCode.RMCode
-        dict['Material'] = rm_receiving.RMCode.Material
-        dict['Units'] = rm_receiving.RMCode.Units
-        dict['quantityReceived'] = rm_receiving.quantityReceived
-        dict['batchNo'] = rm_receiving.batchNo
-        dict['MFG_Date'] = rm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = rm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['IGPNo'] = samples.IGPNo
+        dict['IGPNo'] = 0
+        dict['RMCode'] = samples.RMCode.RMCode
+        dict['Material'] = samples.RMCode.Material
+        dict['Units'] = samples.RMCode.Units
+        dict['quantityReceived'] = samples.quantityReceived
+        dict['batchNo'] = samples.batchNo
+        dict['MFG_Date'] = samples.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = samples.EXP_Date.strftime("%d.%m.%Y")
         dict['quantityApproved'] = analysis.quantityApproved
         dict['quantityRejected'] = analysis.quantityRejected
         dict['rawDataReference'] = analysis.rawDataReference
@@ -387,7 +389,7 @@ class RMAnalysisView(APIView):
         dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = samples.analyst.username
 
-        spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode)
+        spec = RMSpecifications.objects.get(RMCode=samples.RMCode)
         str1 = spec.SOPNo + " Version:" + str(spec.version)
         dict["FirstData"] = str1
         dict["SecondData"] = spec.reference.reference
@@ -446,13 +448,13 @@ class PostRMCOAApprovalView(APIView):
             sample.assignedDateTime = None
             sample.status = "PENDING"
             sample.save()
-            rm = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
-            rm.quantityApproved = analysis.quantityApproved
-            rm.quantityRejected = analysis.quantityRejected
-            rm.QCNo = QCNo
-            rm.status = "REJECTED"
-            rm.retest_Date = retestDate
-            rm.save()
+            # rm = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+            # rm.quantityApproved = analysis.quantityApproved
+            # rm.quantityRejected = analysis.quantityRejected
+            # rm.QCNo = QCNo
+            # rm.status = "REJECTED"
+            # rm.retest_Date = retestDate
+            # rm.save()
             return Response({"message": "Rejected"})
         else:
             sample = RMSamples.objects.get(QCNo=QCNo)
@@ -479,17 +481,17 @@ class PostRMCOAApprovalView(APIView):
                 )
                 item.save()
             sample = RMSamples.objects.get(QCNo=QCNo)
-            rm = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
-            rm.quantityApproved = analysis.quantityApproved
-            rm.quantityRejected = analysis.quantityRejected
-            rm.QCNo = QCNo
-            rm.status = "APPROVED"
-            rm.retest_Date = retestDate
-            rm.save()
-            sample.status = "APPROVED"
-            sample.result = "Released"
-            sample.save()
-            analysis.delete()
+            # rm = RMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+            # rm.quantityApproved = analysis.quantityApproved
+            # rm.quantityRejected = analysis.quantityRejected
+            # rm.QCNo = QCNo
+            # rm.status = "APPROVED"
+            # rm.retest_Date = retestDate
+            # rm.save()
+            # sample.status = "APPROVED"
+            # sample.result = "Released"
+            # sample.save()
+            # analysis.delete()
             return Response({"message": "Released"})
 
 
@@ -520,11 +522,11 @@ class RMDataAnalysisView(generics.ListAPIView):
     queryset = RMAnalysisItemsLog.objects.all()
     serializer_class = RMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['RMAnalysisID__QCNo__IGPNo__RMCode__Material',
-                        'RMAnalysisID__QCNo__IGPNo__batchNo',
+    filterset_fields = ['RMAnalysisID__QCNo__RMCode__Material',
+                        'RMAnalysisID__QCNo__batchNo',
                         'RMAnalysisID__QCNo__QCNo',
                         'parameter',
-                        'RMAnalysisID__QCNo__IGPNo__S_ID__S_Name']
+                        'RMAnalysisID__QCNo__S_ID__S_Name']
     #         --------------    ANALYST MANAGEMENT  -----------
 
 
@@ -570,9 +572,9 @@ class CurrentAnalystSampleView(APIView):
             dict = []
             for i in samples:
                 dic = {}
-                name = i.IGPNo.RMCode.Material
+                # name = i.IGPNo.RMCode.Material
                 dic['QCNo'] = i.QCNo
-                dic['Material'] = name
+                dic['Material'] = i.RMCode.Material
                 dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y")
                 dict.append(dic)
             return Response(dict)
@@ -593,20 +595,21 @@ class Print_RMAnalysisView(APIView):
     def get(self, request, QCNo):
         analysis = RMAnalysisLog.objects.get(QCNo=QCNo)
         samples = RMSamples.objects.get(QCNo=QCNo)
-        rm_receiving = RMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
+        # rm_receiving = RMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
         dict = {}
         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = rm_receiving.IGPNo
-        dict['containersReceived'] = rm_receiving.containersReceived
-        dict['S_Name'] = rm_receiving.S_ID.S_Name
-        dict['RMCode'] = rm_receiving.RMCode.RMCode
-        dict['Material'] = rm_receiving.RMCode.Material
-        dict['Units'] = rm_receiving.RMCode.Units
-        dict['quantityReceived'] = rm_receiving.quantityReceived
-        dict['batchNo'] = rm_receiving.batchNo
-        dict['MFG_Date'] = rm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = rm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        # dict['IGPNo'] = samples.IGPNo
+        dict['IGPNo'] = 0
+        dict['containersReceived'] = samples.containersReceived
+        dict['S_Name'] = samples.S_ID.S_Name
+        dict['RMCode'] = samples.RMCode.RMCode
+        dict['Material'] = samples.RMCode.Material
+        dict['Units'] = samples.RMCode.Units
+        dict['quantityReceived'] = samples.quantityReceived
+        dict['batchNo'] = samples.batchNo
+        dict['MFG_Date'] = samples.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = samples.EXP_Date.strftime("%d.%m.%Y")
         dict['quantityApproved'] = analysis.quantityApproved
         dict['quantityRejected'] = analysis.quantityRejected
         dict['rawDataReference'] = analysis.rawDataReference
@@ -618,7 +621,7 @@ class Print_RMAnalysisView(APIView):
         dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = samples.analyst.username
 
-        spec = RMSpecifications.objects.get(RMCode=rm_receiving.RMCode)
+        spec = RMSpecifications.objects.get(RMCode=samples.RMCode)
         str1 = spec.SOPNo + " Version:" + str(spec.version)
         dict["FirstData"] = str1
         dict["SecondData"] = spec.reference.reference

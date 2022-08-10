@@ -3,6 +3,7 @@ from rest_framework import generics
 from django.shortcuts import render
 from rest_framework.views import APIView
 
+from MaterialSuppliers.models import Suppliers
 from Production.models import Stages
 from Production.serializers import BPRSerializer
 from Products.models import DosageForms, PackSizes
@@ -10,7 +11,7 @@ from QualityControl.serializers import AnalystSerializer
 from .models import *
 from .serializers import *
 from Inventory.models import RMReceiving, PMReceiving
-from QualityControl.models import RMSamples, PMSamples
+from QualityControl.models import RMSamples, PMSamples, RMSpecifications
 from rest_framework.response import Response
 from .utils import *
 import pandas as pd
@@ -30,21 +31,39 @@ class GRNOListView(APIView):
         return Response(serializer.data)
 
 
-class RMReceivingDetailsByGRNoView(APIView):
-    def get(self, request, GRNo):
-        data = RMReceiving.objects.get(GRNo=GRNo)
-        dic = {}
-        dic["GRNo"] = GRNo
-        dic["Material"] = data.RMCode.Material
-        dic['RMCode'] = data.RMCode.RMCode
-        dic["supplierName"] = data.S_ID.S_Name
-        dic['MFG_Date'] = data.MFG_Date
-        dic['EXP_Date'] = data.EXP_Date
-        dic["Batch_No"] = data.batchNo
-        dic["Recieved_Quantity"] = data.quantityReceived
-        dic["units"] = data.RMCode.Units
-        dic['containersReceived'] = data.containersReceived
+class RawMaterialListFromSpecificationsView(APIView):
+    def get(self, request):
+        data = RMSpecifications.objects.all()
+        list = []
+        for obj in data:
+            dic = {}
+            dic["RMCode"] = obj.RMCode.RMCode
+            dic["Material"] = obj.RMCode.Material
+            dic["Unit"] = obj.RMCode.Units
+            list.append(dic)
+        return Response(list)
 
+
+class SuppliersListView(generics.ListAPIView):
+    queryset = Suppliers.objects.all()
+    serializer_class = SuppliersListSerializer
+
+
+class GetQcNoView(APIView):
+    def get(self, request):
+        # data = RMReceiving.objects.get(GRNo=GRNo)
+        # dic = {}
+        # dic["GRNo"] = GRNo
+        # dic["Material"] = data.RMCode.Material
+        # dic['RMCode'] = data.RMCode.RMCode
+        # dic["supplierName"] = data.S_ID.S_Name
+        # dic['MFG_Date'] = data.MFG_Date
+        # dic['EXP_Date'] = data.EXP_Date
+        # dic["Batch_No"] = data.batchNo
+        # dic["Recieved_Quantity"] = data.quantityReceived
+        # dic["units"] = data.RMCode.Units
+        # dic['containersReceived'] = data.containersReceived
+        dic={}
         dic["QC_No"] = getQCNO()
 
         return Response(dic)

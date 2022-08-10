@@ -227,7 +227,6 @@ class GeneralDataBPRLogView(APIView):
 
         return Response(dict)
 
-
 class BatchStagesView(generics.CreateAPIView):
     queryset = BatchStages.objects.all()
     serializer_class = BatchStagesSerializer

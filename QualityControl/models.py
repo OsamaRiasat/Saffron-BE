@@ -1,3 +1,4 @@
+import datetime
 from decimal import Decimal
 from django.db import models
 from Inventory.models import RawMaterials, PackingMaterials, PMReceiving
@@ -102,8 +103,9 @@ class RMSamples(models.Model):
     quantityReceived = models.DecimalField(max_digits=10, decimal_places=2, default=10)
     batchNo = models.CharField(max_length=20, default="ABC")
     S_ID = models.ForeignKey(Suppliers, on_delete=models.CASCADE, default=1)
-    MFG_Date = models.DateField(blank=True, null=True)
-    EXP_Date = models.DateField(blank=True, null=True)
+    MFG_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
+    EXP_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
+    containersReceived = models.IntegerField(default=0)
 
     # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
@@ -113,8 +115,8 @@ class RMSamples(models.Model):
     status = models.CharField(max_length=20, default="PENDING")
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
-    REQUIRED = ['QCNo', 'IGPNo', 'deliveredBy', 'receivedBy', 'RMCode', 'quantityReceived', 'batchNo', 'S_ID',
-                'MFG_Date', 'EXP_Date']
+    REQUIRED = ['QCNo', 'deliveredBy', 'receivedBy', 'RMCode', 'quantityReceived', 'batchNo', 'S_ID',
+                'MFG_Date', 'EXP_Date','containersReceived']
 
 #2.01.001.00072
 #

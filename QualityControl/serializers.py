@@ -180,7 +180,8 @@ class PostRMAnalysisSerializer(serializers.ModelSerializer):
         RMSample = RMSamples.objects.get(QCNo=qc.QCNo)
         RMSample.status = "TESTED"
         RMSample.save()
-        rmcode = RMSamples.objects.get(QCNo=qc.QCNo).IGPNo.RMCode.RMCode
+        rmcode = RMSamples.objects.get(QCNo=qc.QCNo).RMCode.RMCode
+        # rmcode = RMSamples.objects.get(QCNo=qc.QCNo).IGPNo.RMCode.RMCode
         specID = RMSpecifications.objects.get(RMCode=rmcode).specID
         analysis = RMAnalysis.objects.create(
             QCNo=validated_data['QCNo'],
@@ -257,11 +258,11 @@ class RMAnalysisLogPrintSerializer(serializers.Serializer):
 
 
 class RMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
-    material = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.RMCode.Material')
-    batchNo = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.batchNo')
+    material = serializers.CharField(source='RMAnalysisID.QCNo.RMCode.Material')
+    batchNo = serializers.CharField(source='RMAnalysisID.QCNo.batchNo')
     QCNo = serializers.CharField(source='RMAnalysisID.QCNo.QCNo')
     analysisDateTime = serializers.DateTimeField(source='RMAnalysisID.analysisDateTime', format="%d.%m.%Y %H:%M")
-    supplierName = serializers.CharField(source='RMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
+    supplierName = serializers.CharField(source='RMAnalysisID.QCNo.S_ID.S_Name')
 
     class Meta:
         model = RMAnalysisItemsLog
