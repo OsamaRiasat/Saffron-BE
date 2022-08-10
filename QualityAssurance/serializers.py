@@ -18,27 +18,41 @@ class GRNOListSerializer(serializers.ModelSerializer):
         fields = ['GRNo', ]
 
 
+class SuppliersListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Suppliers
+        fields = ['S_ID', 'S_Name']
+
+
 class RMSampleSerializer(serializers.ModelSerializer):
-    GRNo = serializers.IntegerField(write_only=True)
+    # GRNo = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = RMSamples
-        fields = ['QCNo', 'GRNo', 'deliveredBy', 'receivedBy', ]
+        fields = ['QCNo', 'deliveredBy', 'receivedBy', 'RMCode', 'quantityReceived', 'batchNo', 'S_ID',
+                  'MFG_Date', 'EXP_Date', 'containersReceived']
 
     def create(self, validated_data):
-        grno = validated_data['GRNo']
         qcno = getQCNO()
-        receiving = RMReceiving.objects.filter(GRNo=grno).first()
+        # receiving = RMReceiving.objects.filter(GRNo=grno).first()
+
         rm = RMSamples.objects.create(
             QCNo=qcno,
-            IGPNo=receiving,
             deliveredBy=validated_data['deliveredBy'],
-            receivedBy=validated_data['receivedBy']
+            receivedBy=validated_data['receivedBy'],
+            RMCode=validated_data['RMCode'],
+            quantityReceived=validated_data['quantityReceived'],
+            batchNo=validated_data['batchNo'],
+            S_ID=validated_data['S_ID'],
+            MFG_Date=validated_data['MFG_Date'],
+            EXP_Date=validated_data['EXP_Date'],
+            containersReceived=validated_data['containersReceived']
         )
         rm.save()
-        receiving.QCNo = qcno
-        receiving.status = 'UNDER_TEST'
-        receiving.save()
+        # receiving.QCNo = qcno
+        # receiving.status = 'UNDER_TEST'
+        # receiving.status = 'UNDER_TEST'
+        # receiving.save()
         return rm
 
 
@@ -210,24 +224,26 @@ class ChangeControlSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChangeControl
-        fields = ['date', 'CCNo','batchNo', 'status', 'initiator', 'department', 'natureOfChange', 'keyword', 'category',
+        fields = ['date', 'CCNo', 'batchNo', 'status', 'initiator', 'department', 'natureOfChange', 'keyword',
+                  'category',
                   'QAStatus', 'name',
                   'descriptionOfChange', 'intendedPurposeOfChange', 'commentsOfProductionManager',
-                  'commentsOfQCManager', 'commentsOfPlantDirector', 'commentsOfQAManager','product']    
+                  'commentsOfQCManager', 'commentsOfPlantDirector', 'commentsOfQAManager', 'product']
+
 
 class ChangeControlForPostSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ChangeControl
         fields = ['status', 'initiator', 'department', 'natureOfChange', 'keyword', 'category',
-                  'QAStatus', 'name', 'relatedChanges', 'descriptionOfChange', 'intendedPurposeOfChange', 'commentsOfProductionManager',
-                  'commentsOfQCManager', 'commentsOfPlantDirector', 'commentsOfQAManager', 'batchNo','changeDate']
+                  'QAStatus', 'name', 'relatedChanges', 'descriptionOfChange', 'intendedPurposeOfChange',
+                  'commentsOfProductionManager',
+                  'commentsOfQCManager', 'commentsOfPlantDirector', 'commentsOfQAManager', 'batchNo', 'changeDate']
 
 
 class changeControlVerificationOfChangesSerialerzer(serializers.ModelSerializer):
     class Meta:
         model = ChangeControl
-        fields = ['implementedChanges', 'degreeOfImplementation', 'verifiedBy', 'changeDate','status']
+        fields = ['implementedChanges', 'degreeOfImplementation', 'verifiedBy', 'changeDate', 'status']
 
 
 # ------------------- DRF  ---------------------#

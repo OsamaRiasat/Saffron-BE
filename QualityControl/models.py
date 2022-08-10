@@ -1,6 +1,8 @@
+import datetime
 from decimal import Decimal
 from django.db import models
 from Inventory.models import RawMaterials, PackingMaterials, PMReceiving
+from MaterialSuppliers.models import Suppliers
 from Production.models import BPRLog
 from Products.models import Products
 from Inventory.models import RMReceiving
@@ -93,10 +95,17 @@ class TempRMSpecificationsItems(models.Model):
 class RMSamples(models.Model):
     # When QA takes sample
     QCNo = models.CharField(max_length=20, primary_key=True)
-    IGPNo = models.ForeignKey(RMReceiving, on_delete=models.CASCADE)
+    # IGPNo = models.ForeignKey(RMReceiving, on_delete=models.CASCADE)
     deliveredBy = models.CharField(max_length=40)
     receivedBy = models.CharField(max_length=40)
     samplingDateTime = models.DateTimeField(auto_now=True)
+    RMCode = models.ForeignKey(RawMaterials, on_delete=models.CASCADE, default="2.01.001.00072")
+    quantityReceived = models.DecimalField(max_digits=10, decimal_places=2, default=10)
+    batchNo = models.CharField(max_length=20, default="ABC")
+    S_ID = models.ForeignKey(Suppliers, on_delete=models.CASCADE, default=1)
+    MFG_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
+    EXP_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
+    containersReceived = models.IntegerField(default=0)
 
     # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
@@ -106,9 +115,11 @@ class RMSamples(models.Model):
     status = models.CharField(max_length=20, default="PENDING")
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
-    REQUIRED = ['QCNo', 'IGPNo', 'deliveredBy', 'receivedBy']
+    REQUIRED = ['QCNo', 'deliveredBy', 'receivedBy', 'RMCode', 'quantityReceived', 'batchNo', 'S_ID',
+                'MFG_Date', 'EXP_Date','containersReceived']
 
-
+#2.01.001.00072
+#
 class RMAnalysis(models.Model):
     RMAnalysisID = models.AutoField(primary_key=True)
     workingStd = models.CharField(max_length=40)
