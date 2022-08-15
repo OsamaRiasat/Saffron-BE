@@ -92,10 +92,19 @@ WSGI_APPLICATION = 'SaffronProject.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+    
+    default’: {
+        ‘ENGINE’: ‘django.db.backends.postgresql_psycopg2’,
+        ‘NAME’: “d1d1ugqor5c4sr”,
+        ‘USER’: “bvypfxzmnkhrkn”,
+        ‘PASSWORD’: “68e84486d94b0847e97790f69b2c9b30f42a8a2b8fc59702a410caa370533aca”,
+        ‘HOST’: “ec2-54-211-160-34.compute-1.amazonaws.com”,
+        ‘PORT’: “5432”,
     }
+    
 }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
