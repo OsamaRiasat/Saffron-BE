@@ -106,6 +106,7 @@ class RMSamples(models.Model):
     MFG_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
     EXP_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
     containersReceived = models.IntegerField(default=0)
+    GRN_No = models.IntegerField( default=1)
 
     # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
