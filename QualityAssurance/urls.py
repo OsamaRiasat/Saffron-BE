@@ -10,6 +10,7 @@ urlpatterns = [
     path('RawMaterialListFromSpecifications/', RawMaterialListFromSpecificationsView().as_view()),
     path('SuppliersList', SuppliersListView.as_view()),
     path('GetQcNo/', GetQcNoView.as_view()),
+    path('is_GRN_NO_Unique/<int:GRN_No>', is_GRN_NO_Unique_View.as_view()),
     path('RMSample/', RMSampleView.as_view()),
 
     #   -----------------       PM SAMPLE     ---------------
