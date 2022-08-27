@@ -22,7 +22,7 @@ from datetime import date
 # Create your views here.
 
 
-#   ----------------------- RM SAMPLE CC----------------------
+#   ----------------------- RM SAMPLE ----------------------
 
 class GRNOListView(APIView):
     def get(self, request):
@@ -63,10 +63,19 @@ class GetQcNoView(APIView):
         # dic["Recieved_Quantity"] = data.quantityReceived
         # dic["units"] = data.RMCode.Units
         # dic['containersReceived'] = data.containersReceived
-        dic={}
+        dic = {}
         dic["QC_No"] = getQCNO()
 
         return Response(dic)
+
+
+class is_GRN_NO_Unique_View(APIView):
+    def get(self, request, GRN_No):
+        data = RMSamples.objects.filter(GRN_No=GRN_No)
+        flag = False if data else True
+
+        print(data)
+        return Response(flag)
 
 
 class RMSampleView(generics.CreateAPIView):
