@@ -11,7 +11,7 @@ from QualityControl.serializers import AnalystSerializer
 from .models import *
 from .serializers import *
 from Inventory.models import RMReceiving, PMReceiving
-from QualityControl.models import RMSamples, PMSamples, RMSpecifications
+from QualityControl.models import RMSamples, PMSamples, RMSpecifications, PMSpecifications
 from rest_framework.response import Response
 from .utils import *
 import pandas as pd
@@ -92,24 +92,46 @@ class PMGRNOListView(APIView):
         return Response(serializer.data)
 
 
-class PMReceivingDetailsByGRNoView(APIView):
-    def get(self, request, GRNo):
-        data = PMReceiving.objects.get(GRNo=GRNo)
-        dic = {}
-        dic["GRNo"] = GRNo
-        dic["Material"] = data.PMCode.Material
-        dic['RMCode'] = data.PMCode.PMCode
-        dic["supplierName"] = data.S_ID.S_Name
-        dic['MFG_Date'] = data.MFG_Date
-        dic['EXP_Date'] = data.EXP_Date
-        dic["Batch_No"] = data.batchNo
-        dic["Recieved_Quantity"] = data.quantityReceived
-        dic["units"] = data.PMCode.Units
-        dic['containersReceived'] = data.containersReceived
+class PackingMaterialListFromSpecificationsView(APIView):
+    def get(self, request):
+        data = PMSpecifications.objects.all()
+        list = []
+        for obj in data:
+            dic = {}
+            dic["PMCode"] = obj.PMCode.PMCode
+            dic["Material"] = obj.PMCode.Material
+            dic["Unit"] = obj.PMCode.Units
+            list.append(dic)
+        return Response(list)
 
+
+class PackingMaterialGetQcNoView(APIView):
+    def get(self, request):
+        # data = RMReceiving.objects.get(GRNo=GRNo)
+        # dic = {}
+        # dic["GRNo"] = GRNo
+        # dic["Material"] = data.RMCode.Material
+        # dic['RMCode'] = data.RMCode.RMCode
+        # dic["supplierName"] = data.S_ID.S_Name
+        # dic['MFG_Date'] = data.MFG_Date
+        # dic['EXP_Date'] = data.EXP_Date
+        # dic["Batch_No"] = data.batchNo
+        # dic["Recieved_Quantity"] = data.quantityReceived
+        # dic["units"] = data.RMCode.Units
+        # dic['containersReceived'] = data.containersReceived
+        dic = {}
         dic["QC_No"] = PMgetQCNO()
 
         return Response(dic)
+
+
+class is_GRN_NO_PM_Unique_View(APIView):
+    def get(self, request, GRN_No):
+        data = PMSamples.objects.filter(GRN_No=GRN_No)
+        flag = False if data else True
+
+        print(data)
+        return Response(flag)
 
 
 class PMSampleView(generics.CreateAPIView):

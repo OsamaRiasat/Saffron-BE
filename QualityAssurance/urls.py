@@ -15,8 +15,10 @@ urlpatterns = [
 
     #   -----------------       PM SAMPLE     ---------------
 
-    path('PMGRNOList/', PMGRNOListView.as_view()),
-    path('PMRecievingDetailByGRNo/<int:GRNo>/', PMReceivingDetailsByGRNoView.as_view()),
+    path('PackingMaterialListFromSpecifications/', PackingMaterialListFromSpecificationsView().as_view()),
+    #path('SuppliersList', SuppliersListView.as_view()),
+    path('PackingMaterialGetQcNo/', PackingMaterialGetQcNoView.as_view()),
+    path('is_GRN_NO_Unique_PM/<int:GRN_No>', is_GRN_NO_PM_Unique_View.as_view()),
     path('PMSample/', PMSampleView.as_view()),
 
     # populate DB

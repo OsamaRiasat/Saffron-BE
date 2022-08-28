@@ -65,26 +65,34 @@ class PMGRNOListSerializer(serializers.ModelSerializer):
 
 
 class PMSampleSerializer(serializers.ModelSerializer):
-    GRNo = serializers.IntegerField(write_only=True)
+    # GRNo = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = PMSamples
-        fields = ['QCNo', 'GRNo', 'deliveredBy', 'receivedBy', ]
+        fields = ['QCNo', 'deliveredBy', 'receivedBy', 'PMCode', 'quantityReceived', 'batchNo', 'S_ID',
+                  'MFG_Date', 'EXP_Date', 'containersReceived']
 
     def create(self, validated_data):
-        grno = validated_data['GRNo']
         qcno = PMgetQCNO()
-        receiving = PMReceiving.objects.filter(GRNo=grno).first()
+        # receiving = RMReceiving.objects.filter(GRNo=grno).first()
+
         rm = PMSamples.objects.create(
             QCNo=qcno,
-            IGPNo=receiving,
             deliveredBy=validated_data['deliveredBy'],
-            receivedBy=validated_data['receivedBy']
+            receivedBy=validated_data['receivedBy'],
+            PMCode=validated_data['PMCode'],
+            quantityReceived=validated_data['quantityReceived'],
+            batchNo=validated_data['batchNo'],
+            S_ID=validated_data['S_ID'],
+            MFG_Date=validated_data['MFG_Date'],
+            EXP_Date=validated_data['EXP_Date'],
+            containersReceived=validated_data['containersReceived']
         )
         rm.save()
-        receiving.QCNo = qcno
-        receiving.status = 'UNDER_TEST'
-        receiving.save()
+        # receiving.QCNo = qcno
+        # receiving.status = 'UNDER_TEST'
+        # receiving.status = 'UNDER_TEST'
+        # receiving.save()
         return rm
 
 
