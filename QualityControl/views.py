@@ -371,7 +371,7 @@ class RMAnalysisView(APIView):
         dict = {}
         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = samples.IGPNo
+        # dict['IGPNo'] = samples.IGPNo
         dict['IGPNo'] = 0
         dict['RMCode'] = samples.RMCode.RMCode
         dict['Material'] = samples.RMCode.Material
@@ -846,9 +846,9 @@ class PMAnalystSampleView(APIView):
         dict = []
         for i in samples:
             dic = {}
-            name = i.IGPNo.PMCode.Material
+            # name = i.IGPNo.PMCode.Material
             dic['QCNo'] = i.QCNo
-            dic['Material'] = name
+            dic['Material'] = i.PMCode.Material
             dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y %H:%M")
             dic['status'] = i.status
             dict.append(dic)
@@ -867,12 +867,12 @@ class PMSamplesView(APIView):
         for i in samples:
             dic = {}
             dic['QCNo'] = i.QCNo
-            pm_receiving = PMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
-            pm = PackingMaterials.objects.get(PMCode=pm_receiving.PMCode.PMCode)
+            #pm_receiving = PMReceiving.objects.get(IGPNo=i.IGPNo.IGPNo)
+            #pm = PackingMaterials.objects.get(PMCode=pm_receiving.PMCode.PMCode)
             dic['Date'] = i.samplingDateTime.strftime("%d.%m.%Y %H:%M")
-            dic['Material'] = pm.Material
-            dic['Unit'] = pm.Units
-            dic['Quantity'] = pm_receiving.quantityReceived
+            dic['Material'] = i.PMCode.Material
+            dic['Unit'] = i.PMCode.Units
+            dic['Quantity'] = i.quantityReceived
             try:
                 dic['Analyst'] = i.analyst.username
                 dic['AssigneDate'] = i.assignedDateTime.strftime(("%d.%m.%Y %H:%M"))
@@ -908,26 +908,26 @@ class PMQCNoSampleView(APIView):
     def get(self, request, QCNo):
         sample = PMSamples.objects.get(QCNo=QCNo)
 
-        pm_receiving = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+        #pm_receiving = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
 
         dict = {}
         dict['samplingDateTime'] = sample.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = sample.IGPNo.IGPNo
+        dict['IGPNo'] = 0
         dict['assignedDateTime'] = sample.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = sample.analyst.username
 
-        dict['RMCode'] = pm_receiving.PMCode.PMCode
-        dict['Material'] = pm_receiving.PMCode.Material
-        dict['Units'] = pm_receiving.PMCode.Units
-        dict['quantityReceived'] = pm_receiving.quantityReceived
-        dict['batchNo'] = pm_receiving.batchNo
-        dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['RMCode'] = sample.PMCode.PMCode
+        dict['Material'] = sample.PMCode.Material
+        dict['Units'] = sample.PMCode.Units
+        dict['quantityReceived'] = sample.quantityReceived
+        dict['batchNo'] = sample.batchNo
+        dict['MFG_Date'] = sample.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = sample.EXP_Date.strftime("%d.%m.%Y")
 
         data = {}
         try:
-            spec = PMSpecifications.objects.get(PMCode=pm_receiving.PMCode.PMCode)
+            spec = PMSpecifications.objects.get(PMCode=sample.PMCode.PMCode)
         except:
             return Response({"message": "No Specifications for this Material"})
         str1 = spec.SOPNo + " Version:" + str(spec.version) + " Date:" + str(spec.date.strftime('%d-%m-%Y'))
@@ -963,18 +963,18 @@ class PMAnalysisView(APIView):
     def get(self, request, QCNo):
         analysis = PMAnalysis.objects.get(QCNo=QCNo)
         samples = PMSamples.objects.get(QCNo=QCNo)
-        pm_receiving = PMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
+        #pm_receiving = PMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
         dict = {}
         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = pm_receiving.IGPNo
-        dict['RMCode'] = pm_receiving.PMCode.PMCode
-        dict['Material'] = pm_receiving.PMCode.Material
-        dict['Units'] = pm_receiving.PMCode.Units
-        dict['quantityReceived'] = pm_receiving.quantityReceived
-        dict['batchNo'] = pm_receiving.batchNo
-        dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['IGPNo'] = 0
+        dict['RMCode'] = samples.PMCode.PMCode
+        dict['Material'] = samples.PMCode.Material
+        dict['Units'] = samples.PMCode.Units
+        dict['quantityReceived'] = samples.quantityReceived
+        dict['batchNo'] = samples.batchNo
+        dict['MFG_Date'] = samples.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = samples.EXP_Date.strftime("%d.%m.%Y")
         dict['quantityApproved'] = analysis.quantityApproved
         dict['quantityRejected'] = analysis.quantityRejected
         dict['rawDataReference'] = analysis.rawDataReference
@@ -984,7 +984,7 @@ class PMAnalysisView(APIView):
         dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = samples.analyst.username
 
-        spec = PMSpecifications.objects.get(PMCode=pm_receiving.PMCode)
+        spec = PMSpecifications.objects.get(PMCode=samples.PMCode)
         str1 = spec.SOPNo + " Version:" + str(spec.version)
         dict["FirstData"] = str1
         dict["SecondData"] = spec.reference.reference
@@ -1039,13 +1039,13 @@ class PostPMCOAApprovalView(APIView):
                 item.save()
             analysis.delete()
             sample = PMSamples.objects.get(QCNo=QCNo)
-            pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
-            pm.quantityApproved = analysis.quantityApproved
-            pm.quantityRejected = analysis.quantityRejected
-            pm.QCNo = QCNo
-            pm.status = "REJECTED"
-            pm.retest_Date = retestDate
-            pm.save()
+            # pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+            # pm.quantityApproved = analysis.quantityApproved
+            # pm.quantityRejected = analysis.quantityRejected
+            # pm.QCNo = QCNo
+            # pm.status = "REJECTED"
+            # pm.retest_Date = retestDate
+            # pm.save()
             sample.analyst = None
             sample.assignedDateTime = None
             sample.status = "PENDING"
@@ -1076,13 +1076,13 @@ class PostPMCOAApprovalView(APIView):
                 )
                 item.save()
             sample = PMSamples.objects.get(QCNo=QCNo)
-            pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
-            pm.quantityApproved = analysis.quantityApproved
-            pm.quantityRejected = analysis.quantityRejected
-            pm.QCNo = QCNo
-            pm.status = "APPROVED"
-            pm.retest_Date = retestDate
-            pm.save()
+            # pm.quantityApproved = analysis.quantityApproved
+            # pm.quantityRejected = analysis.quantityRejected
+            # pm.QCNo = QCNo
+            # pm = PMReceiving.objects.get(IGPNo=sample.IGPNo.IGPNo)
+            # pm.status = "APPROVED"
+            # pm.retest_Date = retestDate
+            # pm.save()
             sample.status = "APPROVED"
             sample.result = "Released"
             sample.save()
@@ -1103,20 +1103,20 @@ class Print_PMAnalysisView(APIView):
     def get(self, request, QCNo):
         analysis = PMAnalysisLog.objects.get(QCNo=QCNo)
         samples = PMSamples.objects.get(QCNo=QCNo)
-        pm_receiving = PMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
+        #pm_receiving = PMReceiving.objects.get(IGPNo=samples.IGPNo.IGPNo)
         dict = {}
         dict['samplingDateTime'] = samples.samplingDateTime.strftime("%d.%m.%Y %H:%M")
         dict['QCNo'] = QCNo
-        dict['IGPNo'] = pm_receiving.IGPNo
-        dict['containersReceived'] = pm_receiving.containersReceived
-        dict['S_Name'] = pm_receiving.S_ID.S_Name
-        dict['RMCode'] = pm_receiving.PMCode.PMCode
-        dict['Material'] = pm_receiving.PMCode.Material
-        dict['Units'] = pm_receiving.PMCode.Units
-        dict['quantityReceived'] = pm_receiving.quantityReceived
-        dict['batchNo'] = pm_receiving.batchNo
-        dict['MFG_Date'] = pm_receiving.MFG_Date.strftime("%d.%m.%Y")
-        dict['EXP_Date'] = pm_receiving.EXP_Date.strftime("%d.%m.%Y")
+        dict['IGPNo'] = 0
+        dict['containersReceived'] = samples.containersReceived
+        dict['S_Name'] = samples.S_ID.S_Name
+        dict['RMCode'] = samples.PMCode.PMCode
+        dict['Material'] = samples.PMCode.Material
+        dict['Units'] = samples.PMCode.Units
+        dict['quantityReceived'] = samples.quantityReceived
+        dict['batchNo'] = samples.batchNo
+        dict['MFG_Date'] = samples.MFG_Date.strftime("%d.%m.%Y")
+        dict['EXP_Date'] = samples.EXP_Date.strftime("%d.%m.%Y")
         dict['quantityApproved'] = analysis.quantityApproved
         dict['quantityRejected'] = analysis.quantityRejected
         dict['rawDataReference'] = analysis.rawDataReference
@@ -1128,7 +1128,7 @@ class Print_PMAnalysisView(APIView):
         dict['assignedDateTime'] = samples.assignedDateTime.strftime("%d.%m.%Y %H:%M")
         dict['analyst'] = samples.analyst.username
 
-        spec = PMSpecifications.objects.get(PMCode=pm_receiving.PMCode)
+        spec = PMSpecifications.objects.get(PMCode=samples.PMCode)
         str1 = spec.SOPNo + " Version:" + str(spec.version)
         dict["FirstData"] = str1
         dict["SecondData"] = spec.reference.reference
@@ -1186,11 +1186,11 @@ class PMDataAnalysisView(generics.ListAPIView):
     queryset = PMAnalysisItemsLog.objects.all()
     serializer_class = PMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['PMAnalysisID__QCNo__IGPNo__PMCode__Material',
-                        'PMAnalysisID__QCNo__IGPNo__batchNo',
+    filterset_fields = ['PMAnalysisID__QCNo__PMCode__Material',
+                        'PMAnalysisID__QCNo__batchNo',
                         'PMAnalysisID__QCNo__QCNo',
                         'parameter',
-                        'PMAnalysisID__QCNo__IGPNo__S_ID__S_Name']
+                        'PMAnalysisID__QCNo__S_ID__S_Name']
     # -------------- ANALYST LOGIN -------------
 
 
@@ -1204,9 +1204,9 @@ class PMCurrentAnalystSampleView(APIView):
             dict = []
             for i in samples:
                 dic = {}
-                name = i.IGPNo.PMCode.Material
+                #name = i.IGPNo.PMCode.Material
                 dic['QCNo'] = i.QCNo
-                dic['Material'] = name
+                dic['Material'] = i.PMCode.Material
                 dic['assignedDateTime'] = i.assignedDateTime.strftime("%d.%m.%Y")
                 dict.append(dic)
             return Response(dict)

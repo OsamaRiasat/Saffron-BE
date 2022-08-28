@@ -445,7 +445,7 @@ class PostPMAnalysisSerializer(serializers.ModelSerializer):
         PMSample = PMSamples.objects.get(QCNo=qc.QCNo)
         PMSample.status = "TESTED"
         PMSample.save()
-        pmcode = PMSamples.objects.get(QCNo=qc.QCNo).IGPNo.PMCode.PMCode
+        pmcode = PMSamples.objects.get(QCNo=qc.QCNo).PMCode.PMCode
         specID = PMSpecifications.objects.get(PMCode=pmcode).specID
         analysis = PMAnalysis.objects.create(
             QCNo=validated_data['QCNo'],
@@ -523,11 +523,11 @@ class PMAnalysisLogPrintSerializer(serializers.Serializer):
 
 
 class PMAnalysisItemsReportingSerializer(serializers.ModelSerializer):
-    material = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.PMCode.Material')
-    batchNo = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.batchNo')
+    material = serializers.CharField(source='PMAnalysisID.QCNo.PMCode.Material')
+    batchNo = serializers.CharField(source='PMAnalysisID.QCNo.batchNo')
     QCNo = serializers.CharField(source='PMAnalysisID.QCNo.QCNo')
     analysisDateTime = serializers.DateTimeField(source='PMAnalysisID.analysisDateTime', format="%d.%m.%Y %H:%M")
-    supplierName = serializers.CharField(source='PMAnalysisID.QCNo.IGPNo.S_ID.S_Name')
+    supplierName = serializers.CharField(source='PMAnalysisID.QCNo.S_ID.S_Name')
 
     class Meta:
         model = PMAnalysisItemsLog
