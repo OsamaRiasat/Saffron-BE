@@ -262,10 +262,18 @@ class TempPMSpecificationsItems(models.Model):
 class PMSamples(models.Model):
     # When QA takes sample
     QCNo = models.CharField(max_length=20, primary_key=True)
-    IGPNo = models.ForeignKey(PMReceiving, on_delete=models.CASCADE)
+    #IGPNo = models.ForeignKey(PMReceiving, on_delete=models.CASCADE)
     deliveredBy = models.CharField(max_length=40)
     receivedBy = models.CharField(max_length=40)
     samplingDateTime = models.DateTimeField(auto_now=True)
+    PMCode = models.ForeignKey(PackingMaterials, on_delete=models.CASCADE)
+    quantityReceived = models.DecimalField(max_digits=10, decimal_places=2)
+    batchNo = models.CharField(max_length=20)
+    S_ID = models.ForeignKey(Suppliers, on_delete=models.CASCADE)
+    MFG_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
+    EXP_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
+    containersReceived = models.IntegerField(default=0)
+    GRN_No = models.IntegerField(default=1)
 
     # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
@@ -275,7 +283,8 @@ class PMSamples(models.Model):
     status = models.CharField(max_length=20, default="PENDING")
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
-    REQUIRED = ['QCNo', 'IGPNo', 'deliveredBy', 'receivedBy']
+    REQUIRED = ['QCNo', 'deliveredBy', 'receivedBy', 'PMCode', 'quantityReceived', 'batchNo', 'S_ID',
+                'MFG_Date', 'EXP_Date', 'containersReceived']
 
 
 class PMAnalysis(models.Model):
