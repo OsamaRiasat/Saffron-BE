@@ -46,7 +46,8 @@ class RMSampleSerializer(serializers.ModelSerializer):
             S_ID=validated_data['S_ID'],
             MFG_Date=validated_data['MFG_Date'],
             EXP_Date=validated_data['EXP_Date'],
-            containersReceived=validated_data['containersReceived']
+            containersReceived=validated_data['containersReceived'],
+            GRN_No=validated_data['GRN_No']
         )
         rm.save()
         # receiving.QCNo = qcno
@@ -86,7 +87,9 @@ class PMSampleSerializer(serializers.ModelSerializer):
             S_ID=validated_data['S_ID'],
             MFG_Date=validated_data['MFG_Date'],
             EXP_Date=validated_data['EXP_Date'],
-            containersReceived=validated_data['containersReceived']
+            containersReceived=validated_data['containersReceived'],
+            GRN_No=validated_data['GRN_No']
+
         )
         rm.save()
         # receiving.QCNo = qcno
