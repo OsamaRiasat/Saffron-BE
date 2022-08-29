@@ -30,7 +30,7 @@ class RMSampleSerializer(serializers.ModelSerializer):
     class Meta:
         model = RMSamples
         fields = ['QCNo', 'deliveredBy', 'receivedBy', 'RMCode', 'quantityReceived', 'batchNo', 'S_ID',
-                  'MFG_Date', 'EXP_Date', 'containersReceived','GRN']
+                  'MFG_Date', 'EXP_Date', 'containersReceived','GRN_No']
 
     def create(self, validated_data):
         qcno = getQCNO()
@@ -70,7 +70,7 @@ class PMSampleSerializer(serializers.ModelSerializer):
     class Meta:
         model = PMSamples
         fields = ['QCNo', 'deliveredBy', 'receivedBy', 'PMCode', 'quantityReceived', 'batchNo', 'S_ID',
-                  'MFG_Date', 'EXP_Date', 'containersReceived']
+                  'MFG_Date', 'EXP_Date', 'containersReceived','GRN_No']
 
     def create(self, validated_data):
         qcno = PMgetQCNO()
