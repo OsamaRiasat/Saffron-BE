@@ -106,7 +106,7 @@ class RMSamples(models.Model):
     MFG_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
     EXP_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
     containersReceived = models.IntegerField(default=0)
-    GRN_No = models.IntegerField( default=1)
+    GRN_No = models.IntegerField( )
 
     # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
@@ -117,7 +117,7 @@ class RMSamples(models.Model):
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
     REQUIRED = ['QCNo', 'deliveredBy', 'receivedBy', 'RMCode', 'quantityReceived', 'batchNo', 'S_ID',
-                'MFG_Date', 'EXP_Date','containersReceived']
+                'MFG_Date', 'EXP_Date','containersReceived','GRN_No']
 
 #2.01.001.00072
 #
@@ -273,7 +273,7 @@ class PMSamples(models.Model):
     MFG_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
     EXP_Date = models.DateField(blank=True, null=True, default=datetime.date.today)
     containersReceived = models.IntegerField(default=0)
-    GRN_No = models.IntegerField(default=1)
+    GRN_No = models.IntegerField()
 
     # When QC Assigned Samples
     assignedDateTime = models.DateTimeField(blank=True, null=True)
@@ -284,7 +284,7 @@ class PMSamples(models.Model):
     remarks = models.CharField(max_length=50, blank=True, null=True)
 
     REQUIRED = ['QCNo', 'deliveredBy', 'receivedBy', 'PMCode', 'quantityReceived', 'batchNo', 'S_ID',
-                'MFG_Date', 'EXP_Date', 'containersReceived']
+                'MFG_Date', 'EXP_Date', 'containersReceived','GRN_No']
 
 
 class PMAnalysis(models.Model):
