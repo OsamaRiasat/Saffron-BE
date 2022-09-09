@@ -1186,11 +1186,11 @@ class PMDataAnalysisView(generics.ListAPIView):
     queryset = PMAnalysisItemsLog.objects.all()
     serializer_class = PMAnalysisItemsReportingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['PMAnalysisID__QCNo__IGPNo__PMCode__Material',
-                        'PMAnalysisID__QCNo__IGPNo__batchNo',
+    filterset_fields = ['PMAnalysisID__QCNo__PMCode__Material',
+                        'PMAnalysisID__QCNo__batchNo',
                         'PMAnalysisID__QCNo__QCNo',
                         'parameter',
-                        'PMAnalysisID__QCNo__IGPNo__S_ID__S_Name']
+                        'PMAnalysisID__QCNo__S_ID__S_Name']
     # -------------- ANALYST LOGIN -------------
 
 
