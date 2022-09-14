@@ -20,7 +20,7 @@ from Account.models import User
 # --------------- SPECIFICATIONS --------------------
 
 class RMParameters(models.Model):
-    parameter = models.CharField(primary_key=True, max_length=20)
+    parameter = models.CharField(primary_key=True, max_length=100)
 
     REQUIRED = ['parameter']
 
@@ -198,7 +198,7 @@ class RMAnalysisItemsLog(models.Model):
 
 
 class PMParameters(models.Model):
-    parameter = models.CharField(primary_key=True, max_length=20)
+    parameter = models.CharField(primary_key=True, max_length=100)
 
     REQUIRED = ['parameter']
 
@@ -361,7 +361,7 @@ class PMAnalysisItemsLog(models.Model):
 
 
 class ProductParameters(models.Model):
-    parameter = models.CharField(primary_key=True, max_length=20)
+    parameter = models.CharField(primary_key=True, max_length=100)
 
     REQUIRED = ['parameter']
 
