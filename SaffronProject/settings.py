@@ -123,6 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 REST_FRAMEWORK = {
     # 'DATE_INPUT_FORMATS': "%d-%m-%Y",
     # 'DATE_FORMAT': "%d-%m-%Y",
