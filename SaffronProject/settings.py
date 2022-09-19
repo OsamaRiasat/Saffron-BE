@@ -92,10 +92,10 @@ WSGI_APPLICATION = 'SaffronProject.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "d6lac30q8moa0r",
-        'USER': "uftvuqivcrhfio",
-        'PASSWORD': "b992e736b0282988bd7801398c0aa285b9493ebfe742b937d5ddad4e64a2223c",
-        'HOST': "ec2-3-89-214-80.compute-1.amazonaws.com",
+        'NAME': "d1d1ugqor5c4sr",
+        'USER': "bvypfxzmnkhrkn",
+        'PASSWORD': "68e84486d94b0847e97790f69b2c9b30f42a8a2b8fc59702a410caa370533aca",
+        'HOST': "ec2-54-211-160-34.compute-1.amazonaws.com",
         'PORT': "5432",
     }
 }
