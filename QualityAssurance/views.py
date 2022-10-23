@@ -196,10 +196,9 @@ class HighestNCRView(APIView):
         ncr1 = NCR.objects.aggregate(Max('NCRNo'))
         ncr1 = ncr1['NCRNo__max']
         if ncr1 is None:
-            ncr1 = 0
+            return Response({'NCRNo': 0})
         dic = {'NCRNo': ncr1}
         return Response(dic)
-
 
 class NCRView(generics.CreateAPIView):
     queryset = NCR.objects.all()
